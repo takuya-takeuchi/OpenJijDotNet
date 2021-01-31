@@ -1,0 +1,4 @@
+[submodule "src/OpenJij"]
+	path = src/OpenJij
+	url = https://github.com/OpenJij/OpenJij
+	ignore = dirty

@@ -1,0 +1,267 @@
+#***************************************
+#Arguments
+#%1: Test Package (OpenJijDotNet.CUDA92)
+#%2: Version of Release (19.17.0.yyyyMMdd)
+#***************************************
+Param([Parameter(
+      Mandatory=$True,
+      Position = 1
+      )][string]
+      $Package,
+
+      [Parameter(
+      Mandatory=$True,
+      Position = 2
+      )][string]
+      $Version,
+
+      [Parameter(
+      Mandatory=$True,
+      Position = 3
+      )][string]
+      $PlatformTarget,
+
+      [Parameter(
+      Mandatory=$True,
+      Position = 4
+      )][string]
+      $RuntimeIdentifier
+)
+
+Set-StrictMode -Version Latest
+
+function Clear-PackakgeCache([string]$Package, [string]$Version)
+{
+   # Linux is executed on container
+   if ($global:IsWindows -or $global:IsMacOS)
+   {
+      $path = (dotnet nuget locals global-packages --list).Replace('info : global-packages: ', '').Trim()
+      if ($path)
+      {
+         $path = (dotnet nuget locals global-packages --list).Replace('global-packages: ', '').Trim()
+      }
+      $path =  Join-Path $path $Package | `
+               Join-Path -ChildPath $Version
+      if (Test-Path $path)
+      {
+         Write-Host "Remove '$path'" -Foreground Green
+         Remove-Item -Path "$path" -Recurse -Force
+      }
+   }
+}
+
+function RunTest($BuildTargets)
+{
+   foreach($BuildTarget in $BuildTargets)
+   {
+      $package = $BuildTarget.Package
+
+      # Test
+      $WorkDir = Join-Path $OpenJijDotNetRoot work
+      $NugetDir = Join-Path $OpenJijDotNetRoot nuget
+      $TestDir = Join-Path $NugetDir artifacts | `
+                  Join-Path -ChildPath test | `
+                  Join-Path -ChildPath $package | `
+                  Join-Path -ChildPath $Version | `
+                  Join-Path -ChildPath $RuntimeIdentifier
+
+      if (!(Test-Path "$WorkDir")) {
+         New-Item "$WorkDir" -ItemType Directory > $null
+      }
+      if (!(Test-Path "$TestDir")) {
+         New-Item "$TestDir" -ItemType Directory > $null
+      }
+
+      $env:OPENJIJDOTNET_VERSION = $VERSION
+      $env:OPENJIJDOTNET_GUI_SUPPORT = 1
+
+      $NativeTestDir = Join-Path $OpenJijDotNetRoot test | `
+                        Join-Path -ChildPath OpenJijDotNet.Native.Tests
+
+      $TargetDir = Join-Path $WorkDir OpenJijDotNet.Native.Tests
+      if (Test-Path "$TargetDir") {
+         Remove-Item -Path "$TargetDir" -Recurse -Force > $null
+      }
+
+      Copy-Item "$NativeTestDir" "$WorkDir" -Recurse
+
+      Set-Location -Path "$TargetDir"
+
+      Clear-PackakgeCache -Package $Package -Version $Version
+
+      # restore package from local nuget pacakge
+      # And drop stdout message
+      dotnet add package $package -v $VERSION --source "$NugetDir" > $null
+
+      # Copy Dependencies
+      $OutDir = Join-Path $TargetDir bin | `
+                  Join-Path -ChildPath Release | `
+                  Join-Path -ChildPath netcoreapp2.0
+      if (!(Test-Path "$OutDir")) {
+         New-Item "$OutDir" -ItemType Directory > $null
+      }
+
+      if ($IsWindows)
+      {
+         if ($null -ne $BuildTarget.Dependencies)
+         {
+            foreach($Dependency in $BuildTarget.Dependencies)
+            {
+               $FileName = [System.IO.Path]::GetFileName("$Dependency")
+               New-Item -Value "$Dependency" -Path "$OutDir" -Name "$FileName" -ItemType SymbolicLink > $null
+            }
+         }
+      }
+
+      $ErrorActionPreference = "silentlycontinue"
+      $env:PlatformTarget = $PlatformTarget
+      $dotnetPath = ""
+      $runsetting = ""
+      if ($global:IsWindows)
+      {
+         switch($PlatformTarget)
+         {
+            "x64"
+            {
+               $dotnetPath = Join-Path $env:ProgramFiles "dotnet\dotnet.exe"
+            }
+            "x86"
+            {
+               $dotnetPath = Join-Path ${env:ProgramFiles(x86)} "dotnet\dotnet.exe"
+            }
+         }
+      }
+      else
+      {
+         $dotnetPath = "dotnet"
+      }
+
+      switch($PlatformTarget)
+      {
+         "x64"
+         {
+            $runsetting = "x64.runsettings"
+         }
+         "x86"
+         {
+            $runsetting = "x86.runsettings"
+         }
+      }
+
+      Write-Host "${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx" -Foreground Yellow
+      & ${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx
+      if ($lastexitcode -eq 0) {
+         Write-Host "Test Successful" -ForegroundColor Green
+      } else {
+         Write-Host "Test Fail for $package" -ForegroundColor Red
+         Set-Location -Path $Current
+         exit -1
+      }
+
+      $ErrorActionPreference = "continue"
+
+      # move to current
+      Set-Location -Path "$Current"
+
+      # to make sure, delete
+      if (Test-Path "$WorkDir") {
+         Remove-Item -Path "$WorkDir" -Recurse -Force
+      }
+   }
+}
+
+# For windows
+# For OpenJijDotNet.CUDA90
+$tmp90 = New-Object 'System.Collections.Generic.List[string]'
+$tmp90.Add("$env:CUDA_PATH_V9_0\bin\cublas64_90.dll")
+$tmp90.Add("$env:CUDA_PATH_V9_0\bin\cudnn64_7.dll")
+$tmp90.Add("$env:CUDA_PATH_V9_0\bin\curand64_90.dll")
+$tmp90.Add("$env:CUDA_PATH_V9_0\bin\cusolver64_90.dll")
+
+# For OpenJijDotNet.CUDA91
+$tmp91 = New-Object 'System.Collections.Generic.List[string]'
+$tmp91.Add("$env:CUDA_PATH_V9_1\bin\cublas64_91.dll")
+$tmp91.Add("$env:CUDA_PATH_V9_1\bin\cudnn64_7.dll")
+$tmp91.Add("$env:CUDA_PATH_V9_1\bin\curand64_91.dll")
+$tmp91.Add("$env:CUDA_PATH_V9_1\bin\cusolver64_91.dll")
+
+# For OpenJijDotNet.CUDA92
+$tmp92 = New-Object 'System.Collections.Generic.List[string]'
+$tmp92.Add("$env:CUDA_PATH_V9_2\bin\cublas64_92.dll")
+$tmp92.Add("$env:CUDA_PATH_V9_2\bin\cudnn64_7.dll")
+$tmp92.Add("$env:CUDA_PATH_V9_2\bin\curand64_92.dll")
+$tmp92.Add("$env:CUDA_PATH_V9_2\bin\cusolver64_92.dll")
+
+# For OpenJijDotNet.CUDA100
+$tmp100 = New-Object 'System.Collections.Generic.List[string]'
+$tmp100.Add("$env:CUDA_PATH_V10_0\bin\cublas64_100.dll")
+$tmp100.Add("$env:CUDA_PATH_V10_0\bin\cudnn64_7.dll")
+$tmp100.Add("$env:CUDA_PATH_V10_0\bin\curand64_100.dll")
+$tmp100.Add("$env:CUDA_PATH_V10_0\bin\cusolver64_100.dll")
+
+# For OpenJijDotNet.CUDA101
+$tmp101 = New-Object 'System.Collections.Generic.List[string]'
+$tmp101.Add("$env:CUDA_PATH_V10_1\bin\cublas64_10.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_1\bin\cudnn64_7.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_1\bin\curand64_10.dll")
+$tmp101.Add("$env:CUDA_PATH_V10_1\bin\cusolver64_10.dll")
+
+# For OpenJijDotNet.CUDA102
+$tmp102 = New-Object 'System.Collections.Generic.List[string]'
+$tmp102.Add("$env:CUDA_PATH_V10_2\bin\cublas64_10.dll")
+$tmp102.Add("$env:CUDA_PATH_V10_2\bin\cudnn64_7.dll")
+$tmp102.Add("$env:CUDA_PATH_V10_2\bin\curand64_10.dll")
+$tmp102.Add("$env:CUDA_PATH_V10_2\bin\cusolver64_10.dll")
+
+# For OpenJijDotNet.CUDA110
+$tmp110 = New-Object 'System.Collections.Generic.List[string]'
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cublas64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cublasLt64_11.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_adv_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_adv_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_cnn_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_cnn_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_ops_infer64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn_ops_train64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cudnn64_8.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\curand64_10.dll")
+$tmp110.Add("$env:CUDA_PATH_V11_0\bin\cusolver64_10.dll")
+
+# For OpenJijDotNet.CUDA111
+$tmp111 = New-Object 'System.Collections.Generic.List[string]'
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cublas64_11.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cublasLt64_11.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_adv_infer64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_adv_train64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_cnn_infer64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_cnn_train64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_ops_infer64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn_ops_train64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cudnn64_8.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\curand64_10.dll")
+$tmp111.Add("$env:CUDA_PATH_V11_1\bin\cusolver64_11.dll")
+
+$BuildTargets = @()
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet";         Dependencies = $null     }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "OpenJijDotNet";         Dependencies = $null     }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.CUDA90";  Dependencies = $tmp90    }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.CUDA91";  Dependencies = $tmp91    }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.CUDA92";  Dependencies = $tmp92    }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.CUDA100"; Dependencies = $tmp100   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.CUDA101"; Dependencies = $tmp101   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.CUDA102"; Dependencies = $tmp102   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.CUDA110"; Dependencies = $tmp110   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.CUDA111"; Dependencies = $tmp111   }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x64"; Architecture = 64; Package = "OpenJijDotNet.MKL";     Dependencies = $null     }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "x86"; Architecture = 32; Package = "OpenJijDotNet.MKL";     Dependencies = $null     }
+$BuildTargets += New-Object PSObject -Property @{PlatformTarget = "arm"; Architecture = 32; Package = "OpenJijDotNet.ARM";     Dependencies = $null     }
+
+# Store current directory
+$Current = Get-Location
+$OpenJijDotNetRoot = (Split-Path (Get-Location) -Parent)
+
+$targets = $BuildTargets.Where({$PSItem.Package -eq $Package}).Where({$PSItem.PlatformTarget -eq $PlatformTarget})
+RunTest $targets
+
+# Move to Root directory
+Set-Location -Path $Current
