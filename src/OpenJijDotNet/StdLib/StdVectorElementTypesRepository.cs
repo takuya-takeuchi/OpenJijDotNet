@@ -20,8 +20,8 @@ namespace OpenJijDotNet
         {
             var types = new[]
             {
-                new { Type = typeof(int),   ElementType = ElementTypes.Int32 },
-                new { Type = typeof(ulong), ElementType = ElementTypes.UInt64  }
+                new { Type = typeof(int),  ElementType = ElementTypes.Int32 },
+                new { Type = typeof(uint), ElementType = ElementTypes.UInt32  }
             };
 
             foreach (var type in types)
@@ -35,7 +35,7 @@ namespace OpenJijDotNet
 
             Int32,
 
-            UInt64
+            UInt32
 
         }
 

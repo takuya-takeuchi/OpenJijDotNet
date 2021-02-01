@@ -86,8 +86,8 @@ namespace OpenJijDotNet
                 {
                     case StdVectorElementTypesRepository.ElementTypes.Int32:
                         return new StdVectorInt32Imp() as StdVectorImp<TItem>;
-                    case StdVectorElementTypesRepository.ElementTypes.UInt64:
-                        return new StdVectorUInt64Imp() as StdVectorImp<TItem>;
+                    case StdVectorElementTypesRepository.ElementTypes.UInt32:
+                        return new StdVectorUInt32Imp() as StdVectorImp<TItem>;
                 }
             }
 
@@ -193,12 +193,12 @@ namespace OpenJijDotNet
 
         }
 
-        private sealed class StdVectorUInt64Imp : StdVectorImp<ulong>
+        private sealed class StdVectorUInt32Imp : StdVectorImp<uint>
         {
 
             #region Methods
 
-            public override void CopyTo(IntPtr ptr, ulong[] array, int arrayIndex)
+            public override void CopyTo(IntPtr ptr, uint[] array, int arrayIndex)
             {
                 var size = this.GetSize(ptr);
                 if (size == 0)
@@ -210,7 +210,7 @@ namespace OpenJijDotNet
 
             public override IntPtr Create()
             {
-                return NativeMethods.std_vector_ulong_new1();
+                return NativeMethods.std_vector_uint32_new1();
             }
 
             public override IntPtr Create(int size)
@@ -218,40 +218,40 @@ namespace OpenJijDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return NativeMethods.std_vector_ulong_new2(new IntPtr(size));
+                return NativeMethods.std_vector_uint32_new2(new IntPtr(size));
             }
 
-            public override IntPtr Create(IEnumerable<ulong> data)
+            public override IntPtr Create(IEnumerable<uint> data)
             {
                 if (data == null)
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.ToArray();
-                return NativeMethods.std_vector_ulong_new3(array, new IntPtr(array.Length));
+                return NativeMethods.std_vector_uint32_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                NativeMethods.std_vector_ulong_delete(ptr);
+                NativeMethods.std_vector_uint32_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return NativeMethods.std_vector_ulong_getPointer(ptr);
+                return NativeMethods.std_vector_uint32_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return NativeMethods.std_vector_ulong_getSize(ptr).ToInt32();
+                return NativeMethods.std_vector_uint32_getSize(ptr).ToInt32();
             }
 
-            public override ulong[] ToArray(IntPtr ptr)
+            public override uint[] ToArray(IntPtr ptr)
             {
                 var size = this.GetSize(ptr);
                 if (size == 0)
-                    return new ulong[0];
+                    return new uint[0];
 
-                var dst = new ulong[size];
+                var dst = new uint[size];
                 var elementPtr = this.GetElementPtr(ptr);
                 InteropHelper.Copy(elementPtr, dst, 0, (uint)dst.Length);
                 return dst;

@@ -43,6 +43,6 @@ DLLEXPORT void std_vector_##__TYPENAME__##_delete(std::vector<__TYPE__> *vector)
 
 // primitives
 MAKE_FUNC(int32_t, int32)
-MAKE_FUNC(u_int64_t, ulong)
+MAKE_FUNC(u_int32_t, uint32)
 
 #endif
