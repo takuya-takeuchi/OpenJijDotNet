@@ -11,6 +11,9 @@ namespace SimulatedAnnealing
 
         private static void Main(string[] args)
         {
+            using var rd = new StdRandomDevice();
+            using var mt = new StdMt19937(rd);
+            using var dist = new StdUniformRealDistribution<double>(1.0, -1.0);
         }
 
         #region Helpers
