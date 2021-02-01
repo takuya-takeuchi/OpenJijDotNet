@@ -127,6 +127,20 @@ namespace OpenJijDotNet
         public static extern void std_mt19937_delete(IntPtr ptr);
 
         #endregion
+        
+        #region random_device
+
+        #region uniform_real_distribution
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr std_uniform_real_distribution_double_new(double a, double b);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void std_uniform_real_distribution_double_delete(IntPtr ptr);
+
+        #endregion
+
+        #endregion
 
     }
 
