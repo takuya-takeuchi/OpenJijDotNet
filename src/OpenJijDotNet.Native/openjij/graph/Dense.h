@@ -26,6 +26,11 @@ DLLEXPORT void graph_Dense_##__TYPENAME__##_delete(graph::Dense<__TYPE__> *dense
 {\
     delete dense;\
 }\
+DLLEXPORT int32_t graph_Dense_##__TYPENAME__##_get_num_spins(graph::Dense<__TYPE__> *dense, std::size_t* num_spins)\
+{\
+    *num_spins = dense->get_num_spins();\
+    return ERR_OK;\
+}\
 
 #pragma endregion template
 

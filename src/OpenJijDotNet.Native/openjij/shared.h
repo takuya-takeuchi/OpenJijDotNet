@@ -19,4 +19,7 @@ enum struct array2d_type : int
     Matrix
 };
 
+
+#define ERR_OK                                                            0x00000000
+
 #endif

@@ -4,7 +4,7 @@
 namespace OpenJijDotNet.Graph
 {
 
-    public sealed class Dense<TItem> : OpenJijObject
+    public sealed partial class Dense<TItem> : OpenJijObject
     {
 
         #region Fields
@@ -20,6 +20,27 @@ namespace OpenJijDotNet.Graph
             this._Imp = CreateImp();
             this.NativePtr = this._Imp.Create(spins);
         }
+
+        #endregion
+
+        #region Properties
+
+        public uint Spins
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this._Imp.GetNumSpins(this.NativePtr);
+            }
+        }
+
+        // public TItem J[uint i, uint j]
+        // {
+        //     get
+        //     {
+        //         return default(TItem);
+        //     }
+        // }
 
         #endregion
 
@@ -73,6 +94,8 @@ namespace OpenJijDotNet.Graph
 
             public abstract void Dispose(IntPtr ptr);
 
+            public abstract uint GetNumSpins(IntPtr dense);
+
             #endregion
 
         }
@@ -90,6 +113,11 @@ namespace OpenJijDotNet.Graph
             public override void Dispose(IntPtr ptr)
             {
                 NativeMethods.graph_Dense_double_delete(ptr);
+            }
+            public override uint GetNumSpins(IntPtr dense)
+            {
+                NativeMethods.graph_Dense_double_get_num_spins(dense, out var spins);
+                return spins;
             }
 
             #endregion

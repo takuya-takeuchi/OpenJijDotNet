@@ -21,8 +21,10 @@ namespace OpenJijDotNet
         public static extern IntPtr graph_Dense_double_new(uint num_spins);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        [return: MarshalAs(UnmanagedType.U1)]
         public static extern void graph_Dense_double_delete(IntPtr dense);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Dense_double_get_num_spins(IntPtr dense, out uint spins);
 
         #endregion
 
