@@ -4,6 +4,8 @@
 #include "../export.h"
 #include "../shared.h"
 
+#include <vector>
+
 #pragma region template
 
 #define MAKE_FUNC(__TYPE__, __TYPENAME__)\
@@ -41,6 +43,6 @@ DLLEXPORT void std_vector_##__TYPENAME__##_delete(std::vector<__TYPE__> *vector)
 
 // primitives
 MAKE_FUNC(int32_t, int32)
-MAKE_FUNC(uint64_t, ulong)
+MAKE_FUNC(u_int64_t, ulong)
 
 #endif
