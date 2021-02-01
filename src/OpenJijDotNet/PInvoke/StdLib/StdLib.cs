@@ -59,50 +59,50 @@ namespace OpenJijDotNet
         #region int32
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_int32_new1();
+        public static extern IntPtr std_vector_int32_new1();
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_int32_new2(IntPtr size);
+        public static extern IntPtr std_vector_int32_new2(IntPtr size);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_int32_new3([In] int[] data, IntPtr dataLength);
+        public static extern IntPtr std_vector_int32_new3([In] int[] data, IntPtr dataLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_int32_getSize(IntPtr vector);
+        public static extern IntPtr std_vector_int32_getSize(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_int32_getPointer(IntPtr vector);
+        public static extern IntPtr std_vector_int32_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern int stdvector_int32_at(IntPtr vector, int index);
+        public static extern int std_vector_int32_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void stdvector_int32_delete(IntPtr vector);
+        public static extern void std_vector_int32_delete(IntPtr vector);
 
         #endregion
 
         #region ulong
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_ulong_new1();
+        public static extern IntPtr std_vector_ulong_new1();
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_ulong_new2(IntPtr size);
+        public static extern IntPtr std_vector_ulong_new2(IntPtr size);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_ulong_new3([In] ulong[] data, IntPtr dataLength);
+        public static extern IntPtr std_vector_ulong_new3([In] ulong[] data, IntPtr dataLength);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_ulong_getSize(IntPtr vector);
+        public static extern IntPtr std_vector_ulong_getSize(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr stdvector_ulong_getPointer(IntPtr vector);
+        public static extern IntPtr std_vector_ulong_getPointer(IntPtr vector);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern ulong stdvector_ulong_at(IntPtr vector, int index);
+        public static extern ulong std_vector_ulong_at(IntPtr vector, int index);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void stdvector_ulong_delete(IntPtr vector);
+        public static extern void std_vector_ulong_delete(IntPtr vector);
 
         #endregion
 

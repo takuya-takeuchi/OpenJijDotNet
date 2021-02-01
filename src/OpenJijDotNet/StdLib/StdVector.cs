@@ -142,7 +142,7 @@ namespace OpenJijDotNet
 
             public override IntPtr Create()
             {
-                return NativeMethods.stdvector_int32_new1();
+                return NativeMethods.std_vector_int32_new1();
             }
 
             public override IntPtr Create(int size)
@@ -150,7 +150,7 @@ namespace OpenJijDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return NativeMethods.stdvector_int32_new2(new IntPtr(size));
+                return NativeMethods.std_vector_int32_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<int> data)
@@ -159,22 +159,22 @@ namespace OpenJijDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.ToArray();
-                return NativeMethods.stdvector_int32_new3(array, new IntPtr(array.Length));
+                return NativeMethods.std_vector_int32_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                NativeMethods.stdvector_int32_delete(ptr);
+                NativeMethods.std_vector_int32_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return NativeMethods.stdvector_int32_getPointer(ptr);
+                return NativeMethods.std_vector_int32_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return NativeMethods.stdvector_int32_getSize(ptr).ToInt32();
+                return NativeMethods.std_vector_int32_getSize(ptr).ToInt32();
             }
 
             public override int[] ToArray(IntPtr ptr)
@@ -210,7 +210,7 @@ namespace OpenJijDotNet
 
             public override IntPtr Create()
             {
-                return NativeMethods.stdvector_ulong_new1();
+                return NativeMethods.std_vector_ulong_new1();
             }
 
             public override IntPtr Create(int size)
@@ -218,7 +218,7 @@ namespace OpenJijDotNet
                 if (size < 0)
                     throw new ArgumentOutOfRangeException(nameof(size));
 
-                return NativeMethods.stdvector_ulong_new2(new IntPtr(size));
+                return NativeMethods.std_vector_ulong_new2(new IntPtr(size));
             }
 
             public override IntPtr Create(IEnumerable<ulong> data)
@@ -227,22 +227,22 @@ namespace OpenJijDotNet
                     throw new ArgumentNullException(nameof(data));
 
                 var array = data.ToArray();
-                return NativeMethods.stdvector_ulong_new3(array, new IntPtr(array.Length));
+                return NativeMethods.std_vector_ulong_new3(array, new IntPtr(array.Length));
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                NativeMethods.stdvector_ulong_delete(ptr);
+                NativeMethods.std_vector_ulong_delete(ptr);
             }
 
             public override IntPtr GetElementPtr(IntPtr ptr)
             {
-                return NativeMethods.stdvector_ulong_getPointer(ptr);
+                return NativeMethods.std_vector_ulong_getPointer(ptr);
             }
 
             public override int GetSize(IntPtr ptr)
             {
-                return NativeMethods.stdvector_ulong_getSize(ptr).ToInt32();
+                return NativeMethods.std_vector_ulong_getSize(ptr).ToInt32();
             }
 
             public override ulong[] ToArray(IntPtr ptr)
