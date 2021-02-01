@@ -5,12 +5,12 @@ using System.Text;
 
 namespace OpenJijDotNet
 {
-    public readonly struct Spin
+    public readonly struct Index
     {
 
         #region Constructors
 
-        public Spin(int value)
+        public Index(ulong value)
         {
             this.Value = value;
         }
@@ -19,7 +19,7 @@ namespace OpenJijDotNet
 
         #region Properties
 
-        public int Value
+        public ulong Value
         {
             get;
         }
@@ -28,7 +28,7 @@ namespace OpenJijDotNet
 
         #region Methods
 
-        public bool Equals(Spin other)
+        public bool Equals(Index other)
         {
             return this.Value == other.Value;
         }
@@ -36,19 +36,19 @@ namespace OpenJijDotNet
         #region Overrids
 
         /// <summary>
-        /// Specifies whether this <see cref="Spin"/> contains the same coordinates as the specified <see cref="Object"/>.
+        /// Specifies whether this <see cref="Index"/> contains the same coordinates as the specified <see cref="Object"/>.
         /// </summary>
         /// <param name="obj">The <see cref="Object"/> to test.</param>
-        /// <returns><code>true</code> if <paramref name="obj"/> is a <see cref="Spin"/> and has the same coordinates as this <see cref="Spin"/>.</returns>
+        /// <returns><code>true</code> if <paramref name="obj"/> is a <see cref="Index"/> and has the same coordinates as this <see cref="Index"/>.</returns>
         public override bool Equals(object obj)
         {
-            return obj is Spin other && Equals(other);
+            return obj is Index other && Equals(other);
         }
 
         /// <summary>
-        /// Returns a hash code for this <see cref="Spin"/>.
+        /// Returns a hash code for this <see cref="Index"/>.
         /// </summary>
-        /// <returns>An integer value that specifies a hash value for this <see cref="Spin"/>.</returns>
+        /// <returns>An integer value that specifies a hash value for this <see cref="Index"/>.</returns>
         public override int GetHashCode()
         {
             return this.Value.GetHashCode();
@@ -60,23 +60,23 @@ namespace OpenJijDotNet
         }
 
         /// <summary>
-        /// Compares two <see cref="Spin"/> objects. The result specifies whether the values of the <see cref="Value"/> properties of the two <see cref="Spin"/> objects are equal.
+        /// Compares two <see cref="Index"/> objects. The result specifies whether the values of the <see cref="Value"/> properties of the two <see cref="Index"/> objects are equal.
         /// </summary>
-        /// <param name="left">A <see cref="Spin"/> to compare.</param>
-        /// <param name="right">A <see cref="Spin"/> to compare.</param>
+        /// <param name="left">A <see cref="Index"/> to compare.</param>
+        /// <param name="right">A <see cref="Index"/> to compare.</param>
         /// <returns><code>true</code> if the <see cref="Value"/> values of <paramref name="left"/> and <paramref name="right"/> are equal; otherwise, <code>false</code>.</returns>
-        public static bool operator ==(Spin left, Spin right)
+        public static bool operator ==(Index left, Index right)
         {
             return left.Equals(right);
         }
 
         /// <summary>
-        /// Compares two <see cref="Spin"/> objects. The result specifies whether the values of the <see cref="Value"/> properties of the two <see cref="Spin"/> objects are unequal.
+        /// Compares two <see cref="Index"/> objects. The result specifies whether the values of the <see cref="Value"/> properties of the two <see cref="Index"/> objects are unequal.
         /// </summary>
-        /// <param name="left">A <see cref="Spin"/> to compare.</param>
-        /// <param name="right">A <see cref="Spin"/> to compare.</param>
+        /// <param name="left">A <see cref="Index"/> to compare.</param>
+        /// <param name="right">A <see cref="Index"/> to compare.</param>
         /// <returns><code>true</code> if the values of either the <see cref="H"/> properties or the <see cref="S"/> properties or the <see cref="I"/> properties of <paramref name="left"/> and <paramref name="right"/> differ; otherwise, <code>false</code>.</returns>
-        public static bool operator !=(Spin left, Spin right)
+        public static bool operator !=(Index left, Index right)
         {
             return !left.Equals(right);
         }
