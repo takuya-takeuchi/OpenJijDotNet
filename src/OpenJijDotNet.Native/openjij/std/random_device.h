@@ -1,5 +1,5 @@
-#ifndef _CPPSTD_RANDOMDEVICE_H_
-#define _CPPSTD_RANDOMDEVICE_H_
+#ifndef _CPP_STD_RANDOMDEVICE_H_
+#define _CPP_STD_RANDOMDEVICE_H_
 
 #include "../export.h"
 #include "../shared.h"

@@ -117,6 +117,16 @@ namespace OpenJijDotNet
         public static extern void std_random_device_delete(IntPtr ptr);
 
         #endregion
+        
+        #region random_device
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr std_mt19937_new(IntPtr device);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void std_mt19937_delete(IntPtr ptr);
+
+        #endregion
 
     }
 
