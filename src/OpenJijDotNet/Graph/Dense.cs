@@ -1,7 +1,7 @@
 ﻿using System;
 
 // ReSharper disable once CheckNamespace
-namespace OpenJijDotNet
+namespace OpenJijDotNet.Graph
 {
 
     public sealed class Dense<TItem> : OpenJijObject
