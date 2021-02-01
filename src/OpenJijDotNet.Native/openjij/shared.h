@@ -1,8 +1,6 @@
 #ifndef _CPP_SHARED_H_
 #define _CPP_SHARED_H_
 
-#include <regex>
-
 enum struct array2d_type : int
 {
     UInt8 = 0,

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.12.2)
 cmake_policy(SET CMP0053 NEW)
 cmake_policy(SET CMP0054 NEW)
 
@@ -70,9 +70,9 @@ endif()
 
 # openjij project submodule 
 set(OPENJIJ_IN_PROJECT_BUILD True)
-#add_subdirectory(${PROJECT_SOURCE_DIR}/../../src/OpenJij/openjij ${CMAKE_CURRENT_BINARY_DIR}/openjij_build)
-#add_subdirectory(${PROJECT_SOURCE_DIR}/../OpenJij)
-#add_subdirectory(/opt/data/OpenJijDotNet/src/OpenJij)
+
+include(${PROJECT_SOURCE_DIR}/../OpenJij/external/eigen.cmake)
+include(${PROJECT_SOURCE_DIR}/../OpenJij/external/json.cmake)
 
 # create config file
 configure_file(
@@ -80,8 +80,7 @@ configure_file(
     ${PROJECT_SOURCE_DIR}/openjij/config.h
     @ONLY)
 
-FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/openjij/*.h
-                          ${PROJECT_SOURCE_DIR}/../OpenJij/src/*.hpp)
+FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/openjij/*.h)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/openjij/*.cpp)
 
 OPTION(ENABLE_NEON "Enable ARM NEON" OFF)
@@ -108,11 +107,20 @@ if (${OPENJIJ_USE_CUDA})
 
     # include CUDA Runtime Library
     if (MSVC OR MSYS OR MINGW)
-        include_directories("$ENV{CUDA_PATH}/include")
+        include_directories("$ENV{CUDA_PATH}/include"
+                            ${PROJECT_SOURCE_DIR}/../OpenJij/src
+                            ${CMAKE_CURRENT_BINARY_DIR}/_deps/eigen-src
+                            ${PROJECT_SOURCE_DIR}/../OpenJij/external/nlohmann_json)
     elseif(APPLE)
-        include_directories("$ENV{CUDA_PATH}/include")
+        include_directories("$ENV{CUDA_PATH}/include"
+                            ${PROJECT_SOURCE_DIR}/../OpenJij/src
+                            ${CMAKE_CURRENT_BINARY_DIR}/_deps/eigen-src
+                            ${PROJECT_SOURCE_DIR}/../OpenJij/external/nlohmann_json)
     elseif(UNIX AND NOT APPLE)
-        include_directories("$ENV{CUDA_PATH}/include")
+        include_directories("$ENV{CUDA_PATH}/include"
+                            ${PROJECT_SOURCE_DIR}/../OpenJij/src
+                            ${CMAKE_CURRENT_BINARY_DIR}/_deps/eigen-src
+                            ${PROJECT_SOURCE_DIR}/../OpenJij/external/nlohmann_json)
     else()
         message(FATAL_ERROR "Failed to link CUDA Runtime Library")
     endif()
@@ -125,6 +133,10 @@ else()
         ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc
         @ONLY)
+
+    include_directories(${PROJECT_SOURCE_DIR}/../OpenJij/src
+                        ${CMAKE_CURRENT_BINARY_DIR}/_deps/eigen-src
+                        ${PROJECT_SOURCE_DIR}/../OpenJij/external/nlohmann_json)
 
     if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")
         add_library(${PROJ_NAME} ${HEADERS}
