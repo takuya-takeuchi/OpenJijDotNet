@@ -1,8 +1,8 @@
 #ifndef _CPP_UTILITY_SCHEDULE_LIST_H_
 #define _CPP_UTILITY_SCHEDULE_LIST_H_
 
-#include "../export.h"
-#include "../shared.h"
+#include "../export.hpp"
+#include "../shared.hpp"
 #include <random>
 
 #include <utility/schedule_list.hpp>
@@ -24,4 +24,4 @@ DLLEXPORT void utility_schedule_list_ClassicalScheduleList_delete(ClassicalSched
     delete list;
 }
 
-#endif
+#endif // _CPP_UTILITY_SCHEDULE_LIST_H_

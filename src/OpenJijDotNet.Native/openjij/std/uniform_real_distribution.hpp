@@ -1,8 +1,8 @@
 #ifndef _CPP_STD_UNIFORM_REAL_DISTRIBUTION_H_
 #define _CPP_STD_UNIFORM_REAL_DISTRIBUTION_H_
 
-#include "../export.h"
-#include "../shared.h"
+#include "../export.hpp"
+#include "../shared.hpp"
 #include <random>
 
 #pragma region template
@@ -23,4 +23,4 @@ DLLEXPORT void std_uniform_real_distribution_##__TYPENAME__##_delete(std::unifor
 // primitives
 MAKE_FUNC(double, double)
 
-#endif
+#endif // _CPP_STD_UNIFORM_REAL_DISTRIBUTION_H_

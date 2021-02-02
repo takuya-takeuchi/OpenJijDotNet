@@ -1,8 +1,8 @@
 #ifndef _CPP_STD_VECTOR_H_
 #define _CPP_STD_VECTOR_H_
 
-#include "../export.h"
-#include "../shared.h"
+#include "../export.hpp"
+#include "../shared.hpp"
 
 #include <vector>
 
@@ -45,4 +45,4 @@ DLLEXPORT void std_vector_##__TYPENAME__##_delete(std::vector<__TYPE__> *vector)
 MAKE_FUNC(int32_t, int32)
 MAKE_FUNC(u_int32_t, uint32)
 
-#endif
+#endif // _CPP_STD_VECTOR_H_

@@ -1,8 +1,8 @@
 #ifndef _CPP_STD_RANDOMDEVICE_H_
 #define _CPP_STD_RANDOMDEVICE_H_
 
-#include "../export.h"
-#include "../shared.h"
+#include "../export.hpp"
+#include "../shared.hpp"
 #include <random>
 
 DLLEXPORT std::random_device* std_random_device_new()
@@ -15,4 +15,4 @@ DLLEXPORT void std_random_device_delete(std::random_device* device)
     delete device;
 }
 
-#endif
+#endif // _CPP_STD_RANDOMDEVICE_H_

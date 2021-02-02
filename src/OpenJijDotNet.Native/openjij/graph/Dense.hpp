@@ -1,8 +1,8 @@
 #ifndef _CPP_GRAPH_DENSE_H_
 #define _CPP_GRAPH_DENSE_H_
 
-#include "../export.h"
-#include "../shared.h"
+#include "../export.hpp"
+#include "../shared.hpp"
 #include <random>
 
 #include <graph/dense.hpp>
@@ -32,4 +32,4 @@ DLLEXPORT int32_t graph_Dense_##__TYPENAME__##_get_num_spins(graph::Dense<__TYPE
 // primitives
 MAKE_FUNC(double, double)
 
-#endif
+#endif // _CPP_GRAPH_DENSE_H_

@@ -1,8 +1,8 @@
 #ifndef _CPP_GRAPH_GRAPH_H_
 #define _CPP_GRAPH_GRAPH_H_
 
-#include "../export.h"
-#include "../shared.h"
+#include "../export.hpp"
+#include "../shared.hpp"
 #include <random>
 
 #include <graph/graph.hpp>
@@ -27,4 +27,4 @@ DLLEXPORT Spins* graph_Graph_gen_spin__##__TYPENAME__(Graph* graph, __TYPE__* ra
 
 MAKE_FUNC(std::mt19937, mt19937)
 
-#endif
+#endif // _CPP_GRAPH_GRAPH_H_
