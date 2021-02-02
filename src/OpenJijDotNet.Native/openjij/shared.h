@@ -1,22 +1,29 @@
 #ifndef _CPP_SHARED_H_
 #define _CPP_SHARED_H_
 
-enum struct array2d_type : int
+enum struct float_type : int32_t
 {
-    UInt8 = 0,
-    UInt16,
-    UInt32,
-    Int8,
-    Int16,
-    Int32,
-    Float,
+    Flaot = 0,
     Double,
-    RgbPixel,
-    BgrPixel,
-    RgbAlphaPixel,
-    HsiPixel,
-    LabPixel,
-    Matrix
+};
+
+enum struct graph_type : int32_t
+{
+    Dense = 0,
+    Sparse,
+};
+
+enum struct ising_type : int32_t
+{
+    Classical = 0,
+    ContinuousTime,
+    Transverse
+};
+
+enum struct schedule_list_type : int32_t
+{
+    Classical = 0,
+    Transverse
 };
 
 
