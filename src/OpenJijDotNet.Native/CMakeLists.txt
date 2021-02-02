@@ -80,7 +80,6 @@ configure_file(
     ${PROJECT_SOURCE_DIR}/openjij/config.hpp
     @ONLY)
 
-FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/openjij/*.hpp)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/openjij/*.cpp)
 
 OPTION(ENABLE_NEON "Enable ARM NEON" OFF)
@@ -125,8 +124,7 @@ if (${OPENJIJ_USE_CUDA})
         message(FATAL_ERROR "Failed to link CUDA Runtime Library")
     endif()
 
-    add_library(${PROJ_NAME} SHARED ${HEADERS}
-                                    ${SOURCES}
+    add_library(${PROJ_NAME} SHARED ${SOURCES}
                                     ${CMAKE_CURRENT_BINARY_DIR}/version-cuda.rc)
 else()
     configure_file(
@@ -139,12 +137,10 @@ else()
                         ${PROJECT_SOURCE_DIR}/../OpenJij/external/nlohmann_json)
 
     if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS")
-        add_library(${PROJ_NAME} ${HEADERS}
-                                 ${SOURCES}
+        add_library(${PROJ_NAME} ${SOURCES}
                                  ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
     else()
-        add_library(${PROJ_NAME} SHARED ${HEADERS}
-                                        ${SOURCES}
+        add_library(${PROJ_NAME} SHARED ${SOURCES}
                                         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
     endif()
 endif()

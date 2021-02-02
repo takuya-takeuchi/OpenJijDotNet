@@ -3,7 +3,7 @@
 
 enum struct float_types : int32_t
 {
-    Flaot = 0,
+    Float = 0,
     Double,
 };
 
