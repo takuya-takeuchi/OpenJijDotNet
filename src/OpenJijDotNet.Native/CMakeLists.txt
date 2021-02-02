@@ -76,11 +76,11 @@ include(${PROJECT_SOURCE_DIR}/../OpenJij/external/json.cmake)
 
 # create config file
 configure_file(
-    ${PROJECT_SOURCE_DIR}/openjij/config.h.in
-    ${PROJECT_SOURCE_DIR}/openjij/config.h
+    ${PROJECT_SOURCE_DIR}/openjij/config.hpp.in
+    ${PROJECT_SOURCE_DIR}/openjij/config.hpp
     @ONLY)
 
-FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/openjij/*.h)
+FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/openjij/*.hpp)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/openjij/*.cpp)
 
 OPTION(ENABLE_NEON "Enable ARM NEON" OFF)
@@ -92,8 +92,8 @@ if (${ENABLE_NEON})
 endif()
 
 configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/openjij/config.h.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/openjij/config.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/openjij/config.hpp.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/openjij/config.hpp
     @ONLY)
 
 if (${OPENJIJ_USE_CUDA})
