@@ -4,12 +4,12 @@
 namespace OpenJijDotNet.Graphs
 {
 
-    public sealed partial class Dense<TItem> : Graph
+    public sealed partial class Dense<T> : Graph
     {
 
         #region Fields
 
-        private readonly DenseImp<TItem> _Imp;
+        private DenseImp<T> _Imp;
 
         #endregion
 
@@ -18,12 +18,20 @@ namespace OpenJijDotNet.Graphs
         public Dense(uint spins) :
             base(spins)
         {
-            this._Imp = CreateImp();
+            if (!TryParse(typeof(T), out var type))
+                throw new NotSupportedException($"{typeof(T).Name} does not support");
+
+            this.FloatType = type;
         }
 
         #endregion
 
         #region Properties
+
+        internal override GraphTypes GraphType
+        {
+            get => GraphTypes.Dense;
+        }
 
         public override uint Spins
         {
@@ -34,11 +42,11 @@ namespace OpenJijDotNet.Graphs
             }
         }
 
-        // public TItem J[uint i, uint j]
+        // public T J[uint i, uint j]
         // {
         //     get
         //     {
-        //         return default(TItem);
+        //         return default(T);
         //     }
         // }
 
@@ -46,10 +54,17 @@ namespace OpenJijDotNet.Graphs
 
         #region Methods
 
+        internal static bool TryParse<T>(out FloatTypes result)
+            where T : struct
+        {
+            return TryParse(typeof(T), out result);
+        }
+
         #region Overrides
 
         protected override IntPtr Create(uint spins)
         {
+            this._Imp = CreateImp();
             return this._Imp.Create(spins);
         }
 
@@ -70,14 +85,14 @@ namespace OpenJijDotNet.Graphs
 
         #region Helpers
 
-        private static DenseImp<TItem> CreateImp()
+        private static DenseImp<T> CreateImp()
         {
-            if (DenseElementTypesRepository.SupportTypes.TryGetValue(typeof(TItem), out var type))
+            if (DenseElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
             {
                 switch (type)
                 {
                     case DenseElementTypesRepository.ElementTypes.Double:
-                        return new DenseDoubleImp() as DenseImp<TItem>;
+                        return new DenseDoubleImp() as DenseImp<T>;
                 }
             }
 

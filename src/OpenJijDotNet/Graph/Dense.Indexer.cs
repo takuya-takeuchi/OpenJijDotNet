@@ -4,21 +4,21 @@
 namespace OpenJijDotNet.Graphs
 {
 
-    public sealed partial class Dense<TItem> : Graph
+    public sealed partial class Dense<T> : Graph
     {
 
-        public abstract class Indexer<TItem>
+        public abstract class Indexer<T>
         {
 
             #region Fields
 
-            protected readonly Dense<TItem> _Parent;
+            protected readonly Dense<T> _Parent;
 
             #endregion
 
             #region Constructors 
 
-            internal Indexer(Dense<TItem> parent)
+            internal Indexer(Dense<T> parent)
             {
                 this._Parent = parent ?? throw new ArgumentNullException(nameof(parent));
             }
@@ -27,7 +27,7 @@ namespace OpenJijDotNet.Graphs
 
             #region Properties
 
-            public abstract TItem this[uint i, uint j]
+            public abstract T this[uint i, uint j]
             {
                 get;
                 set;
