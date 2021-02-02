@@ -15,7 +15,7 @@ namespace Tutorial
         {
             //generate dense graph with size N=5
             const uint N = 500;
-            using var dense = new OpenJijDotNet.Graph.Dense<double>(N);
+            using var dense = new Dense<double>(N);
 
             //set interactions
             for (uint i = 0; i < N; i++)
@@ -36,7 +36,7 @@ namespace Tutorial
             using var randRngine = new StdMt19937(0x1234);
 
             //create classical Ising system
-            using var system = OpenJij.MakeClassicalIsing<Dense<double>>(dense.gen_spin(rand_engine), dense);
+            using var system = OpenJij.MakeClassicalIsing<Dense<double>>(dense.GenSpin(randRngine), dense);
         }
 
         #region Helpers

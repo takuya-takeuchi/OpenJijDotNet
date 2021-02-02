@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using OpenJijDotNet;
 
@@ -68,6 +69,10 @@ namespace OpenJijDotNet.Graphs
             
             randomNumderEngine.ThrowIfDisposed();
             this.ThrowIfDisposed();
+
+            var spins = NativeMethods.graph_Graph_gen_spin_mt19937(this.NativePtr, randomNumderEngine.NativePtr);
+            using(var vector = new StdVector<int>(spins))
+                return new Spins(vector.ToArray().Select(v => new Spin(v)));
         }
 
         internal static bool TryParse(Type type, out FloatTypes result)

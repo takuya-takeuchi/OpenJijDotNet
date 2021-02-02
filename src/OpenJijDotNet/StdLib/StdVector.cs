@@ -27,6 +27,12 @@ namespace OpenJijDotNet
             this.NativePtr = this._Imp.Create();
         }
 
+        internal StdVector(IntPtr ptr)
+        {
+            this._Imp = CreateImp();
+            this.NativePtr = ptr;
+        }
+
         #endregion
 
         #region Properties

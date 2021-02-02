@@ -13,6 +13,11 @@ namespace OpenJijDotNet
         {
         }
 
+        public Spins(IEnumerable<Spin> collection) :
+            base(collection)
+        {
+        }
+
         #endregion
 
     }
