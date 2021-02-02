@@ -37,6 +37,10 @@ namespace Tutorial
 
             //create classical Ising system
             using var system = OpenJij.MakeClassicalIsing<Dense<double>>(dense.GenSpin(randRngine), dense);
+
+            //generate schedule list
+            //from beta=0.1 to beta=100, 10 samples, 10 Monte Carlo step for each tempearature
+            using var scheduleList = OpenJij.MakeClassicalScheduleList(0.1, 100, 10, 200);
         }
 
         #region Helpers

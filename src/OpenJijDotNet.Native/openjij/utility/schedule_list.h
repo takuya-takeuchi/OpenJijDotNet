@@ -1,0 +1,27 @@
+#ifndef _CPP_UTILITY_SCHEDULE_LIST_H_
+#define _CPP_UTILITY_SCHEDULE_LIST_H_
+
+#include "../export.h"
+#include "../shared.h"
+#include <random>
+
+#include <utility/schedule_list.hpp>
+
+using namespace openjij;
+using namespace openjij::utility;
+
+DLLEXPORT ClassicalScheduleList* utility_schedule_list_make_classical_schedule_list(const double beta_min,
+                                                                                    const double beta_max,
+                                                                                    const std::size_t one_mc_step,
+                                                                                    const std::size_t num_call_updater)
+{
+    auto ret = make_classical_schedule_list(beta_min, beta_max, one_mc_step, num_call_updater);
+    return new ClassicalScheduleList(ret);
+}
+
+DLLEXPORT void utility_schedule_list_ClassicalScheduleList_delete(ClassicalScheduleList* list)
+{
+    delete list;
+}
+
+#endif
