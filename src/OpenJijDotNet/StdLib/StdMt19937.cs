@@ -17,11 +17,16 @@ namespace OpenJijDotNet
             this.NativePtr = NativeMethods.std_mt19937_new(device.NativePtr);
         }
 
+        public StdMt19937(uint seed)
+        {
+            this.NativePtr = NativeMethods.std_mt19937_new2(seed);
+        }
+
         #endregion
 
         #region Methods
 
-        #region Overrides 
+        #region Overrides
 
         /// <summary>
         /// Releases all unmanaged resources.
