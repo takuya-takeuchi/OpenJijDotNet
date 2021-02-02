@@ -60,6 +60,15 @@ namespace OpenJijDotNet.Graphs
         #region Methods
 
         protected abstract IntPtr Create(uint spins);
+        
+        public Spins GenSpin(StdMt19937 randomNumderEngine)
+        {
+            if (randomNumderEngine == null)
+                throw new ArgumentNullException(nameof(randomNumderEngine));
+            
+            randomNumderEngine.ThrowIfDisposed();
+            this.ThrowIfDisposed();
+        }
 
         internal static bool TryParse(Type type, out FloatTypes result)
         {

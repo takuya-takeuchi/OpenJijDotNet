@@ -1,6 +1,8 @@
 ﻿using System;
 
 using OpenJijDotNet;
+using OpenJijDotNet.Graphs;
+using OpenJijDotNet.Systems;
 
 namespace Tutorial
 {
@@ -32,6 +34,9 @@ namespace Tutorial
 
             //generate random engine (mersenne twister)
             using var randRngine = new StdMt19937(0x1234);
+
+            //create classical Ising system
+            using var system = OpenJij.MakeClassicalIsing<Dense<double>>(dense.gen_spin(rand_engine), dense);
         }
 
         #region Helpers
