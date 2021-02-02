@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
-namespace OpenJijDotNet.Graph
+namespace OpenJijDotNet.Graphs
 {
 
     internal static class DenseElementTypesRepository

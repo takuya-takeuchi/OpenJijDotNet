@@ -1,10 +1,10 @@
 ﻿using System;
 
 // ReSharper disable once CheckNamespace
-namespace OpenJijDotNet.Graph
+namespace OpenJijDotNet.Graphs
 {
 
-    public sealed partial class Dense<TItem> : OpenJijObject
+    public sealed partial class Dense<TItem> : Graph
     {
 
         #region Fields
@@ -15,17 +15,17 @@ namespace OpenJijDotNet.Graph
 
         #region Constructors
 
-        public Dense(uint spins)
+        public Dense(uint spins) :
+            base(spins)
         {
             this._Imp = CreateImp();
-            this.NativePtr = this._Imp.Create(spins);
         }
 
         #endregion
 
         #region Properties
 
-        public uint Spins
+        public override uint Spins
         {
             get
             {
@@ -47,6 +47,11 @@ namespace OpenJijDotNet.Graph
         #region Methods
 
         #region Overrides
+
+        protected override IntPtr Create(uint spins)
+        {
+            return this._Imp.Create(spins);
+        }
 
         /// <summary>
         /// Releases all unmanaged resources.

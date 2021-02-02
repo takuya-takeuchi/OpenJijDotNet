@@ -1,10 +1,10 @@
 ﻿using System;
 
 // ReSharper disable once CheckNamespace
-namespace OpenJijDotNet.Graph
+namespace OpenJijDotNet.Graphs
 {
 
-    public sealed partial class Dense<TItem> : OpenJijObject
+    public sealed partial class Dense<TItem> : Graph
     {
 
         public abstract class Indexer<TItem>
