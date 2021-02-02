@@ -29,6 +29,9 @@ namespace Tutorial
             {
                 // dense.h(i) = -1;
             }
+
+            //generate random engine (mersenne twister)
+            using var randRngine = new StdMt19937(0x1234);
         }
 
         #region Helpers
