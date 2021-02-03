@@ -27,6 +27,18 @@ namespace OpenJijDotNet
             this.NativePtr = this._Imp.Create();
         }
 
+        public StdVector(int size)
+        {
+            this._Imp = CreateImp();
+            this.NativePtr = this._Imp.Create(size);
+        }
+
+        public StdVector(IEnumerable<TItem> data)
+        {
+            this._Imp = CreateImp();
+            this.NativePtr = this._Imp.Create(data);
+        }
+
         internal StdVector(IntPtr ptr)
         {
             this._Imp = CreateImp();
