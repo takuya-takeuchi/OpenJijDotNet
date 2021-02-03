@@ -11,7 +11,7 @@ namespace OpenJijDotNet.Tests.StdLib.Vector
         [Fact]
         public void Create()
         {
-            var vector = new StdVector<double>();
+            var vector = new StdVector<int>();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -19,7 +19,7 @@ namespace OpenJijDotNet.Tests.StdLib.Vector
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new StdVector<double>(size);
+            var vector = new StdVector<int>(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -27,8 +27,8 @@ namespace OpenJijDotNet.Tests.StdLib.Vector
         public void CreateWithCollection()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).Select(i => (double)i).ToArray();
-            var vector = new StdVector<double>(source);
+            var source = Enumerable.Range(0, size).Select(i => (int)i).ToArray();
+            var vector = new StdVector<int>(source);
             Assert.Equal(vector.Size, size);
             var ret = vector.ToArray();
             for (var i = 0; i < size; i++)
@@ -40,10 +40,10 @@ namespace OpenJijDotNet.Tests.StdLib.Vector
         public void CopyTo()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).Select(i => (double)i).ToArray();
-            var vector = new StdVector<double>(source);
+            var source = Enumerable.Range(0, size).Select(i => (int)i).ToArray();
+            var vector = new StdVector<int>(source);
             Assert.Equal(vector.Size, size);
-            var ret = new double[15];
+            var ret = new int[15];
             vector.CopyTo(ret, 5);
 
             for (var i = 0; i < size; i++)

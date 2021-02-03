@@ -11,7 +11,7 @@ namespace OpenJijDotNet.Tests.StdLib.Vector
         [Fact]
         public void Create()
         {
-            var vector = new StdVector<float>();
+            var vector = new StdVector<uint>();
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -19,7 +19,7 @@ namespace OpenJijDotNet.Tests.StdLib.Vector
         public void CreateWithSize()
         {
             const int size = 10;
-            var vector = new StdVector<float>(size);
+            var vector = new StdVector<uint>(size);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -27,12 +27,12 @@ namespace OpenJijDotNet.Tests.StdLib.Vector
         public void CreateWithCollection()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).Select(i => (float)i).ToArray();
-            var vector = new StdVector<float>(source);
+            var source = Enumerable.Range(0, size).Select(i => (uint)i).ToArray();
+            var vector = new StdVector<uint>(source);
             Assert.Equal(vector.Size, size);
             var ret = vector.ToArray();
             for (var i = 0; i < size; i++)
-                Assert.Equal(ret[i], i);
+                Assert.Equal(ret[i], (uint)i);
             this.DisposeAndCheckDisposedState(vector);
         }
 
@@ -40,14 +40,14 @@ namespace OpenJijDotNet.Tests.StdLib.Vector
         public void CopyTo()
         {
             const int size = 10;
-            var source = Enumerable.Range(0, size).Select(i => (float)i).ToArray();
-            var vector = new StdVector<float>(source);
+            var source = Enumerable.Range(0, size).Select(i => (uint)i).ToArray();
+            var vector = new StdVector<uint>(source);
             Assert.Equal(vector.Size, size);
-            var ret = new float[15];
+            var ret = new uint[15];
             vector.CopyTo(ret, 5);
 
             for (var i = 0; i < size; i++)
-                Assert.Equal(ret[i + 5], i);
+                Assert.Equal(ret[i + 5], (uint)i);
 
             this.DisposeAndCheckDisposedState(vector);
         }
