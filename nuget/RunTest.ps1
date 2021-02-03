@@ -91,12 +91,20 @@ function RunTest()
 
    # restore package from local nuget pacakge
    # And drop stdout message
+   Write-Host "[Info] Remove Reference from ${TestDir}" --ForegroundColor Yellow
+   Set-Location ${TestDir}
+   dotnet remove reference "..\..\src\OpenJijDotNet\OpenJijDotNet.csproj" > $null
+
    Write-Host "[Info] Add Package to ${TestDir}" --ForegroundColor Yellow
    Set-Location ${TestDir}
    dotnet add package $package -v $VERSION --source "$NugetDir" > $null
 
    Write-Host "${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx" -Foreground Yellow
    & ${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx
+
+   Write-Host "[Info] Revert modification for OpenJijDotNet.Tests.csproj" --ForegroundColor Yellow
+   git checkout OpenJijDotNet.Tests.csproj
+
    if ($lastexitcode -eq 0) {
       Write-Host "Test Successful" -ForegroundColor Green
    } else {
