@@ -4,18 +4,18 @@
 namespace OpenJijDotNet.Graphs
 {
 
-    public sealed partial class Dense<T> : Graph
+    public sealed partial class Sparse<T> : Graph
     {
 
         #region Fields
 
-        private DenseImp<T> _Imp;
+        private SparseImp<T> _Imp;
 
         #endregion
 
         #region Constructors
 
-        public Dense(uint spins) :
+        public Sparse(uint spins) :
             base(spins)
         {
             if (!TryParse(typeof(T), out var type))
@@ -35,7 +35,7 @@ namespace OpenJijDotNet.Graphs
 
         internal override NativeMethods.GraphTypes GraphType
         {
-            get => NativeMethods.GraphTypes.Dense;
+            get => NativeMethods.GraphTypes.Sparse;
         }
 
         public override uint Spins
@@ -90,14 +90,14 @@ namespace OpenJijDotNet.Graphs
 
         #region Helpers
 
-        private static DenseImp<T> CreateImp()
+        private static SparseImp<T> CreateImp()
         {
             if (GrpahElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
             {
                 switch (type)
                 {
                     case GrpahElementTypesRepository.ElementTypes.Double:
-                        return new DenseDoubleImp() as DenseImp<T>;
+                        return new SparseDoubleImp() as SparseImp<T>;
                 }
             }
 
@@ -108,9 +108,9 @@ namespace OpenJijDotNet.Graphs
 
         #endregion
 
-        #region DenseImp
+        #region SparseImp
 
-        private abstract class DenseImp<T>
+        private abstract class SparseImp<T>
         {
 
             #region Methods
@@ -119,29 +119,29 @@ namespace OpenJijDotNet.Graphs
 
             public abstract void Dispose(IntPtr ptr);
 
-            public abstract uint GetNumSpins(IntPtr dense);
+            public abstract uint GetNumSpins(IntPtr sparse);
 
             #endregion
 
         }
 
-        private sealed class DenseDoubleImp : DenseImp<double>
+        private sealed class SparseDoubleImp : SparseImp<double>
         {
 
             #region Methods
 
             public override IntPtr Create(uint spins)
             {
-                return NativeMethods.graph_Dense_double_new(spins);
+                return NativeMethods.graph_Sparse_double_new(spins);
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                NativeMethods.graph_Dense_double_delete(ptr);
+                NativeMethods.graph_Sparse_double_delete(ptr);
             }
-            public override uint GetNumSpins(IntPtr dense)
+            public override uint GetNumSpins(IntPtr sparse)
             {
-                NativeMethods.graph_Dense_double_get_num_spins(dense, out var spins);
+                NativeMethods.graph_Sparse_double_get_num_spins(sparse, out var spins);
                 return spins;
             }
 

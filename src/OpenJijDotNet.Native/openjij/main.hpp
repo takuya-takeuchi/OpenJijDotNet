@@ -8,5 +8,6 @@
 
 #include "graph/Dense.hpp"
 #include "graph/Graph.hpp"
+#include "graph/Sparse.hpp"
 
 #include "utility/schedule_list.hpp"

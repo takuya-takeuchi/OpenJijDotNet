@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace OpenJijDotNet.Graphs
 {
 
-    internal static class DenseElementTypesRepository
+    internal static class GrpahElementTypesRepository
     {
 
         #region Fields
@@ -16,7 +16,7 @@ namespace OpenJijDotNet.Graphs
 
         #region Constructors
         
-        static DenseElementTypesRepository()
+        static GrpahElementTypesRepository()
         {
             var types = new[]
             {
