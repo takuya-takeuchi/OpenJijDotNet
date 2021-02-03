@@ -7,14 +7,9 @@
 
 #include <algorithm/algorithm.hpp>
 #include <system/classical_ising.hpp>
-#include <system/system.hpp>
 #include <system/transverse_ising.hpp>
 #include <updater/single_spin_flip.hpp>
 #include <utility/schedule_list.hpp>
-
-using namespace openjij;
-using namespace openjij::system;
-using namespace openjij::utility;
 
 #pragma region template
 
