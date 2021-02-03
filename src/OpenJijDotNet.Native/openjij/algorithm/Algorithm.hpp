@@ -49,6 +49,17 @@ switch(graph_type)\
         break;\
 }\
 
+#define sparse_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, __RNG__, ...) \
+switch(graph_type)\
+{\
+    case ::graph_types::Sparse:\
+        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, Sparse, __RNG__, __VA_ARGS__);\
+        break;\
+    default:\
+        error = ERR_GRAPH_TYPE_NOT_SUPPORT;\
+        break;\
+}\
+
 #define SingleSpinFlip_run(error, ...) \
 switch(ising_type)\
 {\
@@ -57,6 +68,28 @@ switch(ising_type)\
         break;\
     case ::ising_types::Transverse:\
         graph_template(error, SingleSpinFlip, TransverseIsing, TransverseFieldScheduleList, __RNG__, __VA_ARGS__);\
+        break;\
+    default:\
+        error = ERR_ISING_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
+#define SwendsenWang_run(error, ...) \
+switch(ising_type)\
+{\
+    case ::ising_types::Classical:\
+        sparse_template(error, SwendsenWang, ClassicalIsing, ClassicalScheduleList, __RNG__, __VA_ARGS__);\
+        break;\
+    default:\
+        error = ERR_ISING_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
+#define ContinuousTimeSwendsenWang_run(error, ...) \
+switch(ising_type)\
+{\
+    case ::ising_types::Transverse:\
+        sparse_template(error, ContinuousTimeSwendsenWang, ContinuousTimeIsing, TransverseFieldScheduleList, __RNG__, __VA_ARGS__);\
         break;\
     default:\
         error = ERR_ISING_TYPE_NOT_SUPPORT;\
@@ -72,8 +105,7 @@ DLLEXPORT int32_t algorithm_Algorithm_SingleSpinFlip_run(void* ising,
                                                          const graph_types graph_type,
                                                          const float_types float_type,
                                                          std::mt19937* random_number_engine,
-                                                         void* schedule_list,
-                                                         const schedule_list_types schedule_list_type)
+                                                         void* schedule_list)
 {
     int error = ERR_OK;
 
@@ -83,8 +115,47 @@ DLLEXPORT int32_t algorithm_Algorithm_SingleSpinFlip_run(void* ising,
                        graph_type,
                        float_type,
                        random_number_engine,
-                       schedule_list,
-                       schedule_list_type);
+                       schedule_list);
+
+    return error;
+}
+
+DLLEXPORT int32_t algorithm_Algorithm_SwendsenWang_run(void* ising,
+                                                       const ising_types ising_type,
+                                                       const graph_types graph_type,
+                                                       const float_types float_type,
+                                                       std::mt19937* random_number_engine,
+                                                       void* schedule_list)
+{
+    int error = ERR_OK;
+
+    SwendsenWang_run(error,
+                     ising,
+                     ising_type,
+                     graph_type,
+                     float_type,
+                     random_number_engine,
+                     schedule_list);
+
+    return error;
+}
+
+DLLEXPORT int32_t algorithm_Algorithm_ContinuousTimeSwendsenWang_run(void* ising,
+                                                                     const ising_types ising_type,
+                                                                     const graph_types graph_type,
+                                                                     const float_types float_type,
+                                                                     std::mt19937* random_number_engine,
+                                                                     void* schedule_list)
+{
+    int error = ERR_OK;
+
+    ContinuousTimeSwendsenWang_run(error,
+                                   ising,
+                                   ising_type,
+                                   graph_type,
+                                   float_type,
+                                   random_number_engine,
+                                   schedule_list);
 
     return error;
 }
