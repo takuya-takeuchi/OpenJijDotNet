@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 
 using OpenJijDotNet;
+using OpenJijDotNet.Algorithms;
 using OpenJijDotNet.Graphs;
 using OpenJijDotNet.Systems;
+using OpenJijDotNet.Updaters;
 
 namespace Tutorial
 {
@@ -41,6 +44,12 @@ namespace Tutorial
             //generate schedule list
             //from beta=0.1 to beta=100, 10 samples, 10 Monte Carlo step for each tempearature
             using var scheduleList = OpenJij.MakeClassicalScheduleList(0.1, 100, 10, 200);
+
+            //do annealing (updater: SingleSpinFlip)
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            Algorithm<SingleSpinFlip>.Run(system, randRngine, scheduleList);
+            stopWatch.Stop();
         }
 
         #region Helpers

@@ -24,6 +24,8 @@ namespace OpenJijDotNet
                 throw new ArgumentNullException(nameof(initSpin));
             if (initInteraction == null)
                 throw new ArgumentNullException(nameof(initInteraction));
+            
+            initInteraction.ThrowIfDisposed();
 
             return ClassicalIsing<T>.Create(initSpin, initInteraction);
         }

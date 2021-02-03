@@ -8,7 +8,7 @@ using OpenJijDotNet.Graphs;
 namespace OpenJijDotNet.Systems
 {
 
-    public sealed class ClassicalIsing<T> : OpenJijObject
+    public sealed class ClassicalIsing<T> : Ising
         where T: Graph
     {
 

@@ -7,18 +7,14 @@ using OpenJijDotNet;
 namespace OpenJijDotNet.Utilities
 {
 
-    public sealed class ClassicalScheduleList : OpenJijObject
+    public sealed class ClassicalScheduleList : ScheduleList
     {
 
         #region Constructors
 
         internal ClassicalScheduleList(IntPtr ptr, bool isEnabledDispose)
-            : base(isEnabledDispose)
+            : base(ptr, isEnabledDispose)
         {
-            if (ptr == IntPtr.Zero)
-                throw new ArgumentException("Can not pass IntPtr.Zero", nameof(ptr));
-
-            this.NativePtr = ptr;
         }
 
         #endregion

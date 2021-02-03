@@ -22,7 +22,7 @@ namespace OpenJijDotNet
                                                          GraphTypes graph_type,
                                                          FloatTypes float_type,
                                                          IntPtr random_number_engine,
-                                                         IntPtr schedule_list)
+                                                         IntPtr schedule_list);
 
     }
 
