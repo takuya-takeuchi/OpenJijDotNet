@@ -5,12 +5,12 @@
 #include "../shared.hpp"
 #include <random>
 
-// #include <algorithm/algorithm.hpp>
-// #include <system/classical_ising.hpp>
+#include <algorithm/algorithm.hpp>
+#include <system/classical_ising.hpp>
 #include <system/system.hpp>
-// #include <system/transverse_ising.hpp>
-// #include <updater/single_spin_flip.hpp>
-// #include <utility/schedule_list.hpp>
+#include <system/transverse_ising.hpp>
+#include <updater/single_spin_flip.hpp>
+#include <utility/schedule_list.hpp>
 
 using namespace openjij;
 using namespace openjij::system;
@@ -19,10 +19,12 @@ using namespace openjij::utility;
 #pragma region template
 
 #define run_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, __SCHEDULETYPE__, __RNG__, ...) \
-const auto& i = *static_cast<__ISINGTYPE__<__GRAPHTYPE__<__FLOATTYPE__>>>(ising);\
-const auto& rng = *random_number_engine;\
-const auto& s = *static_cast<__SCHEDULETYPE__>(schedule_list);\
-algorithm::Algorithm<__UPDATERTYPE__>::run(i, rng, s);\
+{\
+    const auto& i = *static_cast<openjij::system::__ISINGTYPE__<openjij::graph::__GRAPHTYPE__<__FLOATTYPE__>>*>(ising);\
+    const auto& rng = *random_number_engine;\
+    const auto& s = *static_cast<openjij::utility::__SCHEDULETYPE__*>(schedule_list);\
+    algorithm::Algorithm<openjij::updater::__UPDATERTYPE__>::run(i, rng, s);\
+}
 
 #define schedule_list_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, __RNG__, ...) \
 switch(schedule_list_type)\
@@ -56,10 +58,10 @@ switch(float_type)\
 switch(graph_type)\
 {\
     case ::graph_types::Dense:\
-        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, openjij::graph::Dense, __RNG__, __VA_ARGS__);\
+        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, Dense, __RNG__, __VA_ARGS__);\
         break;\
     case ::graph_types::Sparse:\
-        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, openjij::graph::Sparse, __RNG__, __VA_ARGS__);\
+        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, Sparse, __RNG__, __VA_ARGS__);\
         break;\
     default:\
         error = ERR_GRAPH_TYPE_NOT_SUPPORT;\
@@ -72,9 +74,6 @@ switch(ising_type)\
     case ::ising_types::Classical:\
         graph_template(error, __UPDATERTYPE__, ClassicalIsing, __RNG__, __VA_ARGS__);\
         break;\
-    case ::ising_types::ContinuousTime:\
-        graph_template(error, __UPDATERTYPE__, ContinuousTimeIsing, __RNG__, __VA_ARGS__);\
-        break;\
     case ::ising_types::Transverse:\
         graph_template(error, __UPDATERTYPE__, TransverseIsing, __RNG__, __VA_ARGS__);\
         break;\
@@ -82,12 +81,15 @@ switch(ising_type)\
         error = ERR_ISING_TYPE_NOT_SUPPORT;\
         break;\
 }
+    // case ::ising_types::ContinuousTime:\
+    //     graph_template(error, __UPDATERTYPE__, ContinuousTimeIsing, __RNG__, __VA_ARGS__);\
+    //     break;\
 
 #define updater_template(error, __RNG__, ...) \
 switch(updater_type)\
 {\
     case ::updater_types::SingleSpinFlip:\
-        ising_template(error, updater::SingleSpinFlip, __RNG__, __VA_ARGS__);\
+        ising_template(error, SingleSpinFlip, __RNG__, __VA_ARGS__);\
         break;\
     default:\
         error = ERR_UPDATER_TYPE_NOT_SUPPORT;\
