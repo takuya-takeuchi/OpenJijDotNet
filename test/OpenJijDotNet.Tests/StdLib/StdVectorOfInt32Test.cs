@@ -2,7 +2,7 @@
 using Xunit;
 
 // ReSharper disable once CheckNamespace
-namespace OpenJijDotNet.Tests.StdLib.Vector
+namespace OpenJijDotNet.Tests.StdLib
 {
 
     public class StdVectorOfDoubleTest : TestBase
