@@ -26,17 +26,6 @@ using namespace openjij::utility;
     algorithm::Algorithm<openjij::updater::__UPDATERTYPE__>::run(i, rng, s);\
 }
 
-// #define run_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, __SCHEDULETYPE__, __RNG__, ...) \
-// {\
-//     constexpr std::size_t N = 500;\
-//     auto dense = graph::Dense<double>(N);\
-//     auto rand_engine = std::mt19937(0x1234);\
-//     auto system = system::make_classical_ising(dense.gen_spin(rand_engine), dense);\
-//     auto schedule_list = utility::make_classical_schedule_list(0.1, 100, 10, 200);\
-//     algorithm::Algorithm<updater::SingleSpinFlip>::run(system, rand_engine, schedule_list);\
-// }
-
-
 #define schedule_list_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, __RNG__, ...) \
 switch(schedule_list_type)\
 {\
