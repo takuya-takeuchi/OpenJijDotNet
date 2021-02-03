@@ -18,7 +18,7 @@ using namespace openjij::utility;
 
 #pragma region template
 
-#define run_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, __SCHEDULETYPE__, __RNG__, ...) \
+#define run_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, __GRAPHTYPE__, __FLOATTYPE__, __RNG__, ...) \
 {\
     auto& i = *static_cast<openjij::system::__ISINGTYPE__<openjij::graph::__GRAPHTYPE__<__FLOATTYPE__>>*>(ising);\
     auto& rng = *random_number_engine;\
@@ -26,42 +26,28 @@ using namespace openjij::utility;
     algorithm::Algorithm<openjij::updater::__UPDATERTYPE__>::run(i, rng, s);\
 }
 
-#define schedule_list_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, __RNG__, ...) \
-switch(schedule_list_type)\
-{\
-    case ::schedule_list_types::Classical:\
-        run_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, ClassicalScheduleList, __RNG__, __VA_ARGS__);\
-        break;\
-    default:\
-        error = ERR_SCHEDULELIST_TYPE_NOT_SUPPORT;\
-        break;\
-}\
-    // case ::schedule_list_types::Transverse:\
-    //     run_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, TransverseFieldScheduleList, __RNG__, __VA_ARGS__);\
-    //     break;\
-
-#define float_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, __RNG__, ...) \
+#define float_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, __GRAPHTYPE__, __RNG__, ...) \
 switch(float_type)\
 {\
     case ::float_types::Double:\
-        schedule_list_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, double, __RNG__, __VA_ARGS__);\
+        run_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, __GRAPHTYPE__, double, __RNG__, __VA_ARGS__);\
         break;\
     case ::float_types::Float:\
-        schedule_list_template(error, __UPDATERTYPE__, __ISINGTYPE__, __GRAPHTYPE__, float, __RNG__, __VA_ARGS__);\
+        run_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, __GRAPHTYPE__, float, __RNG__, __VA_ARGS__);\
         break;\
     default:\
         error = ERR_FLOAT_TYPE_NOT_SUPPORT;\
         break;\
 }\
 
-#define graph_template(error, __UPDATERTYPE__, __ISINGTYPE__, __RNG__, ...) \
+#define graph_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, __RNG__, ...) \
 switch(graph_type)\
 {\
     case ::graph_types::Dense:\
-        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, Dense, __RNG__, __VA_ARGS__);\
+        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, Dense, __RNG__, __VA_ARGS__);\
         break;\
     case ::graph_types::Sparse:\
-        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, Sparse, __RNG__, __VA_ARGS__);\
+        float_template(error, __UPDATERTYPE__, __ISINGTYPE__, __SCHEDULETYPE__, Sparse, __RNG__, __VA_ARGS__);\
         break;\
     default:\
         error = ERR_GRAPH_TYPE_NOT_SUPPORT;\
@@ -72,15 +58,15 @@ switch(graph_type)\
 switch(ising_type)\
 {\
     case ::ising_types::Classical:\
-        graph_template(error, SingleSpinFlip, ClassicalIsing, __RNG__, __VA_ARGS__);\
+        graph_template(error, SingleSpinFlip, ClassicalIsing, ClassicalScheduleList, __RNG__, __VA_ARGS__);\
+        break;\
+    case ::ising_types::Transverse:\
+        graph_template(error, SingleSpinFlip, TransverseIsing, TransverseFieldScheduleList, __RNG__, __VA_ARGS__);\
         break;\
     default:\
         error = ERR_ISING_TYPE_NOT_SUPPORT;\
         break;\
 }
-    // case ::ising_types::Transverse:\
-    //     graph_template(error, SingleSpinFlip, TransverseIsing, __RNG__, __VA_ARGS__);\
-    //     break;\
 
 #pragma endregion template
 
