@@ -11,6 +11,11 @@ namespace OpenJijDotNet.Systems
     public abstract class Ising : OpenJijObject
     {
 
+        internal abstract NativeMethods.IsingTypes IsingType
+        {
+            get;
+        }
+
     }
 
 }

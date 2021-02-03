@@ -28,9 +28,9 @@ namespace OpenJijDotNet.Graphs
 
         #region Properties
 
-        internal override GraphTypes GraphType
+        internal override NativeMethods.GraphTypes GraphType
         {
-            get => GraphTypes.Dense;
+            get => NativeMethods.GraphTypes.Dense;
         }
 
         public override uint Spins

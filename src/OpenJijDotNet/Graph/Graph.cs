@@ -46,7 +46,7 @@ namespace OpenJijDotNet.Graphs
             set;
         }
 
-        internal abstract GraphTypes GraphType
+        internal abstract NativeMethods.GraphTypes GraphType
         {
             get;
         }

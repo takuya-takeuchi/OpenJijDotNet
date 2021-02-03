@@ -43,6 +43,12 @@ namespace OpenJijDotNet.Systems
         #endregion
 
         #region Properties
+
+        internal override NativeMethods.IsingTypes IsingType
+        {
+            get => NativeMethods.IsingTypes.Classical;
+        }
+
         #endregion
 
         #region Methods

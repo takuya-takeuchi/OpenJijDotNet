@@ -10,6 +10,12 @@ namespace OpenJijDotNet.Updaters
 
     public abstract class Updater : OpenJijObject
     {
+
+        internal abstract NativeMethods.UpdaterTypes UpdaterType
+        {
+            get;
+        }
+
     }
 
 }

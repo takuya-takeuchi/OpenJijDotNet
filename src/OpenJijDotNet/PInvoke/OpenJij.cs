@@ -40,7 +40,7 @@ namespace OpenJijDotNet
             Transverse
         };
 
-        internal enum updater_types
+        internal enum UpdaterTypes
         {
             SingleSpinFlip = 0,
             SwendsenWang,

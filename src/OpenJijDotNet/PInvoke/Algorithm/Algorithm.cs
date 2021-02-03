@@ -16,7 +16,7 @@ namespace OpenJijDotNet
     {
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern int algorithm_Algorithm_run(updater_types updater_type,
+        public static extern int algorithm_Algorithm_run(UpdaterTypes updater_type,
                                                          IntPtr ising,
                                                          IsingTypes ising_type,
                                                          GraphTypes graph_type,
