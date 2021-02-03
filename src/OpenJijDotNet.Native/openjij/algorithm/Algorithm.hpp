@@ -96,66 +96,45 @@ switch(ising_type)\
         break;\
 }
 
+#define run(error, ...) \
+switch(updater_type)\
+{\
+    case ::updater_types::SingleSpinFlip:\
+        SingleSpinFlip_run(error, __VA_ARGS__);\
+        break;\
+    case ::updater_types::SwendsenWang:\
+        SwendsenWang_run(error, __VA_ARGS__);\
+        break;\
+    case ::updater_types::ContinuousTimeSwendsenWang:\
+        ContinuousTimeSwendsenWang_run(error, __VA_ARGS__);\
+        break;\
+    default:\
+        error = ERR_UPDATER_TYPE_NOT_SUPPORT;\
+        break;\
+}
+
 #pragma endregion template
 
 using namespace openjij;
 
-DLLEXPORT int32_t algorithm_Algorithm_SingleSpinFlip_run(void* ising,
-                                                         const ising_types ising_type,
-                                                         const graph_types graph_type,
-                                                         const float_types float_type,
-                                                         std::mt19937* random_number_engine,
-                                                         void* schedule_list)
+DLLEXPORT int32_t algorithm_Algorithm_run(const updater_types updater_type,
+                                          void* ising,
+                                          const ising_types ising_type,
+                                          const graph_types graph_type,
+                                          const float_types float_type,
+                                          std::mt19937* random_number_engine,
+                                          void* schedule_list)
 {
     int error = ERR_OK;
 
-    SingleSpinFlip_run(error,
-                       ising,
-                       ising_type,
-                       graph_type,
-                       float_type,
-                       random_number_engine,
-                       schedule_list);
-
-    return error;
-}
-
-DLLEXPORT int32_t algorithm_Algorithm_SwendsenWang_run(void* ising,
-                                                       const ising_types ising_type,
-                                                       const graph_types graph_type,
-                                                       const float_types float_type,
-                                                       std::mt19937* random_number_engine,
-                                                       void* schedule_list)
-{
-    int error = ERR_OK;
-
-    SwendsenWang_run(error,
-                     ising,
-                     ising_type,
-                     graph_type,
-                     float_type,
-                     random_number_engine,
-                     schedule_list);
-
-    return error;
-}
-
-DLLEXPORT int32_t algorithm_Algorithm_ContinuousTimeSwendsenWang_run(void* ising,
-                                                                     const ising_types ising_type,
-                                                                     const graph_types graph_type,
-                                                                     const float_types float_type,
-                                                                     std::mt19937* random_number_engine,
-                                                                     void* schedule_list)
-{
-    int error = ERR_OK;
-
-    ContinuousTimeSwendsenWang_run(error,
-                                   ising,
-                                   ising_type,
-                                   graph_type,
-                                   float_type,
-                                   random_number_engine,
-                                   schedule_list);
+    run(error,
+        updater_type,
+        ising,
+        ising_type,
+        graph_type,
+        float_type,
+        random_number_engine,
+        schedule_list);
 
     return error;
 }

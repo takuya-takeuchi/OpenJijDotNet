@@ -28,7 +28,9 @@ enum struct schedule_list_types : int32_t
 
 enum struct updater_types : int32_t
 {
-    SingleSpinFlip = 0
+    SingleSpinFlip = 0,
+    SwendsenWang,
+    ContinuousTimeSwendsenWang,
 };
 
 
