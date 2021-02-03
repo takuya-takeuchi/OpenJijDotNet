@@ -1,5 +1,5 @@
 #ifndef _CPP_UTILITY_SCHEDULE_LIST_H_
-#define _CPP_UTILITY_SCHEDULE_LIST_H_ 1
+#define _CPP_UTILITY_SCHEDULE_LIST_H_
 
 #include "../export.hpp"
 #include "../shared.hpp"
