@@ -1,5 +1,5 @@
 #ifndef _CPP_STD_RANDOMDEVICE_H_
-#define _CPP_STD_RANDOMDEVICE_H_
+#define _CPP_STD_RANDOMDEVICE_H_ 1
 
 #include "../export.hpp"
 #include "../shared.hpp"

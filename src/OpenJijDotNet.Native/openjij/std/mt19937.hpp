@@ -1,5 +1,5 @@
 #ifndef _CPP_STD_MT19937_H_
-#define _CPP_STD_MT19937_H_
+#define _CPP_STD_MT19937_H_ 1
 
 #include "../export.hpp"
 #include "../shared.hpp"

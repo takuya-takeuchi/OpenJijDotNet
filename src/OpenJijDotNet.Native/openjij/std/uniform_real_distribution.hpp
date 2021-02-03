@@ -1,5 +1,5 @@
 #ifndef _CPP_STD_UNIFORM_REAL_DISTRIBUTION_H_
-#define _CPP_STD_UNIFORM_REAL_DISTRIBUTION_H_
+#define _CPP_STD_UNIFORM_REAL_DISTRIBUTION_H_ 1
 
 #include "../export.hpp"
 #include "../shared.hpp"
