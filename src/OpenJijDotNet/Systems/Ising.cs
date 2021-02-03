@@ -16,6 +16,16 @@ namespace OpenJijDotNet.Systems
             get;
         }
 
+        internal abstract NativeMethods.FloatTypes FloatType
+        {
+            get;
+        }
+
+        internal abstract NativeMethods.GraphTypes GraphType
+        {
+            get;
+        }
+
     }
 
 }

@@ -28,6 +28,15 @@ namespace OpenJijDotNet.Algorithms
             system.ThrowIfDisposed();
             randomNumberEngine.ThrowIfDisposed();
             scheduleList.ThrowIfDisposed();
+
+            var updaterType = NativeMethods.UpdaterTypes.SingleSpinFlip;
+            var ret = NativeMethods.algorithm_Algorithm_run(updaterType,
+                                                            system.NativePtr,
+                                                            system.IsingType,
+                                                            system.GraphType,
+                                                            system.FloatType,
+                                                            randomNumberEngine.NativePtr,
+                                                            scheduleList.NativePtr);
         }
 
         #endregion

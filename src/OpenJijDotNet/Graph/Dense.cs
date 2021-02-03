@@ -28,6 +28,11 @@ namespace OpenJijDotNet.Graphs
 
         #region Properties
 
+        internal override NativeMethods.FloatTypes FloatType
+        {
+            get;
+        }
+
         internal override NativeMethods.GraphTypes GraphType
         {
             get => NativeMethods.GraphTypes.Dense;
@@ -54,7 +59,7 @@ namespace OpenJijDotNet.Graphs
 
         #region Methods
 
-        internal static bool TryParse<T>(out FloatTypes result)
+        internal static bool TryParse<T>(out NativeMethods.FloatTypes result)
             where T : struct
         {
             return TryParse(typeof(T), out result);

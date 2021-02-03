@@ -34,15 +34,28 @@ namespace OpenJijDotNet.Systems
                 SupportTypes.Add(type.Type, type.Generator);
         }
 
-        public ClassicalIsing(Spins initSpins, T initInteraction)
+        private ClassicalIsing(Spins initSpins, T initInteraction)
         {
             if (initSpins == null)
                 throw new ArgumentNullException(nameof(initSpins));
+            
+            this.GraphType = initInteraction.GraphType;
+            this.FloatType = initInteraction.FloatType;
         }
 
         #endregion
 
         #region Properties
+
+        internal override NativeMethods.GraphTypes GraphType
+        {
+            get;
+        }
+
+        internal override NativeMethods.FloatTypes FloatType
+        {
+            get;
+        }
 
         internal override NativeMethods.IsingTypes IsingType
         {

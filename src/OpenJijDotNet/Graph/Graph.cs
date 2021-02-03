@@ -13,7 +13,7 @@ namespace OpenJijDotNet.Graphs
 
         #region Fields
 
-        private static readonly Dictionary<Type, FloatTypes> SupportTypes = new Dictionary<Type, FloatTypes>();
+        private static readonly Dictionary<Type, NativeMethods.FloatTypes> SupportTypes = new Dictionary<Type, NativeMethods.FloatTypes>();
 
         #endregion
 
@@ -23,8 +23,8 @@ namespace OpenJijDotNet.Graphs
         {
             var types = new[]
             {
-                new { Type = typeof(float),   ElementType = FloatTypes.Float },
-                new { Type = typeof(double),  ElementType = FloatTypes.Double }
+                new { Type = typeof(float),   ElementType = NativeMethods.FloatTypes.Float },
+                new { Type = typeof(double),  ElementType = NativeMethods.FloatTypes.Double }
             };
 
             foreach (var type in types)
@@ -40,10 +40,9 @@ namespace OpenJijDotNet.Graphs
 
         #region Properties
 
-        protected FloatTypes FloatType
+        internal abstract NativeMethods.FloatTypes FloatType
         {
             get;
-            set;
         }
 
         internal abstract NativeMethods.GraphTypes GraphType
@@ -75,7 +74,7 @@ namespace OpenJijDotNet.Graphs
                 return new Spins(vector.ToArray().Select(v => new Spin(v)));
         }
 
-        internal static bool TryParse(Type type, out FloatTypes result)
+        internal static bool TryParse(Type type, out NativeMethods.FloatTypes result)
         {
             return SupportTypes.TryGetValue(type, out result);
         }
