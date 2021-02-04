@@ -25,6 +25,18 @@ namespace OpenJijDotNet
         
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern int graph_Dense_double_get_num_spins(IntPtr dense, out uint spins);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Dense_double_get_J(IntPtr dense, uint i, uint j, out double value);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Dense_double_set_J(IntPtr dense, uint i, uint j, double value);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Dense_double_get_h(IntPtr dense, uint i, out double value);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Dense_double_set_h(IntPtr dense, uint i, double value);
 
         #endregion
 

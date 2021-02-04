@@ -21,9 +21,34 @@ DLLEXPORT void graph_Sparse_##__TYPENAME__##_delete(graph::Sparse<__TYPE__> *spa
 {\
     delete sparse;\
 }\
+\
 DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_get_num_spins(graph::Sparse<__TYPE__> *sparse, std::size_t* num_spins)\
 {\
     *num_spins = sparse->get_num_spins();\
+    return ERR_OK;\
+}\
+\
+DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_get_J(graph::Sparse<__TYPE__> *dense, const uint32_t i, const uint32_t j, __TYPE__* value)\
+{\
+    *value = dense->J(i, j);\
+    return ERR_OK;\
+}\
+\
+DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_set_J(graph::Sparse<__TYPE__> *dense, const uint32_t i, const uint32_t j, __TYPE__ value)\
+{\
+    dense->J(i, j) = value;\
+    return ERR_OK;\
+}\
+\
+DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_get_h(graph::Sparse<__TYPE__> *dense, const uint32_t i, __TYPE__* value)\
+{\
+    *value = dense->h(i);\
+    return ERR_OK;\
+}\
+\
+DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_set_h(graph::Sparse<__TYPE__> *dense, const uint32_t i, __TYPE__ value)\
+{\
+    dense->h(i) = value;\
     return ERR_OK;\
 }\
 

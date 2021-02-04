@@ -9,7 +9,9 @@ namespace OpenJijDotNet.Graphs
 
         #region Fields
 
-        private SparseImp<T> _Imp;
+        private Implement<T> _Implement;
+
+        private Indexer<T> _Indexer;
 
         #endregion
 
@@ -43,7 +45,7 @@ namespace OpenJijDotNet.Graphs
             get
             {
                 this.ThrowIfDisposed();
-                return this._Imp.GetNumSpins(this.NativePtr);
+                return this._Implement.GetNumSpins(this.NativePtr);
             }
         }
 
@@ -69,8 +71,10 @@ namespace OpenJijDotNet.Graphs
 
         protected override IntPtr Create(uint spins)
         {
-            this._Imp = CreateImp();
-            return this._Imp.Create(spins);
+            this._Implement = CreateImp();
+            var owner = this._Implement.Create(spins);
+            this._Indexer = new Indexer<T>(owner, this._Implement);
+            return owner;
         }
 
         /// <summary>
@@ -83,21 +87,21 @@ namespace OpenJijDotNet.Graphs
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            this._Imp?.Dispose(this.NativePtr);
+            this._Implement?.Dispose(this.NativePtr);
         }
 
         #endregion
 
         #region Helpers
 
-        private static SparseImp<T> CreateImp()
+        private static Implement<T> CreateImp()
         {
             if (GrpahElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
             {
                 switch (type)
                 {
                     case GrpahElementTypesRepository.ElementTypes.Double:
-                        return new SparseDoubleImp() as SparseImp<T>;
+                        return new SparseDoubleImp() as Implement<T>;
                 }
             }
 
@@ -108,24 +112,9 @@ namespace OpenJijDotNet.Graphs
 
         #endregion
 
-        #region SparseImp
+        #region Implement
 
-        private abstract class SparseImp<T>
-        {
-
-            #region Methods
-
-            public abstract IntPtr Create(uint spins);
-
-            public abstract void Dispose(IntPtr ptr);
-
-            public abstract uint GetNumSpins(IntPtr sparse);
-
-            #endregion
-
-        }
-
-        private sealed class SparseDoubleImp : SparseImp<double>
+        private sealed class SparseDoubleImp : Implement<double>
         {
 
             #region Methods
@@ -139,10 +128,32 @@ namespace OpenJijDotNet.Graphs
             {
                 NativeMethods.graph_Sparse_double_delete(ptr);
             }
-            public override uint GetNumSpins(IntPtr sparse)
+            public override uint GetNumSpins(IntPtr ptr)
             {
-                NativeMethods.graph_Sparse_double_get_num_spins(sparse, out var spins);
+                NativeMethods.graph_Sparse_double_get_num_spins(ptr, out var spins);
                 return spins;
+            }
+
+            public override double GetJ(IntPtr ptr, uint i, uint j)
+            {
+                NativeMethods.graph_Sparse_double_get_J(ptr, i, j, out var value);
+                return value;
+            }
+
+            public override void SetJ(IntPtr ptr, uint i, uint j, double value)
+            {
+                NativeMethods.graph_Sparse_double_set_J(ptr, i, j, value);
+            }
+
+            public override double GetH(IntPtr ptr, uint i)
+            {
+                NativeMethods.graph_Sparse_double_get_h(ptr, i, out var value);
+                return value;
+            }
+
+            public override void SetH(IntPtr ptr, uint i, double value)
+            {
+                NativeMethods.graph_Sparse_double_set_h(ptr, i, value);
             }
 
             #endregion
