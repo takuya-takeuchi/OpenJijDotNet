@@ -12,7 +12,7 @@ using namespace openjij;
 #pragma region template
 
 #define MAKE_FUNC(__TYPE__, __TYPENAME__)\
-DLLEXPORT openjij::graph::Spins* graph_Graph_gen_spin__##__TYPENAME__(openjij::graph::Graph* graph, __TYPE__* random_numder_engine)\
+DLLEXPORT openjij::graph::Spins* graph_Graph_gen_spin_##__TYPENAME__(openjij::graph::Graph* graph, __TYPE__* random_numder_engine)\
 {\
     auto& rne = *random_numder_engine;\
     const auto spins = graph->gen_spin(rne);\

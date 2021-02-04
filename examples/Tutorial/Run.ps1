@@ -44,7 +44,7 @@ function Clear-PackageCache([string]$Package, [string]$Version)
    }
 }
 
-function RunTest()
+function Run()
 {
    $ErrorActionPreference = "silentlycontinue"
    $env:PlatformTarget = $PlatformTarget
@@ -85,42 +85,33 @@ function RunTest()
    Clear-PackageCache -Package $Package -Version $Version
 
    # Test
-   $TestDir = Join-Path $OpenJijDotNetRoot "test" | `
-              Join-Path -ChildPath "OpenJijDotNet.Tests"
+   $WorkDir = Join-Path $OpenJijDotNetRoot "examples" | `
+              Join-Path -ChildPath "Tutorial"
    $NugetDir = Join-Path $OpenJijDotNetRoot nuget
 
    # restore package from local nuget pacakge
    # And drop stdout message
    Write-Host "[Info] Remove Reference from ${TestDir}" -Foreground Yellow
-   Set-Location ${TestDir}
+   Set-Location ${WorkDir}
    dotnet remove reference "..\..\src\OpenJijDotNet\OpenJijDotNet.csproj" > $null
 
    Write-Host "[Info] Add Package to ${TestDir}" -Foreground Yellow
-   Set-Location ${TestDir}
+   Set-Location ${WorkDir}
    dotnet add package $package -v $VERSION --source "$NugetDir" > $null
 
-   Write-Host "${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx" -Foreground Yellow
-   & ${dotnetPath} test -c Release -r "$TestDir" -s $runsetting --logger trx
+   Write-Host "${dotnetPath} run -c Release" -Foreground Yellow
+   & ${dotnetPath} run -c Release
 
-   Write-Host "[Info] Revert modification for OpenJijDotNet.Tests.csproj" -Foreground Yellow
-   git checkout OpenJijDotNet.Tests.csproj
-
-   if ($lastexitcode -eq 0) {
-      Write-Host "Test Successful" -Foreground Green
-   } else {
-      Write-Host "Test Fail for $package" -Foreground Red
-      Set-Location -Path $Current
-      exit -1
-   }
+   Write-Host "[Info] Revert modification for Tutorial.csproj" -Foreground Yellow
+   git checkout Tutorial.csproj
 }
-
-$ErrorActionPreference = "continue"
 
 # Store current directory
 $Current = Get-Location
-$OpenJijDotNetRoot = (Split-Path (Get-Location) -Parent)
+$ExampleRoot = (Split-Path (Get-Location) -Parent)
+$OpenJijDotNetRoot = (Split-Path $ExampleRoot -Parent)
 
-RunTest
+Run
 
 # Move to Root directory
 Set-Location -Path $Current
