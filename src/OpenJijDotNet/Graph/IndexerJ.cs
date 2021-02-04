@@ -4,20 +4,20 @@
 namespace OpenJijDotNet.Graphs
 {
 
-    internal sealed class Indexer<T>
+    public sealed class IndexerJ<T>
     {
 
         #region Fields
 
-        protected readonly Implement<T> _Implement;
+        private readonly Implement<T> _Implement;
 
-        public readonly IntPtr _Owner;
+        private readonly IntPtr _Owner;
 
         #endregion
 
         #region Constructors 
 
-        public Indexer(IntPtr owner, Implement<T> implement)
+        internal IndexerJ(IntPtr owner, Implement<T> implement)
         {
             if (implement == null)
                 throw new ArgumentNullException(nameof(implement));
@@ -39,18 +39,6 @@ namespace OpenJijDotNet.Graphs
             set
             {
                 this._Implement.SetJ(this._Owner, i, j, value);
-            }
-        }
-
-        public T this[uint i]
-        {
-            get
-            {
-                return this._Implement.GetH(this._Owner, i);
-            }
-            set
-            {
-                this._Implement.SetH(this._Owner, i, value);
             }
         }
 

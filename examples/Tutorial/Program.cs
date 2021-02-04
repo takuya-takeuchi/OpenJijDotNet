@@ -25,14 +25,14 @@ namespace Tutorial
             {
                 for (uint j = 0; j < N; j++)
                 {
-                    // dense.J(i, j) = (i == j) ? 0 : -1;
+                    dense.J[i, j] = (i == j) ? 0 : -1;
                 }
             }
 
             //set local fields
             for (uint i = 0; i < N; i++)
             {
-                // dense.h(i) = -1;
+                dense.H[i] = -1;
             }
 
             //generate random engine (mersenne twister)

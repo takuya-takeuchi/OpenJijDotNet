@@ -11,7 +11,9 @@ namespace OpenJijDotNet.Graphs
 
         private Implement<T> _Implement;
 
-        private Indexer<T> _Indexer;
+        private IndexerJ<T> _IndexerJ;
+
+        private IndexerH<T> _IndexerH;
 
         #endregion
 
@@ -40,6 +42,24 @@ namespace OpenJijDotNet.Graphs
             get => NativeMethods.GraphTypes.Sparse;
         }
 
+        public IndexerH<T> H
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this._IndexerH;
+            }
+        }
+
+        public IndexerJ<T> J
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this._IndexerJ;
+            }
+        }
+
         public override uint Spins
         {
             get
@@ -48,14 +68,6 @@ namespace OpenJijDotNet.Graphs
                 return this._Implement.GetNumSpins(this.NativePtr);
             }
         }
-
-        // public T J[uint i, uint j]
-        // {
-        //     get
-        //     {
-        //         return default(T);
-        //     }
-        // }
 
         #endregion
 
@@ -73,7 +85,8 @@ namespace OpenJijDotNet.Graphs
         {
             this._Implement = CreateImp();
             var owner = this._Implement.Create(spins);
-            this._Indexer = new Indexer<T>(owner, this._Implement);
+            this._IndexerJ = new IndexerJ<T>(owner, this._Implement);
+            this._IndexerH = new IndexerH<T>(owner, this._Implement);
             return owner;
         }
 
