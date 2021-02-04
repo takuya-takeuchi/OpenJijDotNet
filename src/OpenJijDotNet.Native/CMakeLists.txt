@@ -90,11 +90,6 @@ if (${ENABLE_NEON})
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
 endif()
 
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/openjij/config.hpp.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/openjij/config.hpp
-    @ONLY)
-
 if (${OPENJIJ_USE_CUDA})
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/version-cuda.rc.in
