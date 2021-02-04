@@ -15,38 +15,37 @@ namespace OpenJijDotNet
     internal sealed partial class NativeMethods
     {
 
-        internal enum Array2DType
+        internal enum FloatTypes
         {
-
-            UInt8 = 0,
-
-            UInt16,
-
-            UInt32,
-
-            Int8,
-
-            Int16,
-
-            Int32,
-
-            Float,
-
+            Float = 0,
             Double,
+        };
 
-            RgbPixel,
+        internal enum GraphTypes
+        {
+            Dense = 0,
+            Sparse,
+        };
 
-            BgrPixel,
+        internal enum IsingTypes
+        {
+            Classical = 0,
+            ContinuousTime,
+            Transverse
+        };
 
-            RgbAlphaPixel,
+        internal enum ScheduleListTypes
+        {
+            Classical = 0,
+            Transverse
+        };
 
-            HsiPixel,
-
-            LabPixel,
-
-            Matrix
-
-        }
+        internal enum UpdaterTypes
+        {
+            SingleSpinFlip = 0,
+            SwendsenWang,
+            ContinuousTimeSwendsenWang,
+        };
 
         internal enum ErrorType
         {

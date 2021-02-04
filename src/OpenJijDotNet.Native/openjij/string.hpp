@@ -1,7 +1,7 @@
 #ifndef _CPP_STRING_H_
 #define _CPP_STRING_H_
 
-#include "export.h"
+#include "export.hpp"
 #include <string>
 #include <stdlib.h>
 
@@ -30,4 +30,4 @@ DLLEXPORT void string_delete(std::string* str)
     delete str;
 }
 
-#endif
+#endif // _CPP_STRING_H_

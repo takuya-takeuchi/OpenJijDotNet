@@ -6,7 +6,7 @@ namespace OpenJijDotNet
     /// <summary>
     /// A class which has a pointer of native structure.
     /// </summary>
-    public abstract class OpenJijObject
+    public abstract class OpenJijObject : IDisposable
     {
 
         #region Constructors
