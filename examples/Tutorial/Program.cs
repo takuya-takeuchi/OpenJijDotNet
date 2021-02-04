@@ -4,6 +4,7 @@ using System.Diagnostics;
 using OpenJijDotNet;
 using OpenJijDotNet.Algorithms;
 using OpenJijDotNet.Graphs;
+using OpenJijDotNet.Results;
 using OpenJijDotNet.Systems;
 using OpenJijDotNet.Updaters;
 
@@ -50,19 +51,19 @@ namespace Tutorial
             stopWatch.Start();
             Algorithm<SingleSpinFlip>.Run(system, randRngine, scheduleList);
             stopWatch.Stop();
-        }
 
-        #region Helpers
-        
-        private static void ShowSpins(Spins spins)
-        {
-            foreach (var s in spins)
-                Console.Write($"{s} ");
-            Console.WriteLine();
+            double ticks = stopWatch.ElapsedTicks;
+            double time = (ticks / Stopwatch.Frequency) * 1000;
+            Console.WriteLine($"time {time}[ms]");
+
+            //show spins
+            Console.Write("The result spins are [");
+            foreach (var elem in Result.GetSolution(system))
+                Console.Write($"{elem} ");
+
+            Console.WriteLine("]");
         }
         
-        #endregion
-
         #endregion
 
     }
