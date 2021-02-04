@@ -23,9 +23,9 @@ message("-------------------------------------------------------")
 
 # Version info
 set(VERSION_MAJOR 0)
-set(VERSION_MINOR 1)
+set(VERSION_MINOR 0)
 set(VERSION_PATCH 1)
-set(VERSION_DATE 20210131)
+set(VERSION_DATE 20210205)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -89,11 +89,6 @@ if (${ENABLE_NEON})
 	#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -mfpu=neon -fprofile-use -D ENABLE_NEON")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fprofile-use -D ENABLE_NEON")
 endif()
-
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/openjij/config.hpp.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/openjij/config.hpp
-    @ONLY)
 
 if (${OPENJIJ_USE_CUDA})
     configure_file(
