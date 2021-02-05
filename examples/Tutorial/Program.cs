@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-
 using OpenJijDotNet;
 using OpenJijDotNet.Algorithms;
 using OpenJijDotNet.Graphs;
 using OpenJijDotNet.Results;
-using OpenJijDotNet.Systems;
 using OpenJijDotNet.Updaters;
 
 namespace Tutorial

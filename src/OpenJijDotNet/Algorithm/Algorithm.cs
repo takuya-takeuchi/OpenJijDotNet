@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using OpenJijDotNet;
-using OpenJijDotNet.Updaters;
 using OpenJijDotNet.Systems;
+using OpenJijDotNet.Updaters;
 using OpenJijDotNet.Utilities;
 
 // ReSharper disable once CheckNamespace

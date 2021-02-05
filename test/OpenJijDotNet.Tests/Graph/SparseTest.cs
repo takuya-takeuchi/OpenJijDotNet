@@ -1,7 +1,5 @@
-﻿using System.Linq;
+﻿using OpenJijDotNet.Graphs;
 using Xunit;
-
-using OpenJijDotNet.Graphs;
 
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Tests.Graphs
