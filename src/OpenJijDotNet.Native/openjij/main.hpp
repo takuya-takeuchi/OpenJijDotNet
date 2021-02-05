@@ -10,7 +10,7 @@
 #include "graph/Graph.hpp"
 #include "graph/Sparse.hpp"
 
-// #include "result/get_solution.hpp"
+#include "result/get_solution.hpp"
 
 #include "system/ClassicalIsing.hpp"
 // #include "system/ContinuousTimeIsing.hpp"
