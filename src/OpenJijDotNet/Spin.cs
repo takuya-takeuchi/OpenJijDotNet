@@ -1,5 +1,6 @@
 namespace OpenJijDotNet
 {
+
     public readonly struct Spin
     {
 
@@ -51,7 +52,7 @@ namespace OpenJijDotNet
 
         public override string ToString()
         {
-            return $"{nameof(this.Value)}: {this.Value}";
+            return $"{this.Value}";
         }
 
         /// <summary>
