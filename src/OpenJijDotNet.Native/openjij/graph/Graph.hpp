@@ -11,7 +11,7 @@ using namespace openjij;
 
 #pragma region template
 
-#define MAKE_FUNC(__TYPE__, __TYPENAME__)\
+#define MAKE_GRAPH_FUNC(__TYPE__, __TYPENAME__)\
 DLLEXPORT openjij::graph::Spins* graph_Graph_gen_spin_##__TYPENAME__(openjij::graph::Graph* graph, __TYPE__* random_numder_engine)\
 {\
     auto& rne = *random_numder_engine;\
@@ -24,6 +24,6 @@ DLLEXPORT openjij::graph::Spins* graph_Graph_gen_spin_##__TYPENAME__(openjij::gr
 
 #pragma endregion template
 
-MAKE_FUNC(std::mt19937, mt19937)
+MAKE_GRAPH_FUNC(std::mt19937, mt19937)
 
 #endif // _CPP_GRAPH_GRAPH_H_

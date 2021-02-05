@@ -11,7 +11,7 @@ using namespace openjij;
 
 #pragma region template
 
-#define MAKE_FUNC(__TYPE__, __TYPENAME__)\
+#define MAKE_SPARSE_FUNC(__TYPE__, __TYPENAME__)\
 DLLEXPORT graph::Sparse<__TYPE__>* graph_Sparse_##__TYPENAME__##_new(const std::size_t num_spins)\
 {\
     return new graph::Sparse<__TYPE__>(num_spins);\
@@ -55,6 +55,6 @@ DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_set_h(graph::Sparse<__TYPE__> *d
 #pragma endregion template
 
 // primitives
-MAKE_FUNC(double, double)
+MAKE_SPARSE_FUNC(double, double)
 
 #endif // _CPP_GRAPH_DENSE_H_
