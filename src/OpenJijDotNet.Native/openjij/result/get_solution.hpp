@@ -80,11 +80,8 @@ switch(ising_type)\
     case ::ising_types::Classical:\
         get_solution_graph_template(error, ClassicalIsing, __VA_ARGS__);\
         break;\
-    case ::ising_types::ContinuousTime:\
-        get_solution_sparse_template(error, ContinuousTimeIsing, __VA_ARGS__);\
-        break;\
     case ::ising_types::Transverse:\
-        get_solution_dense_template(error, TransverseIsing, __VA_ARGS__);\
+        get_solution_graph_template(error, TransverseIsing, __VA_ARGS__);\
         break;\
     default:\
         error = ERR_ISING_TYPE_NOT_SUPPORT;\
