@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using OpenJijDotNet.Graphs;
 
 // ReSharper disable once CheckNamespace
@@ -43,7 +44,7 @@ namespace OpenJijDotNet.Systems
             this.GraphType = initInteraction.GraphType;
             this.FloatType = initInteraction.FloatType;
 
-            this._Implement = CreateImplement<T>();
+            this._Implement = CreateImplement<T>(this.GetType());
             this.NativePtr = this._Implement.Create(initSpins, initInteraction);
         }
 
@@ -80,12 +81,12 @@ namespace OpenJijDotNet.Systems
 
         #region Helpers
 
-        private static Implement<T> CreateImplement<T>()
+        private static Implement<T> CreateImplement<T>(Type type)
             where T: Graph
         {
-            if (IsingElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
+            if (IsingElementTypesRepository.SupportTypes.TryGetValue(type, out var ret))
             {
-                switch (type)
+                switch (ret)
                 {
                     case IsingElementTypesRepository.ElementTypes.DenseDouble:
                         return new DenseDoubleImplement() as Implement<T>;

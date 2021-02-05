@@ -25,6 +25,6 @@ DLLEXPORT void system_ClassicalIsing_##__GRAPHNAME__##_##__TYPENAME__##_delete(o
 #pragma endregion template
 
 // primitives
-MAKE_FUNC(double, double, Dense)
+MAKE_FUNC(double, double, Dense, Dense)
 
 #endif // _CPP_GRAPH_DENSE_H_
