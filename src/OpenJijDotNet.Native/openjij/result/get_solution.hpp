@@ -52,6 +52,28 @@ switch(graph_type)\
         break;\
 }\
 
+#define get_solution_dense_template(error, __ISINGTYPE__, ...) \
+switch(graph_type)\
+{\
+    case ::graph_types::Dense:\
+        get_solution_float_template(error, __ISINGTYPE__, Dense, __VA_ARGS__);\
+        break;\
+    default:\
+        error = ERR_GRAPH_TYPE_NOT_SUPPORT;\
+        break;\
+}\
+
+#define get_solution_sparse_template(error, __ISINGTYPE__, ...) \
+switch(graph_type)\
+{\
+    case ::graph_types::Dense:\
+        get_solution_float_template(error, __ISINGTYPE__, Dense, __VA_ARGS__);\
+        break;\
+    default:\
+        error = ERR_GRAPH_TYPE_NOT_SUPPORT;\
+        break;\
+}\
+
 #define get_solution(error, ...) \
 switch(ising_type)\
 {\
@@ -59,10 +81,10 @@ switch(ising_type)\
         get_solution_graph_template(error, ClassicalIsing, __VA_ARGS__);\
         break;\
     case ::ising_types::ContinuousTime:\
-        get_solution_graph_template(error, ContinuousTimeIsing, __VA_ARGS__);\
+        get_solution_sparse_template(error, ContinuousTimeIsing, __VA_ARGS__);\
         break;\
     case ::ising_types::Transverse:\
-        get_solution_graph_template(error, ContinuousTimeIsing, __VA_ARGS__);\
+        get_solution_dense_template(error, ContinuousTimeIsing, __VA_ARGS__);\
         break;\
     default:\
         error = ERR_ISING_TYPE_NOT_SUPPORT;\
