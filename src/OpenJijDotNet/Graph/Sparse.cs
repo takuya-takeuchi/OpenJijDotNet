@@ -114,7 +114,7 @@ namespace OpenJijDotNet.Graphs
                 switch (type)
                 {
                     case GrpahElementTypesRepository.ElementTypes.Double:
-                        return new SparseDoubleImp() as Implement<T>;
+                        return new DoubleImplement() as Implement<T>;
                 }
             }
 
@@ -127,7 +127,7 @@ namespace OpenJijDotNet.Graphs
 
         #region Implement
 
-        private sealed class SparseDoubleImp : Implement<double>
+        private sealed class DoubleImplement : Implement<double>
         {
 
             #region Methods
@@ -141,6 +141,7 @@ namespace OpenJijDotNet.Graphs
             {
                 NativeMethods.graph_Sparse_double_delete(ptr);
             }
+            
             public override uint GetNumSpins(IntPtr ptr)
             {
                 NativeMethods.graph_Sparse_double_get_num_spins(ptr, out var spins);

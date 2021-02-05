@@ -1,11 +1,11 @@
-﻿
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Systems
 {
 
     public abstract class Ising : OpenJijObject
     {
+
+        #region Properties
 
         internal abstract NativeMethods.IsingTypes IsingType
         {
@@ -21,6 +21,8 @@ namespace OpenJijDotNet.Systems
         {
             get;
         }
+
+        #endregion
 
     }
 

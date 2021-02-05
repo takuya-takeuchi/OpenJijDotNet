@@ -7,7 +7,7 @@ using OpenJijDotNet.Graphs;
 namespace OpenJijDotNet.Systems
 {
 
-    public sealed class ClassicalIsing<T> : Ising
+    public sealed class TransverseIsing<T> : Ising
         where T: Graph
     {
 
@@ -15,27 +15,27 @@ namespace OpenJijDotNet.Systems
 
         private Implement<T> _Implement;
 
-        private static readonly Dictionary<Type, Func<Spins, T, ClassicalIsing<T>>> SupportTypes = new Dictionary<Type, Func<Spins, T, ClassicalIsing<T>>>();
+        private static readonly Dictionary<Type, Func<Spins, T, TransverseIsing<T>>> SupportTypes = new Dictionary<Type, Func<Spins, T, TransverseIsing<T>>>();
 
         #endregion
 
         #region Constructors
 
-        static ClassicalIsing()
+        static TransverseIsing()
         {
             var types = new[]
             {
-                new { Type = typeof(Dense<float>),   Generator = new Func<Spins, T, ClassicalIsing<T>>((s, i) => { return new ClassicalIsing<Dense<float>>(s, i as Dense<float>) as ClassicalIsing<T>;   } ) },
-                new { Type = typeof(Dense<double>),  Generator = new Func<Spins, T, ClassicalIsing<T>>((s, i) => { return new ClassicalIsing<Dense<double>>(s, i as Dense<double>) as ClassicalIsing<T>; } ) },
-                // new { Type = typeof(Sparse<float>),  Generator = new Func<Spins, T, ClassicalIsing<T>>((s, i) => { return new ClassicalIsing<Sparse<float>>(s, i);  } ) },
-                // new { Type = typeof(Sparse<double>), Generator = new Func<Spins, T, ClassicalIsing<T>>((s, i) => { return new ClassicalIsing<Sparse<double>>(s, i); } ) }
+                new { Type = typeof(Dense<float>),   Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Dense<float>>(s, i as Dense<float>) as TransverseIsing<T>;   } ) },
+                new { Type = typeof(Dense<double>),  Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Dense<double>>(s, i as Dense<double>) as TransverseIsing<T>; } ) },
+                // new { Type = typeof(Sparse<float>),  Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Sparse<float>>(s, i);  } ) },
+                // new { Type = typeof(Sparse<double>), Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Sparse<double>>(s, i); } ) }
             };
 
             foreach (var type in types)
                 SupportTypes.Add(type.Type, type.Generator);
         }
 
-        private ClassicalIsing(Spins initSpins, T initInteraction)
+        private TransverseIsing(Spins initSpins, T initInteraction)
         {
             if (initSpins == null)
                 throw new ArgumentNullException(nameof(initSpins));
@@ -70,7 +70,7 @@ namespace OpenJijDotNet.Systems
 
         #region Methods
 
-        internal static ClassicalIsing<T> Create(Spins initSpins, T initInteraction)
+        internal static TransverseIsing<T> Create(Spins initSpins, T initInteraction)
         {
             if (!SupportTypes.TryGetValue(typeof(T), out var generator))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
@@ -109,12 +109,12 @@ namespace OpenJijDotNet.Systems
             public override IntPtr Create(Spins initSpins, Dense<double> initInteraction)
             {
                 using (var vector = new StdVector<int>(initSpins.Select(s => s.Value)))
-                    return NativeMethods.system_ClassicalIsing_Dense_double_new(vector.NativePtr, initInteraction.NativePtr);
+                    return NativeMethods.system_TransverseIsing_Dense_double_new(vector.NativePtr, initInteraction.NativePtr);
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                NativeMethods.system_ClassicalIsing_Dense_double_delete(ptr);
+                NativeMethods.system_TransverseIsing_Dense_double_delete(ptr);
             }
 
             #endregion
