@@ -15,13 +15,13 @@ namespace OpenJijDotNet
     internal sealed partial class NativeMethods
     {
 
-        #region Dense<double>
+        #region Sparse<double>
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr system_ContinuousTimeIsing_Dense_double_new(IntPtr spins, IntPtr graph);
+        public static extern IntPtr system_ContinuousTimeIsing_Sparse_double_new(IntPtr spins, IntPtr graph);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void system_ContinuousTimeIsing_Dense_double_delete(IntPtr sparse);
+        public static extern void system_ContinuousTimeIsing_Sparse_double_delete(IntPtr sparse);
 
         #endregion
 

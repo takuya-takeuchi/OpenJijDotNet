@@ -5,22 +5,26 @@
 #include "../shared.hpp"
 #include <random>
 
-#include <graph/all.hpp>
-#include <system/all.hpp>
+#include <result/get_solution.hpp>
+#include <graph/dense.hpp>
+#include <graph/sparse.hpp>
+#include <system/classical_ising.hpp>
+#include <system/continuous_time_ising.hpp>
+#include <system/transverse_ising.hpp>
 
 #pragma region template
 
 #define run_template(error, __ISINGTYPE__, __GRAPHTYPE__, __FLOATTYPE__, ...) \
 {\
-    auto& system = *static_cast<openjij::system::__ISINGTYPE__<openjij::graph::__GRAPHTYPE__<__FLOATTYPE__>>*>(ising);\
+    const auto& system = *static_cast<openjij::system::__ISINGTYPE__<openjij::graph::__GRAPHTYPE__<__FLOATTYPE__>>*>(ising);\
     const auto& ret = openjij::result::get_solution(system);\
-    auto tmp = new Spins(ret.size());\
+    auto tmp = new openjij::graph::Spins(ret.size());\
     for (auto index = 0; index < ret.size(); index++)\
         tmp->operator[](index) = ret[index];\
     *spins = tmp;\
 }
 
-#define float_template(error, __UPDATERTYPE__, __GRAPHTYPE__, ...) \
+#define float_template(error, __ISINGTYPE__, __GRAPHTYPE__, ...) \
 switch(float_type)\
 {\
     case ::float_types::Double:\
@@ -49,7 +53,7 @@ switch(graph_type)\
 }\
 
 #define run(error, ...) \
-switch(updater_type)\
+switch(ising_type)\
 {\
     case ::ising_types::Classical:\
         graph_template(error, ClassicalIsing, __VA_ARGS__);\
@@ -78,10 +82,10 @@ DLLEXPORT int32_t result_get_solution(void* ising,
     int error = ERR_OK;
 
     run(error,
-        ising,
         ising_type,
         graph_type,
         float_type,
+        ising,
         spins);
 
     return error;

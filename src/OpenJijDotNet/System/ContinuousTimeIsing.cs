@@ -25,8 +25,8 @@ namespace OpenJijDotNet.Systems
         {
             var types = new[]
             {
-                new { Type = typeof(Dense<float>),   Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Dense<float>>(s, i as Dense<float>) as ContinuousTimeIsing<T>;   } ) },
-                new { Type = typeof(Dense<double>),  Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Dense<double>>(s, i as Dense<double>) as ContinuousTimeIsing<T>; } ) },
+                new { Type = typeof(Sparse<float>),   Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<float>>(s, i as Sparse<float>) as ContinuousTimeIsing<T>;   } ) },
+                new { Type = typeof(Sparse<double>),  Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<double>>(s, i as Sparse<double>) as ContinuousTimeIsing<T>; } ) },
                 // new { Type = typeof(Sparse<float>),  Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<float>>(s, i);  } ) },
                 // new { Type = typeof(Sparse<double>), Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<double>>(s, i); } ) }
             };
@@ -87,8 +87,8 @@ namespace OpenJijDotNet.Systems
             {
                 switch (type)
                 {
-                    case IsingElementTypesRepository.ElementTypes.DenseDouble:
-                        return new DenseDoubleImplement() as Implement<T>;
+                    case IsingElementTypesRepository.ElementTypes.SparseDouble:
+                        return new SparseDoubleImplement() as Implement<T>;
                 }
             }
 
@@ -101,20 +101,20 @@ namespace OpenJijDotNet.Systems
 
         #region Implement
 
-        private sealed class DenseDoubleImplement : Implement<Dense<double>>
+        private sealed class SparseDoubleImplement : Implement<Sparse<double>>
         {
 
             #region Methods
 
-            public override IntPtr Create(Spins initSpins, Dense<double> initInteraction)
+            public override IntPtr Create(Spins initSpins, Sparse<double> initInteraction)
             {
                 using (var vector = new StdVector<int>(initSpins.Select(s => s.Value)))
-                    return NativeMethods.system_ContinuousTimeIsing_Dense_double_new(vector.NativePtr, initInteraction.NativePtr);
+                    return NativeMethods.system_ContinuousTimeIsing_Sparse_double_new(vector.NativePtr, initInteraction.NativePtr);
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                NativeMethods.system_ContinuousTimeIsing_Dense_double_delete(ptr);
+                NativeMethods.system_ContinuousTimeIsing_Sparse_double_delete(ptr);
             }
 
             #endregion

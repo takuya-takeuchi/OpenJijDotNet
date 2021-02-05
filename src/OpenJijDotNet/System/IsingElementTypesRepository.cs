@@ -24,7 +24,7 @@ namespace OpenJijDotNet.Graphs
             var types = new[]
             {
                 new { Type = typeof(ClassicalIsing<Dense<double>>),        ElementType = ElementTypes.DenseDouble },
-                new { Type = typeof(ContinuousTimeIsing<Dense<double>>),   ElementType = ElementTypes.DenseDouble },
+                new { Type = typeof(ContinuousTimeIsing<Sparse<double>>),   ElementType = ElementTypes.SparseDouble },
                 new { Type = typeof(TransverseIsing<Dense<double>>),       ElementType = ElementTypes.DenseDouble }
             };
 
@@ -37,7 +37,9 @@ namespace OpenJijDotNet.Graphs
         public enum ElementTypes
         {
 
-            DenseDouble
+            DenseDouble,
+            
+            SparseDouble
 
         }
 

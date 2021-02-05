@@ -4,11 +4,13 @@
 #include "../export.hpp"
 #include "../shared.hpp"
 
+#include <graph/dense.hpp>
+#include <graph/sparse.hpp>
 #include <system/continuous_time_ising.hpp>
 
 #pragma region template
 
-#define MAKE_FUNC(__TYPE__, __TYPENAME__, __GRAPHTYPE__, GRAPHNAME__)\
+#define MAKE_FUNC(__TYPE__, __TYPENAME__, __GRAPHTYPE__, __GRAPHNAME__)\
 DLLEXPORT openjij::system::ContinuousTimeIsing<openjij::graph::__GRAPHTYPE__<__TYPE__>>* system_ContinuousTimeIsing_##__GRAPHNAME__##_##__TYPENAME__##_new(openjij::graph::Spins* init_spin, \
                                                                                                                                                            openjij::graph::__GRAPHTYPE__<__TYPE__>* init_interaction)\
 {\
@@ -25,6 +27,6 @@ DLLEXPORT void system_ContinuousTimeIsing_##__GRAPHNAME__##_##__TYPENAME__##_del
 #pragma endregion template
 
 // primitives
-MAKE_FUNC(double, double, Dense, Dense)
+MAKE_FUNC(double, double, Sparse, Sparse)
 
 #endif // _CPP_GRAPH_DENSE_H_

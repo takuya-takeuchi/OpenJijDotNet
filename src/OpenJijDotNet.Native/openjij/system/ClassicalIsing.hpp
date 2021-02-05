@@ -4,11 +4,13 @@
 #include "../export.hpp"
 #include "../shared.hpp"
 
+#include <graph/dense.hpp>
+#include <graph/sparse.hpp>
 #include <system/classical_ising.hpp>
 
 #pragma region template
 
-#define MAKE_FUNC(__TYPE__, __TYPENAME__, __GRAPHTYPE__, GRAPHNAME__)\
+#define MAKE_FUNC(__TYPE__, __TYPENAME__, __GRAPHTYPE__, __GRAPHNAME__)\
 DLLEXPORT openjij::system::ClassicalIsing<openjij::graph::__GRAPHTYPE__<__TYPE__>>* system_ClassicalIsing_##__GRAPHNAME__##_##__TYPENAME__##_new(openjij::graph::Spins* init_spin, \
                                                                                                                                                  openjij::graph::__GRAPHTYPE__<__TYPE__>* init_interaction)\
 {\
