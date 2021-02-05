@@ -7,6 +7,11 @@
     <Authors>Takuya Takeuchi</Authors>
     <Description>Example of OpenJijDotNet</Description>
     <Configurations>Debug;Release</Configurations>
+    <Platforms>x64;x86</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
