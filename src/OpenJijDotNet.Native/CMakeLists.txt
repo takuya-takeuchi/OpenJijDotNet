@@ -3,7 +3,7 @@ cmake_policy(SET CMP0053 NEW)
 cmake_policy(SET CMP0054 NEW)
 
 set(PROJ_NAME OpenJijDotNetNative)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # It means that CMakeLists.txt version rather than library version

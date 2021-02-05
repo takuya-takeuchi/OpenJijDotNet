@@ -11,7 +11,7 @@ using namespace openjij;
 
 #pragma region template
 
-#define MAKE_FUNC(__TYPE__, __TYPENAME__)\
+#define MAKE_DENSE_FUNC(__TYPE__, __TYPENAME__)\
 DLLEXPORT graph::Dense<__TYPE__>* graph_Dense_##__TYPENAME__##_new(const std::size_t num_spins)\
 {\
     return new graph::Dense<__TYPE__>(num_spins);\
@@ -54,6 +54,6 @@ DLLEXPORT int32_t graph_Dense_##__TYPENAME__##_set_h(graph::Dense<__TYPE__> *den
 #pragma endregion template
 
 // primitives
-MAKE_FUNC(double, double)
+MAKE_DENSE_FUNC(double, double)
 
 #endif // _CPP_GRAPH_DENSE_H_

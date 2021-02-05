@@ -10,7 +10,7 @@
 
 #pragma region template
 
-#define MAKE_FUNC(__TYPE__, __TYPENAME__, __GRAPHTYPE__, __GRAPHNAME__)\
+#define MAKE_CLASSICAL_ISING_FUNC(__TYPE__, __TYPENAME__, __GRAPHTYPE__, __GRAPHNAME__)\
 DLLEXPORT openjij::system::ClassicalIsing<openjij::graph::__GRAPHTYPE__<__TYPE__>>* system_ClassicalIsing_##__GRAPHNAME__##_##__TYPENAME__##_new(openjij::graph::Spins* init_spin, \
                                                                                                                                                  openjij::graph::__GRAPHTYPE__<__TYPE__>* init_interaction)\
 {\
@@ -27,6 +27,6 @@ DLLEXPORT void system_ClassicalIsing_##__GRAPHNAME__##_##__TYPENAME__##_delete(o
 #pragma endregion template
 
 // primitives
-MAKE_FUNC(double, double, Dense, Dense)
+MAKE_CLASSICAL_ISING_FUNC(double, double, Dense, Dense)
 
 #endif // _CPP_GRAPH_DENSE_H_
