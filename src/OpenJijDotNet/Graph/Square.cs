@@ -33,6 +33,15 @@ namespace OpenJijDotNet.Graphs
 
         #region Properties
 
+        public uint Column
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this._Implement.GetNumColumn(this.NativePtr);
+            }
+        }
+
         internal override NativeMethods.FloatTypes FloatType
         {
             get;
@@ -58,6 +67,15 @@ namespace OpenJijDotNet.Graphs
             {
                 this.ThrowIfDisposed();
                 return this._IndexerJ;
+            }
+        }
+
+        public uint Row
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this._Implement.GetNumRow(this.NativePtr);
             }
         }
 
