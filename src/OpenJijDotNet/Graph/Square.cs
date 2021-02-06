@@ -4,7 +4,7 @@
 namespace OpenJijDotNet.Graphs
 {
 
-    public sealed class Dense<T> : Graph
+    public sealed class Square<T> : Sparse<T>
         where T: struct
     {
 
@@ -20,13 +20,13 @@ namespace OpenJijDotNet.Graphs
 
         #region Constructors
 
-        public Dense(uint spins)
+        public Square(uint row, uint column, T initValue)
         {
             if (!TryParse(typeof(T), out var type))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
 
             this.FloatType = type;
-            this.NativePtr = this.Create(spins);
+            this.NativePtr = this.Create(row, column, initValue);
         }
 
         #endregion
@@ -40,7 +40,7 @@ namespace OpenJijDotNet.Graphs
 
         internal override NativeMethods.GraphTypes GraphType
         {
-            get => NativeMethods.GraphTypes.Dense;
+            get => NativeMethods.GraphTypes.Square;
         }
 
         public IndexerH<T> H
@@ -99,10 +99,10 @@ namespace OpenJijDotNet.Graphs
 
         #region Helpers
 
-        private IntPtr Create(uint spins)
+        private IntPtr Create(uint row, uint column, T initValue)
         {
             this._Implement = CreateImp();
-            var owner = this._Implement.Create(spins);
+            var owner = this._Implement.Create(row, column, initValue);
             this._IndexerJ = new IndexerJ<T>(owner, this._Implement);
             this._IndexerH = new IndexerH<T>(owner, this._Implement);
             return owner;
@@ -133,19 +133,27 @@ namespace OpenJijDotNet.Graphs
 
             #region Methods
 
-            public abstract IntPtr Create(uint spins);
+            public abstract IntPtr Create(uint numRow, uint numColumn, T initVal);
 
             public abstract void Dispose(IntPtr ptr);
 
             public abstract uint GetNumSpins(IntPtr ptr);
 
-            public abstract T GetJ(IntPtr ptr, uint i, uint j);
+            public abstract T GetJ(IntPtr ptr, uint r, uint c, Direction direction);
 
-            public abstract void SetJ(IntPtr ptr, uint i, uint j, T value);
+            public abstract void SetJ(IntPtr ptr, uint r, uint c, Direction direction, T value);
 
-            public abstract T GetH(IntPtr ptr, uint i);
+            public abstract T GetH(IntPtr ptr, uint r, uint c);
 
-            public abstract void SetH(IntPtr ptr, uint i, T value);
+            public abstract void SetH(IntPtr ptr, uint r, uint c, T value);
+            
+            public abstract uint GetNumRow(IntPtr ptr);
+            
+            public abstract uint GetNumColumn(IntPtr ptr);
+            
+            public abstract Spin GetSpin(IntPtr ptr, uint r, uint c);
+            
+            public abstract void SetSpin(IntPtr ptr, uint r, uint c, Spin spin);
 
             #endregion
 
@@ -156,42 +164,65 @@ namespace OpenJijDotNet.Graphs
 
             #region Methods
 
-            public override IntPtr Create(uint spins)
+            public override IntPtr Create(uint numRow, uint numColumn, double initVal)
             {
-                return NativeMethods.graph_Dense_double_new(spins);
+                return NativeMethods.graph_Square_double_new(numRow, numColumn, initVal);
             }
 
             public override void Dispose(IntPtr ptr)
             {
-                NativeMethods.graph_Dense_double_delete(ptr);
+                NativeMethods.graph_Square_double_delete(ptr);
             }
             
             public override uint GetNumSpins(IntPtr ptr)
             {
-                NativeMethods.graph_Dense_double_get_num_spins(ptr, out var spins);
+                NativeMethods.graph_Square_double_get_num_spins(ptr, out var spins);
                 return spins;
             }
 
-            public override double GetJ(IntPtr ptr, uint i, uint j)
+            public override double GetJ(IntPtr ptr, uint r, uint c, Direction direction)
             {
-                NativeMethods.graph_Dense_double_get_J(ptr, i, j, out var value);
+                NativeMethods.graph_Square_double_get_J(ptr, r, c, direction, out var value);
                 return value;
             }
 
-            public override void SetJ(IntPtr ptr, uint i, uint j, double value)
+            public override void SetJ(IntPtr ptr, uint r, uint c, Direction direction, double value)
             {
-                NativeMethods.graph_Dense_double_set_J(ptr, i, j, value);
+                NativeMethods.graph_Square_double_set_J(ptr, r, c, direction, value);
             }
 
-            public override double GetH(IntPtr ptr, uint i)
+            public override double GetH(IntPtr ptr, uint r, uint c)
             {
-                NativeMethods.graph_Dense_double_get_h(ptr, i, out var value);
+                NativeMethods.graph_Square_double_get_h(ptr, r, c, out var value);
                 return value;
             }
 
-            public override void SetH(IntPtr ptr, uint i, double value)
+            public override void SetH(IntPtr ptr, uint r, uint c, double value)
             {
-                NativeMethods.graph_Dense_double_set_h(ptr, i, value);
+                NativeMethods.graph_Square_double_set_h(ptr, r, c, value);
+            }
+            
+            public override uint GetNumRow(IntPtr ptr)
+            {
+                NativeMethods.graph_Square_double_get_num_row(ptr, out var value);
+                return value;
+            }
+            
+            public override uint GetNumColumn(IntPtr ptr)
+            {
+                NativeMethods.graph_Square_double_get_num_column(ptr, out var value);
+                return value;
+            }
+            
+            public override Spin GetSpin(IntPtr ptr, uint r, uint c)
+            {
+                NativeMethods.graph_Square_double_get_spin(ptr, r, c, out var spin);
+                return new Spin(spin);
+            }
+            
+            public override void SetSpin(IntPtr ptr, uint r, uint c, Spin spin)
+            {
+                NativeMethods.graph_Square_double_set_spin(ptr, r, c, spin.Value);
             }
 
             #endregion
@@ -226,15 +257,15 @@ namespace OpenJijDotNet.Graphs
 
             #region Properties
 
-            public T this[uint i, uint j]
+            public T this[uint row, uint column, Direction direction]
             {
                 get
                 {
-                    return this._Implement.GetJ(this._Owner, i, j);
+                    return this._Implement.GetJ(this._Owner, row, column, direction);
                 }
                 set
                 {
-                    this._Implement.SetJ(this._Owner, i, j, value);
+                    this._Implement.SetJ(this._Owner, row, column, direction, value);
                 }
             }
 
@@ -268,15 +299,15 @@ namespace OpenJijDotNet.Graphs
 
             #region Properties
 
-            public T this[uint i]
+            public T this[uint row, uint column]
             {
                 get
                 {
-                    return this._Implement.GetH(this._Owner, i);
+                    return this._Implement.GetH(this._Owner, row, column);
                 }
                 set
                 {
-                    this._Implement.SetH(this._Owner, i, value);
+                    this._Implement.SetH(this._Owner, row, column, value);
                 }
             }
 

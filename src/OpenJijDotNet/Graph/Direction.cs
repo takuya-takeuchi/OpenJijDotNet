@@ -2,7 +2,7 @@
 namespace OpenJijDotNet.Graphs
 {
 
-    public enum ChimeraDirection 
+    public enum Direction 
     {
 
         PlusRow,

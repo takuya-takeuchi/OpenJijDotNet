@@ -9,6 +9,7 @@
 #include "graph/Dense.hpp"
 #include "graph/Graph.hpp"
 #include "graph/Sparse.hpp"
+#include "graph/Square.hpp"
 
 #include "result/get_solution.hpp"
 
