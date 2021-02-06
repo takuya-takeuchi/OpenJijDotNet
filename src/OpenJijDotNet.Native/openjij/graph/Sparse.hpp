@@ -57,4 +57,4 @@ DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_set_h(graph::Sparse<__TYPE__> *s
 // primitives
 MAKE_SPARSE_FUNC(double, double)
 
-#endif // _CPP_GRAPH_DENSE_H_
+#endif // _CPP_GRAPH_SPARSE_H_

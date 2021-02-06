@@ -81,4 +81,4 @@ DLLEXPORT int32_t graph_Square_##__TYPENAME__##_set_spin(graph::Square<__TYPE__>
 // primitives
 MAKE_SQUARE_FUNC(double, double)
 
-#endif // _CPP_GRAPH_DENSE_H_
+#endif // _CPP_GRAPH_SQUARE_H_

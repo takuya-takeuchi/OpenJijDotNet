@@ -11,7 +11,14 @@ namespace OpenJijDotNet.Tests.Graphs
         [Fact]
         public void Create()
         {
-            var square = new Square<double>(10, 10, 0);
+            var square = new Square<double>(10, 10);
+            this.DisposeAndCheckDisposedState(square);
+        }
+
+        [Fact]
+        public void Create2()
+        {
+            var square = new Square<double>(10, 10, 1.0);
             this.DisposeAndCheckDisposedState(square);
         }
 

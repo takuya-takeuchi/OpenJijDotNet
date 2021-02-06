@@ -20,7 +20,7 @@ namespace OpenJijDotNet.Graphs
 
         #region Constructors
 
-        public Square(uint row, uint column, T initValue)
+        public Square(uint row, uint column, T initValue = default(T))
         {
             if (!TryParse(typeof(T), out var type))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
