@@ -107,6 +107,18 @@ namespace OpenJijDotNet.Graphs
             return TryParse(typeof(T), out result);
         }
 
+        public uint ToIndex(uint row, uint column, uint inChimera)
+        {
+            this.ThrowIfDisposed();
+            return this._Implement.ToIndex(this.NativePtr, row, column, inChimera);
+        }
+
+        public ChimeraIndex ToRowColumnInChimera(uint index)
+        {
+            this.ThrowIfDisposed();
+            return this._Implement.ToRowColumnInChimera(this.NativePtr, index);
+        }
+
         #region Overrides
 
         /// <summary>
@@ -184,6 +196,10 @@ namespace OpenJijDotNet.Graphs
             
             public abstract void SetSpin(IntPtr ptr, uint r, uint c, uint i, Spin spin);
 
+            public abstract uint ToIndex(IntPtr ptr, uint row, uint column, uint inChimera);
+
+            public abstract ChimeraIndex ToRowColumnInChimera(IntPtr ptr, uint index);
+
             #endregion
 
         }
@@ -258,6 +274,18 @@ namespace OpenJijDotNet.Graphs
             public override void SetSpin(IntPtr ptr, uint r, uint c, uint i, Spin spin)
             {
                 NativeMethods.graph_Chimera_double_set_spin(ptr, r, c, i, spin.Value);
+            }
+
+            public override uint ToIndex(IntPtr ptr, uint row, uint column, uint inChimera)
+            {
+                NativeMethods.graph_Chimera_double_to_ind(ptr, row, column, inChimera, out var index);
+                return index;
+            }
+
+            public override ChimeraIndex ToRowColumnInChimera(IntPtr ptr, uint index)
+            {
+                NativeMethods.graph_Chimera_double_to_rci(ptr, index, out var r, out var c, out var i);
+                return new ChimeraIndex(r, c, i);
             }
 
             #endregion

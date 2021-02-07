@@ -51,6 +51,12 @@ namespace OpenJijDotNet
         
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern int graph_Square_double_set_spin(IntPtr square, uint r, uint c, int value);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Square_double_to_ind(IntPtr square, uint r, uint c, out uint value);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Square_double_to_rc(IntPtr square, uint value, out uint r, out uint c);
 
         #endregion
 

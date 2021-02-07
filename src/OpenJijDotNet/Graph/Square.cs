@@ -98,6 +98,18 @@ namespace OpenJijDotNet.Graphs
             return TryParse(typeof(T), out result);
         }
 
+        public uint ToIndex(uint row, uint column)
+        {
+            this.ThrowIfDisposed();
+            return this._Implement.ToIndex(this.NativePtr, row, column);
+        }
+
+        public RowColumn ToRowColumn(uint index)
+        {
+            this.ThrowIfDisposed();
+            return this._Implement.ToRowColumn(this.NativePtr, index);
+        }
+
         #region Overrides
 
         /// <summary>
@@ -173,6 +185,10 @@ namespace OpenJijDotNet.Graphs
             
             public abstract void SetSpin(IntPtr ptr, uint r, uint c, Spin spin);
 
+            public abstract uint ToIndex(IntPtr ptr, uint row, uint column);
+
+            public abstract RowColumn ToRowColumn(IntPtr ptr, uint index);
+
             #endregion
 
         }
@@ -241,6 +257,18 @@ namespace OpenJijDotNet.Graphs
             public override void SetSpin(IntPtr ptr, uint r, uint c, Spin spin)
             {
                 NativeMethods.graph_Square_double_set_spin(ptr, r, c, spin.Value);
+            }
+
+            public override uint ToIndex(IntPtr ptr, uint row, uint column)
+            {
+                NativeMethods.graph_Square_double_to_ind(ptr, row, column, out var index);
+                return index;
+            }
+
+            public override RowColumn ToRowColumn(IntPtr ptr, uint index)
+            {
+                NativeMethods.graph_Square_double_to_rc(ptr, index, out var r, out var c);
+                return new RowColumn(r, c);
             }
 
             #endregion

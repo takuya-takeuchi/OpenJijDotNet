@@ -54,6 +54,12 @@ namespace OpenJijDotNet
         
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern int graph_Chimera_double_set_spin(IntPtr chimera, uint r, uint c, uint i, int value);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Chimera_double_to_ind(IntPtr chimera, uint r, uint c, uint i, out uint value);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Chimera_double_to_rci(IntPtr chimera, uint value, out uint r, out uint c, out uint i);
 
         #endregion
 
