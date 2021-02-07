@@ -85,10 +85,15 @@ namespace OpenJijDotNet.Systems
         {
             if (IsingElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
             {
-                switch (type)
+                switch (type.Item1)
                 {
-                    case IsingElementTypesRepository.ElementTypes.SparseDouble:
-                        return new SparseDoubleImplement() as Implement<T>;
+                    case OpenJijDotNet.NativeMethods.GraphTypes.Sparse:
+                        switch (type.Item2)
+                        {
+                            case OpenJijDotNet.NativeMethods.FloatTypes.Double:
+                                return new SparseDoubleImplement() as Implement<T>;
+                        }
+                        break;
                 }
             }
 
