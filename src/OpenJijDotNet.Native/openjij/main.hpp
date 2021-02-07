@@ -6,6 +6,7 @@
 
 #include "algorithm/Algorithm.hpp"
 
+#include "graph/Chimera.hpp"
 #include "graph/Dense.hpp"
 #include "graph/Graph.hpp"
 #include "graph/Sparse.hpp"
