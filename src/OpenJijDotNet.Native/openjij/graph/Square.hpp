@@ -99,6 +99,26 @@ DLLEXPORT int32_t graph_Square_##__TYPENAME__##_set_spin(graph::Square<__TYPE__>
     square->spin(tmp, r, c) = value;\
     return ERR_OK;\
 }\
+\
+DLLEXPORT int32_t graph_Square_##__TYPENAME__##_to_ind(graph::Square<__TYPE__> *square, \
+                                                       const uint32_t r, \
+                                                       const uint32_t c, \
+                                                       graph::Index* index)\
+{\
+    *index = square->to_ind(r, c);\
+    return ERR_OK;\
+}\
+\
+DLLEXPORT int32_t graph_Square_##__TYPENAME__##_to_rc(graph::Square<__TYPE__> *square, \
+                                                      const graph::Index index, \
+                                                      uint32_t* r, \
+                                                      uint32_t* c)\
+{\
+    const auto& cin = square->to_rc(index);\
+    *r = std::get<0>(cin);\
+    *c = std::get<1>(cin);\
+    return ERR_OK;\
+}\
 
 #pragma endregion template
 

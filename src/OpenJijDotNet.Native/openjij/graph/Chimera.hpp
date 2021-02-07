@@ -112,6 +112,29 @@ DLLEXPORT int32_t graph_Chimera_##__TYPENAME__##_set_spin(graph::Chimera<__TYPE_
     chimera->spin(tmp, r, c, i) = value;\
     return ERR_OK;\
 }\
+\
+DLLEXPORT int32_t graph_Chimera_##__TYPENAME__##_to_ind(graph::Chimera<__TYPE__> *chimera, \
+                                                        const uint32_t r, \
+                                                        const uint32_t c, \
+                                                        const uint32_t i, \
+                                                        graph::Index* index)\
+{\
+    *index = chimera->to_ind(r, c, i);\
+    return ERR_OK;\
+}\
+\
+DLLEXPORT int32_t graph_Chimera_##__TYPENAME__##_to_rci(graph::Chimera<__TYPE__> *chimera, \
+                                                        const graph::Index index, \
+                                                        uint32_t* r, \
+                                                        uint32_t* c, \
+                                                        uint32_t* i)\
+{\
+    const auto& cin = chimera->to_rci(index);\
+    *r = std::get<0>(cin);\
+    *c = std::get<1>(cin);\
+    *i = std::get<2>(cin);\
+    return ERR_OK;\
+}\
 
 #pragma endregion template
 
