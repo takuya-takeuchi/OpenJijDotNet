@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>OpenJijDotNet</id>
-    <version>0.0.1.20210206</version>
+    <version>0.0.1.20210207</version>
     <title>OpenJijDotNet</title>
     <authors>Takuya Takeuchi</authors>
     <owners>Takuya Takeuchi</owners>
@@ -30,6 +30,7 @@
     <file src="..\artifacts\cpu\runtimes\win-x64\native\OpenJijDotNetNative.dll" target="runtimes\win-x64\native\OpenJijDotNetNative.dll" />
     <file src="..\artifacts\cpu\runtimes\win-x86\native\OpenJijDotNetNative.dll" target="runtimes\win-x86\native\OpenJijDotNetNative.dll" />
     <file src="..\artifacts\cpu\runtimes\linux-x64\native\libOpenJijDotNetNative.so" target="runtimes\linux-x64\native\libOpenJijDotNetNative.so" />
+    <file src="..\artifacts\cpu\runtimes\osx-x64\native\libOpenJijDotNetNative.dylib" target="runtimes\osx-x64\native\libOpenJijDotNetNative.dylib" />
 
     <!-- license -->
     <file src="..\..\LICENSE.txt" target="" />
