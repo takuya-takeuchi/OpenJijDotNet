@@ -53,7 +53,7 @@ foreach($BuildTarget in $BuildTargets)
    }
 
    Write-Host "Start docker build -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""" -ForegroundColor Green
-   docker build --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
+   docker build --network host --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
    if ($lastexitcode -ne 0)
    {
