@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using OpenJijDotNet;
-
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Graphs
 {
@@ -31,11 +29,6 @@ namespace OpenJijDotNet.Graphs
                 SupportTypes.Add(type.Type, type.ElementType);
         }
 
-        protected Graph(uint spins)
-        {
-            this.NativePtr = this.Create(spins);
-        }
-
         #endregion
 
         #region Properties
@@ -58,8 +51,6 @@ namespace OpenJijDotNet.Graphs
         #endregion
 
         #region Methods
-
-        protected abstract IntPtr Create(uint spins);
         
         public Spins GenSpin(StdMt19937 randomNumderEngine)
         {

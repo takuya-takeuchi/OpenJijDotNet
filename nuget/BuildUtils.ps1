@@ -11,7 +11,6 @@ class Config
    @(
       "cpu",
       "cuda",
-      "mkl",
       "arm"
    )
 
@@ -89,12 +88,11 @@ class Config
    # Arguments
    #  %1: Root directory of OpenJijDotNet
    #  %2: Build Configuration (Release/Debug)
-   #  %3: Target (cpu/cuda/mkl/arm)
+   #  %3: Target (cpu/cuda/arm)
    #  %4: Architecture (32/64)
    #  %5: Platform (desktop/android/ios/uwp)
    #  %6: Optional Argument
    #    if Target is cuda, CUDA version if Target is cuda [90/91/92/100/101/102/110]
-   #    if Target is mkl and Windows, IntelMKL directory path
    #***************************************
    Config(  [string]$Root,
             [string]$Configuration,
@@ -143,10 +141,6 @@ class Config
                Write-Host "Error: Specify CUDA version [${candidate}]" -ForegroundColor Red
                exit -1
             }
-         }
-         "mkl"
-         {
-            $this._MklDirectory = $Option
          }
       }
 
@@ -432,12 +426,14 @@ function ConfigCPU([Config]$Config)
    if ($IsWindows)
    {
       cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
+            -D USE_CUDA=OFF `
             ..
    }
    else
    {
       $arch_type = $Config.GetArchitecture()
       cmake -D ARCH_TYPE="$arch_type" `
+            -D USE_CUDA=OFF `
             ..
    }
 }
@@ -469,117 +465,6 @@ function ConfigCUDA([Config]$Config)
             -D DLIB_USE_BLAS=OFF `
             -D DLIB_USE_LAPACK=OFF `
             -D LIBPNG_IS_GOOD=OFF  `
-            -D PNG_FOUND=OFF `
-            -D PNG_LIBRARY_RELEASE="" `
-            -D PNG_LIBRARY_DEBUG="" `
-            -D PNG_PNG_INCLUDE_DIR="" `
-            ..
-   }
-}
-
-function ConfigMKL([Config]$Config)
-{
-   if ($IsWindows)
-   {
-      $intelMklDirectory = $Config.GetIntelMklDirectory()
-      if (!$intelMklDirectory) {
-         Write-Host "Error: Specify Intel MKL directory" -ForegroundColor Red
-         exit -1
-      }
-
-      if ((Test-Path $intelMklDirectory) -eq $False) {
-         Write-Host "Error: Specified IntelMKL directory '${intelMklDirectory}' does not found" -ForegroundColor Red
-         exit -1
-      }
- 
-      $architecture = $Config.GetArchitecture()
-      $architectureDir = ""
-      switch ($architecture)
-      {
-         32
-         { 
-            $architectureDir = "ia32_win"
-            $MKL_INCLUDE_DIR = Join-Path $intelMklDirectory "mkl/include"
-            $LIBIOMP5MD_LIB = Join-Path $intelMklDirectory "compiler/lib/${architectureDir}/libiomp5md.lib"
-            $MKLCOREDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_core_dll.lib"
-            $MKLINTELC_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_c.lib"            
-            $MKLINTELTHREADDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_thread_dll.lib"
-      
-            if ((Test-Path $LIBIOMP5MD_LIB) -eq $False) {
-               Write-Host "Error: ${LIBIOMP5MD_LIB} does not found" -ForegroundColor Red
-               exit -1
-            }
-            if ((Test-Path $MKLCOREDLL_LIB) -eq $False) {
-               Write-Host "Error: ${MKLCOREDLL_LIB} does not found" -ForegroundColor Red
-               exit -1
-            }
-            if ((Test-Path $MKLINTELC_LIB) -eq $False) {
-               Write-Host "Error: ${MKLINTELC_LIB} does not found" -ForegroundColor Red
-               exit -1
-            }
-            if ((Test-Path $MKLINTELTHREADDLL_LIB) -eq $False) {
-               Write-Host "Error: ${MKLINTELTHREADDLL_LIB} does not found" -ForegroundColor Red
-               exit -1
-            }
-
-            cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
-                  -D DLIB_USE_CUDA=OFF `
-                  -D DLIB_USE_BLAS=ON `
-                  -D DLIB_USE_LAPACK=OFF `
-                  -D mkl_include_dir="${MKL_INCLUDE_DIR}" `
-                  -D BLAS_libiomp5md_LIBRARY="${LIBIOMP5MD_LIB}" `
-                  -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
-                  -D BLAS_mkl_intel_c_dll_LIBRARY="${MKLINTELC_LIB}" `
-                  -D BLAS_mkl_intel_thread_dll_LIBRARY="${MKLINTELTHREADDLL_LIB}" `
-                  ..
-         }
-         64
-         { 
-            $architectureDir = "intel64_win"
-            $MKL_INCLUDE_DIR = Join-Path $intelMklDirectory "mkl/include"
-            $LIBIOMP5MD_LIB = Join-Path $intelMklDirectory "compiler/lib/${architectureDir}/libiomp5md.lib"
-            $MKLCOREDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_core_dll.lib"
-            $MKLINTELLP64DLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_lp64_dll.lib"
-            $MKLINTELTHREADDLL_LIB = Join-Path $intelMklDirectory "mkl/lib/${architectureDir}/mkl_intel_thread_dll.lib"
-      
-            if ((Test-Path $LIBIOMP5MD_LIB) -eq $False) {
-               Write-Host "Error: ${LIBIOMP5MD_LIB} does not found" -ForegroundColor Red
-               exit -1
-            }
-            if ((Test-Path $MKLCOREDLL_LIB) -eq $False) {
-               Write-Host "Error: ${MKLCOREDLL_LIB} does not found" -ForegroundColor Red
-               exit -1
-            }
-            if ((Test-Path $MKLINTELLP64DLL_LIB) -eq $False) {
-               Write-Host "Error: ${MKLINTELLP64DLL_LIB} does not found" -ForegroundColor Red
-               exit -1
-            }
-            if ((Test-Path $MKLINTELTHREADDLL_LIB) -eq $False) {
-               Write-Host "Error: ${MKLINTELTHREADDLL_LIB} does not found" -ForegroundColor Red
-               exit -1
-            }
-      
-            cmake -G $Config.GetVisualStudio() -A $Config.GetVisualStudioArchitecture() -T host=x64 `
-                  -D DLIB_USE_CUDA=OFF `
-                  -D DLIB_USE_BLAS=ON `
-                  -D DLIB_USE_LAPACK=OFF `
-                  -D mkl_include_dir="${MKL_INCLUDE_DIR}" `
-                  -D BLAS_libiomp5md_LIBRARY="${LIBIOMP5MD_LIB}" `
-                  -D BLAS_mkl_core_dll_LIBRARY="${MKLCOREDLL_LIB}" `
-                  -D BLAS_mkl_intel_lp64_dll_LIBRARY="${MKLINTELLP64DLL_LIB}" `
-                  -D BLAS_mkl_intel_thread_dll_LIBRARY="${MKLINTELTHREADDLL_LIB}" `
-                  ..
-         }
-      }
-   }
-   else
-   {      
-      $arch_type = $Config.GetArchitecture()
-      cmake -D ARCH_TYPE="$arch_type" `
-            -D DLIB_USE_CUDA=OFF `
-            -D DLIB_USE_BLAS=ON `
-            -D DLIB_USE_LAPACK=OFF `
-            -D LIBPNG_IS_GOOD=OFF `
             -D PNG_FOUND=OFF `
             -D PNG_LIBRARY_RELEASE="" `
             -D PNG_LIBRARY_DEBUG="" `
@@ -785,10 +670,6 @@ function Build([Config]$Config)
             "cpu"
             {
                ConfigCPU $Config
-            }
-            "mkl"
-            {
-               ConfigMKL $Config
             }
             "cuda"
             {

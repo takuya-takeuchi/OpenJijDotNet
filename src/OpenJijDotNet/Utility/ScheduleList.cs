@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using OpenJijDotNet;
 
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Utilities

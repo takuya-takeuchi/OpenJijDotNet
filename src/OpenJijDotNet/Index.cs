@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-
 namespace OpenJijDotNet
 {
     public readonly struct Index
@@ -36,9 +31,9 @@ namespace OpenJijDotNet
         #region Overrids
 
         /// <summary>
-        /// Specifies whether this <see cref="Index"/> contains the same coordinates as the specified <see cref="Object"/>.
+        /// Specifies whether this <see cref="Index"/> contains the same coordinates as the specified <see cref="object"/>.
         /// </summary>
-        /// <param name="obj">The <see cref="Object"/> to test.</param>
+        /// <param name="obj">The <see cref="object"/> to test.</param>
         /// <returns><code>true</code> if <paramref name="obj"/> is a <see cref="Index"/> and has the same coordinates as this <see cref="Index"/>.</returns>
         public override bool Equals(object obj)
         {

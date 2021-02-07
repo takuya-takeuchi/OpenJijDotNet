@@ -6,8 +6,16 @@
 
 #include "algorithm/Algorithm.hpp"
 
+#include "graph/Chimera.hpp"
 #include "graph/Dense.hpp"
 #include "graph/Graph.hpp"
 #include "graph/Sparse.hpp"
+#include "graph/Square.hpp"
+
+#include "result/get_solution.hpp"
+
+#include "system/ClassicalIsing.hpp"
+// #include "system/ContinuousTimeIsing.hpp"
+// #include "system/TransverseIsing.hpp"
 
 #include "utility/schedule_list.hpp"

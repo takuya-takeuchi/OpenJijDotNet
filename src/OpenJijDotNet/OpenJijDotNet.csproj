@@ -13,6 +13,8 @@
     <PackageLicenseUrl></PackageLicenseUrl>
   
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  
+    <Platforms>x64;x86</Platforms>
   </PropertyGroup>
 
 
@@ -31,6 +33,10 @@
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <Optimize>true</Optimize>
     <DocumentationFile>docs\OpenJijDotNet.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

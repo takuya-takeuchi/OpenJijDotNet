@@ -7,7 +7,7 @@
 
 #pragma region template
 
-#define MAKE_FUNC(__TYPE__, __TYPENAME__)\
+#define MAKE_UNIFORM_REAL_DISTRIBUTION_FUNC(__TYPE__, __TYPENAME__)\
 DLLEXPORT std::uniform_real_distribution<__TYPE__>* std_uniform_real_distribution_##__TYPENAME__##_new(__TYPE__ a, __TYPE__ b)\
 {\
     return new std::uniform_real_distribution<__TYPE__>(a, b);\
@@ -21,6 +21,6 @@ DLLEXPORT void std_uniform_real_distribution_##__TYPENAME__##_delete(std::unifor
 #pragma endregion template
 
 // primitives
-MAKE_FUNC(double, double)
+MAKE_UNIFORM_REAL_DISTRIBUTION_FUNC(double, double)
 
 #endif // _CPP_STD_UNIFORM_REAL_DISTRIBUTION_H_

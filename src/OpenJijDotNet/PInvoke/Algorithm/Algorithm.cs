@@ -15,6 +15,9 @@ namespace OpenJijDotNet
     internal sealed partial class NativeMethods
     {
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void AlgorithmUpdaterParameterCallback(IntPtr system, IntPtr update_parameter);
+
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern int algorithm_Algorithm_run(UpdaterTypes updater_type,
                                                          IntPtr ising,

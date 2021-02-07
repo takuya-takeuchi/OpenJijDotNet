@@ -1,10 +1,6 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-
 namespace OpenJijDotNet
 {
+
     public readonly struct Spin
     {
 
@@ -36,9 +32,9 @@ namespace OpenJijDotNet
         #region Overrids
 
         /// <summary>
-        /// Specifies whether this <see cref="Spin"/> contains the same coordinates as the specified <see cref="Object"/>.
+        /// Specifies whether this <see cref="Spin"/> contains the same coordinates as the specified <see cref="object"/>.
         /// </summary>
-        /// <param name="obj">The <see cref="Object"/> to test.</param>
+        /// <param name="obj">The <see cref="object"/> to test.</param>
         /// <returns><code>true</code> if <paramref name="obj"/> is a <see cref="Spin"/> and has the same coordinates as this <see cref="Spin"/>.</returns>
         public override bool Equals(object obj)
         {
@@ -56,7 +52,7 @@ namespace OpenJijDotNet
 
         public override string ToString()
         {
-            return $"{nameof(this.Value)}: {this.Value}";
+            return $"{this.Value}";
         }
 
         /// <summary>

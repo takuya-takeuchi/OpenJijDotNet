@@ -10,7 +10,7 @@ DLLEXPORT std::mt19937* std_mt19937_new(std::random_device* device)
     return new std::mt19937(device->operator()());
 }
 
-DLLEXPORT std::mt19937* std_mt19937_new2(const u_int32_t seed)
+DLLEXPORT std::mt19937* std_mt19937_new2(const uint32_t seed)
 {
     return new std::mt19937(seed);
 }
