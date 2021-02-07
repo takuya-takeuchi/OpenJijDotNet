@@ -17,6 +17,12 @@ DLLEXPORT graph::Sparse<__TYPE__>* graph_Sparse_##__TYPENAME__##_new(const std::
     return new graph::Sparse<__TYPE__>(num_spins);\
 }\
 \
+DLLEXPORT graph::Sparse<__TYPE__>* graph_Sparse_##__TYPENAME__##_new2(const std::size_t num_spins, \
+                                                                      const std::size_t num_edges)\
+{\
+    return new graph::Sparse<__TYPE__>(num_spins, num_edges);\
+}\
+\
 DLLEXPORT void graph_Sparse_##__TYPENAME__##_delete(graph::Sparse<__TYPE__> *sparse)\
 {\
     delete sparse;\
@@ -25,6 +31,21 @@ DLLEXPORT void graph_Sparse_##__TYPENAME__##_delete(graph::Sparse<__TYPE__> *spa
 DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_get_num_spins(graph::Sparse<__TYPE__> *sparse, std::size_t* num_spins)\
 {\
     *num_spins = sparse->get_num_spins();\
+    return ERR_OK;\
+}\
+\
+DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_adj_nodes(graph::Sparse<__TYPE__> *sparse, \
+                                                          const openjij::graph::Index index, \
+                                                          openjij::graph::Nodes** nodes)\
+{\
+    const auto tmp = sparse->adj_nodes(index);\
+    *nodes = new openjij::graph::Nodes(tmp.begin(), tmp.begin() + tmp.size());\
+    return ERR_OK;\
+}\
+\
+DLLEXPORT int32_t graph_Sparse_##__TYPENAME__##_get_num_edges(graph::Sparse<__TYPE__> *sparse, std::size_t* num_edges)\
+{\
+    *num_edges = sparse->get_num_edges();\
     return ERR_OK;\
 }\
 \

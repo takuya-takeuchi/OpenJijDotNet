@@ -13,6 +13,11 @@ namespace OpenJijDotNet
         {
         }
 
+        public Nodes(IEnumerable<Index> collection) :
+            base(collection)
+        {
+        }
+
         #endregion
 
     }

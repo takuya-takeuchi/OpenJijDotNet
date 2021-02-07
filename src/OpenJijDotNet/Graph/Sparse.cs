@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Graphs
@@ -46,6 +47,15 @@ namespace OpenJijDotNet.Graphs
 
         #region Properties
 
+        public uint Edges
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                return this._Implement.GetNumEdges(this.NativePtr);
+            }
+        }
+
         internal override NativeMethods.FloatTypes FloatType
         {
             get;
@@ -86,6 +96,12 @@ namespace OpenJijDotNet.Graphs
         #endregion
 
         #region Methods
+            
+        public Nodes GetAdjacentNodes(uint index)
+        {
+            this.ThrowIfDisposed();
+            return this._Implement.AdjNodes(this.NativePtr, index);
+        }
 
         internal static bool TryParse<T>(out NativeMethods.FloatTypes result)
             where T : struct
@@ -162,6 +178,10 @@ namespace OpenJijDotNet.Graphs
             public abstract void Dispose(IntPtr ptr);
 
             public abstract uint GetNumSpins(IntPtr ptr);
+            
+            public abstract Nodes AdjNodes(IntPtr ptr, uint index);
+            
+            public abstract uint GetNumEdges(IntPtr ptr);
 
             public abstract T GetJ(IntPtr ptr, uint i, uint j);
 
@@ -199,6 +219,19 @@ namespace OpenJijDotNet.Graphs
             {
                 NativeMethods.graph_Sparse_double_get_num_spins(ptr, out var spins);
                 return spins;
+            }
+            
+            public override Nodes AdjNodes(IntPtr ptr, uint index)
+            {
+                NativeMethods.graph_Sparse_double_adj_nodes(ptr, index, out var nodes);
+                using (var vector = new StdVector<int>(nodes))
+                    return new Nodes(vector.ToArray().Select(n => new Index((ulong)n)));
+            }
+            
+            public override uint GetNumEdges(IntPtr ptr)
+            {
+                NativeMethods.graph_Sparse_double_get_num_edges(ptr, out var edges);
+                return edges;
             }
 
             public override double GetJ(IntPtr ptr, uint i, uint j)

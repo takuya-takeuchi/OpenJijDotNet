@@ -35,7 +35,7 @@ foreach($dockerfile in $baseDockerfiles)
 
    $runtimetag = "openjijdotnet" + $runtimeNameBase.Replace('base', 'runtime')
    Write-Host "Start 'docker build -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME=""$basetag""'" -ForegroundColor Green
-   docker build --force-rm=true -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME="$basetag"
+   docker build --network host --force-rm=true -t $runtimetag $runtimeDockerfileDirectory --build-arg IMAGE_NAME="$basetag"
 
    if ($lastexitcode -ne 0)
    {
