@@ -3,6 +3,8 @@ cmake_policy(SET CMP0053 NEW)
 cmake_policy(SET CMP0054 NEW)
 
 set(PROJ_NAME OpenJijDotNetNative)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # It means that CMakeLists.txt version rather than library version
 project(${PROJ_NAME} VERSION 1.0.0)
@@ -25,7 +27,7 @@ message("-------------------------------------------------------")
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 1)
-set(VERSION_DATE 20210205)
+set(VERSION_DATE 20210207)
 
 # Only GCC requires -fPIC
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

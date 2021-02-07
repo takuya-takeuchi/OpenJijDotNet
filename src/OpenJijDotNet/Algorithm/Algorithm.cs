@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using OpenJijDotNet;
-using OpenJijDotNet.Updaters;
+using OpenJijDotNet.Graphs;
 using OpenJijDotNet.Systems;
+using OpenJijDotNet.Updaters;
 using OpenJijDotNet.Utilities;
 
 // ReSharper disable once CheckNamespace
@@ -11,7 +9,7 @@ namespace OpenJijDotNet.Algorithms
 {
 
     public sealed class Algorithm<T>
-            where T: Updater
+            where T : Updater
     {
 
         #region Methods
@@ -24,12 +22,21 @@ namespace OpenJijDotNet.Algorithms
                 throw new ArgumentNullException(nameof(randomNumberEngine));
             if (scheduleList == null)
                 throw new ArgumentNullException(nameof(scheduleList));
-            
+
             system.ThrowIfDisposed();
             randomNumberEngine.ThrowIfDisposed();
             scheduleList.ThrowIfDisposed();
 
-            var updaterType = NativeMethods.UpdaterTypes.SingleSpinFlip;
+            if (!UpdaterElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var types))
+                throw new NotSupportedException($"{typeof(T).Name} does not support");
+            if (types.Item2 != system.IsingType)
+                throw new NotSupportedException($"{typeof(T).Name} supports only {system.IsingType}");
+            if (types.Item3 != system.GraphType)
+                throw new NotSupportedException($"{typeof(T).Name} supports only {system.GraphType}");
+            if (types.Item4 != system.FloatType)
+                throw new NotSupportedException($"{typeof(T).Name} supports only {system.FloatType}");
+
+            var updaterType = types.Item1;
             var ret = NativeMethods.algorithm_Algorithm_run(updaterType,
                                                             system.NativePtr,
                                                             system.IsingType,

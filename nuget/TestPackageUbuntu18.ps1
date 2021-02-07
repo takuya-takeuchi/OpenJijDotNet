@@ -53,7 +53,7 @@ foreach($BuildTarget in $BuildTargets)
    }
 
    Write-Host "Start docker build -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""" -ForegroundColor Green
-   docker build --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
+   docker build --network host --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
    if ($lastexitcode -ne 0)
    {
@@ -68,31 +68,34 @@ foreach($BuildTarget in $BuildTargets)
       Write-Host "Docker API Version: $dockerAPIVersion" -ForegroundColor Yellow
       if ($dockerAPIVersion -ge 1.40)
       {
-         Write-Host "Start docker run --gpus all --rm -v ""$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
-         docker run --gpus all --rm `
-                     -v "$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet" `
-                     -e "LOCAL_UID=$(id -u $env:USER)" `
-                     -e "LOCAL_GID=$(id -g $env:USER)" `
-                     -t "$dockername" $Version $package $platformTarget $rid
+         Write-Host "Start docker run --network host --gpus all --rm -v ""$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
+         docker run --network host `
+                    --gpus all --rm `
+                    -v "$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet" `
+                    -e "LOCAL_UID=$(id -u $env:USER)" `
+                    -e "LOCAL_GID=$(id -g $env:USER)" `
+                    -t "$dockername" $Version $package $platformTarget $rid
       }
       else
       {
-         Write-Host "Start docker run --runtime=nvidia --rm -v ""$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
-         docker run --runtime=nvidia --rm `
-                     -v "$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet" `
-                     -e "LOCAL_UID=$(id -u $env:USER)" `
-                     -e "LOCAL_GID=$(id -g $env:USER)" `
-                     -t "$dockername" $Version $package $platformTarget $rid
+         Write-Host "Start docker run --network host --runtime=nvidia --rm -v ""$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
+         docker run --network host `
+                    --runtime=nvidia --rm `
+                    -v "$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet" `
+                    -e "LOCAL_UID=$(id -u $env:USER)" `
+                    -e "LOCAL_GID=$(id -g $env:USER)" `
+                    -t "$dockername" $Version $package $platformTarget $rid
       }
    }
    else
    {
-      Write-Host "Start docker run --rm -v ""$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
-      docker run --rm `
-                  -v "$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet" `
-                  -e "LOCAL_UID=$(id -u $env:USER)" `
-                  -e "LOCAL_GID=$(id -g $env:USER)" `
-                  -t "$dockername" $Version $package $platformTarget $rid
+      Write-Host "Start docker run --network host --rm -v ""$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t ""$dockername"" $Version $package $platformTarget $rid" -ForegroundColor Green
+      docker run --network host `
+                 --rm `
+                 -v "$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet" `
+                 -e "LOCAL_UID=$(id -u $env:USER)" `
+                 -e "LOCAL_GID=$(id -g $env:USER)" `
+                 -t "$dockername" $Version $package $platformTarget $rid
    }
 
    if ($lastexitcode -ne 0)

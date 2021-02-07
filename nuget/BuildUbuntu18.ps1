@@ -60,7 +60,7 @@ foreach($BuildTarget in $BuildTargets)
    $build = $Config.GetBuildDirectoryName($OperatingSystem)
 
    Write-Host "Start 'docker build -t $dockername $DockerFileDir --build-arg IMAGE_NAME=""$imagename""'" -ForegroundColor Green
-   docker build --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
+   docker build --network host --force-rm=true -t $dockername $DockerFileDir --build-arg IMAGE_NAME="$imagename"
 
    if ($lastexitcode -ne 0)
    {
@@ -72,7 +72,7 @@ foreach($BuildTarget in $BuildTargets)
    foreach ($key in $BuildSourceHash.keys)
    {
       Write-Host "Start 'docker run --rm -v ""$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet"" -e LOCAL_UID=$(id -u $env:USER) -e LOCAL_GID=$(id -g $env:USER) -t $dockername'" -ForegroundColor Green
-      docker run --rm `
+      docker run --rm --network host `
                   -v "$($OpenJijDotNetRoot):/opt/data/OpenJijDotNet" `
                   -e "LOCAL_UID=$(id -u $env:USER)" `
                   -e "LOCAL_GID=$(id -g $env:USER)" `

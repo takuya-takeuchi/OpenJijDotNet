@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using OpenJijDotNet;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using OpenJijDotNet.Graphs;
 
 // ReSharper disable once CheckNamespace
@@ -13,6 +13,8 @@ namespace OpenJijDotNet.Systems
     {
 
         #region Fields
+
+        private Implement<T> _Implement;
 
         private static readonly Dictionary<Type, Func<Spins, T, ClassicalIsing<T>>> SupportTypes = new Dictionary<Type, Func<Spins, T, ClassicalIsing<T>>>();
 
@@ -41,6 +43,9 @@ namespace OpenJijDotNet.Systems
             
             this.GraphType = initInteraction.GraphType;
             this.FloatType = initInteraction.FloatType;
+
+            this._Implement = CreateImplement<T>(this.GetType());
+            this.NativePtr = this._Implement.Create(initSpins, initInteraction);
         }
 
         #endregion
@@ -74,8 +79,55 @@ namespace OpenJijDotNet.Systems
             return generator(initSpins, initInteraction);
         }
 
+        #region Helpers
+
+        private static Implement<T> CreateImplement<T>(Type type)
+            where T: Graph
+        {
+            if (IsingElementTypesRepository.SupportTypes.TryGetValue(type, out var ret))
+            {
+                switch (ret.Item1)
+                {
+                    case OpenJijDotNet.NativeMethods.GraphTypes.Dense:
+                        switch (ret.Item2)
+                        {
+                            case OpenJijDotNet.NativeMethods.FloatTypes.Double:
+                                return new DenseDoubleImplement() as Implement<T>;
+                        }
+                        break;
+                }
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+
         #endregion
 
+        #endregion
+
+        #region Implement
+
+        private sealed class DenseDoubleImplement : Implement<Dense<double>>
+        {
+
+            #region Methods
+
+            public override IntPtr Create(Spins initSpins, Dense<double> initInteraction)
+            {
+                using (var vector = new StdVector<int>(initSpins.Select(s => s.Value)))
+                    return NativeMethods.system_ClassicalIsing_Dense_double_new(vector.NativePtr, initInteraction.NativePtr);
+            }
+
+            public override void Dispose(IntPtr ptr)
+            {
+                NativeMethods.system_ClassicalIsing_Dense_double_delete(ptr);
+            }
+
+            #endregion
+
+        }
+
+        #endregion
 
     }
 

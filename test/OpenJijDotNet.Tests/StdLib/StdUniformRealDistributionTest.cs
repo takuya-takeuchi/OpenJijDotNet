@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Xunit;
+﻿using Xunit;
 
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Tests.StdLib

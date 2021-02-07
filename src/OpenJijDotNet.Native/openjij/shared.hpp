@@ -1,6 +1,8 @@
 #ifndef _CPP_SHARED_H_
 #define _CPP_SHARED_H_
 
+#include <cstdint>
+
 enum struct float_types : int32_t
 {
     Float = 0,

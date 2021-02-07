@@ -4,7 +4,8 @@
 namespace OpenJijDotNet.Graphs
 {
 
-    public sealed partial class Dense<T> : Graph
+    public sealed class Dense<T> : Graph
+        where T: struct
     {
 
         #region Fields
@@ -19,13 +20,13 @@ namespace OpenJijDotNet.Graphs
 
         #region Constructors
 
-        public Dense(uint spins) :
-            base(spins)
+        public Dense(uint spins)
         {
             if (!TryParse(typeof(T), out var type))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
 
             this.FloatType = type;
+            this.NativePtr = this.Create(spins);
         }
 
         #endregion
@@ -81,15 +82,6 @@ namespace OpenJijDotNet.Graphs
 
         #region Overrides
 
-        protected override IntPtr Create(uint spins)
-        {
-            this._Implement = CreateImp();
-            var owner = this._Implement.Create(spins);
-            this._IndexerJ = new IndexerJ<T>(owner, this._Implement);
-            this._IndexerH = new IndexerH<T>(owner, this._Implement);
-            return owner;
-        }
-
         /// <summary>
         /// Releases all unmanaged resources.
         /// </summary>
@@ -107,14 +99,23 @@ namespace OpenJijDotNet.Graphs
 
         #region Helpers
 
+        private IntPtr Create(uint spins)
+        {
+            this._Implement = CreateImp();
+            var owner = this._Implement.Create(spins);
+            this._IndexerJ = new IndexerJ<T>(owner, this._Implement);
+            this._IndexerH = new IndexerH<T>(owner, this._Implement);
+            return owner;
+        }
+
         private static Implement<T> CreateImp()
         {
             if (GrpahElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
             {
                 switch (type)
                 {
-                    case GrpahElementTypesRepository.ElementTypes.Double:
-                        return new DenseDoubleImp() as Implement<T>;
+                    case NativeMethods.FloatTypes.Double:
+                        return new DoubleImplement() as Implement<T>;
                 }
             }
 
@@ -126,8 +127,31 @@ namespace OpenJijDotNet.Graphs
         #endregion
 
         #region Implement
+    
+        internal abstract class Implement<T>
+        {
 
-        private sealed class DenseDoubleImp : Implement<double>
+            #region Methods
+
+            public abstract IntPtr Create(uint spins);
+
+            public abstract void Dispose(IntPtr ptr);
+
+            public abstract uint GetNumSpins(IntPtr ptr);
+
+            public abstract T GetJ(IntPtr ptr, uint i, uint j);
+
+            public abstract void SetJ(IntPtr ptr, uint i, uint j, T value);
+
+            public abstract T GetH(IntPtr ptr, uint i);
+
+            public abstract void SetH(IntPtr ptr, uint i, T value);
+
+            #endregion
+
+        }
+
+        internal sealed class DoubleImplement : Implement<double>
         {
 
             #region Methods
@@ -141,6 +165,7 @@ namespace OpenJijDotNet.Graphs
             {
                 NativeMethods.graph_Dense_double_delete(ptr);
             }
+            
             public override uint GetNumSpins(IntPtr ptr)
             {
                 NativeMethods.graph_Dense_double_get_num_spins(ptr, out var spins);
@@ -174,6 +199,90 @@ namespace OpenJijDotNet.Graphs
         }
 
         #endregion
+
+        public sealed class IndexerJ<T>
+        {
+
+            #region Fields
+
+            private readonly Implement<T> _Implement;
+
+            private readonly IntPtr _Owner;
+
+            #endregion
+
+            #region Constructors 
+
+            internal IndexerJ(IntPtr owner, Implement<T> implement)
+            {
+                if (implement == null)
+                    throw new ArgumentNullException(nameof(implement));
+
+                this._Owner = owner;
+                this._Implement = implement;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public T this[uint i, uint j]
+            {
+                get
+                {
+                    return this._Implement.GetJ(this._Owner, i, j);
+                }
+                set
+                {
+                    this._Implement.SetJ(this._Owner, i, j, value);
+                }
+            }
+
+            #endregion
+
+        }
+
+        public sealed class IndexerH<T>
+        {
+
+            #region Fields
+
+            private readonly Implement<T> _Implement;
+
+            private readonly IntPtr _Owner;
+
+            #endregion
+
+            #region Constructors 
+
+            internal IndexerH(IntPtr owner, Implement<T> implement)
+            {
+                if (implement == null)
+                    throw new ArgumentNullException(nameof(implement));
+
+                this._Owner = owner;
+                this._Implement = implement;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public T this[uint i]
+            {
+                get
+                {
+                    return this._Implement.GetH(this._Owner, i);
+                }
+                set
+                {
+                    this._Implement.SetH(this._Owner, i, value);
+                }
+            }
+
+            #endregion
+
+        }
 
     }
 

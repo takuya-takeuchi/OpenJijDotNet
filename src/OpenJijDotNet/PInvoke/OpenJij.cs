@@ -25,6 +25,8 @@ namespace OpenJijDotNet
         {
             Dense = 0,
             Sparse,
+            Square,
+            Chimera,
         };
 
         internal enum IsingTypes

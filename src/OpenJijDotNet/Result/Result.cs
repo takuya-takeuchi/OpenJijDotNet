@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-
-using OpenJijDotNet;
-using OpenJijDotNet.Graphs;
 using OpenJijDotNet.Systems;
 
 // ReSharper disable once CheckNamespace

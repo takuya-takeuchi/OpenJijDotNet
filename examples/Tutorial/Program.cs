@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-
 using OpenJijDotNet;
 using OpenJijDotNet.Algorithms;
 using OpenJijDotNet.Graphs;
@@ -10,28 +9,29 @@ using OpenJijDotNet.Updaters;
 
 namespace Tutorial
 {
+
     internal class Program
     {
 
         #region Methods
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             //generate dense graph with size N=5
-            const uint N = 500;
-            using var dense = new Dense<double>(N);
+            const uint n = 500;
+            using var dense = new Dense<double>(n);
 
             //set interactions
-            for (uint i = 0; i < N; i++)
+            for (uint i = 0; i < n; i++)
             {
-                for (uint j = 0; j < N; j++)
+                for (uint j = 0; j < n; j++)
                 {
                     dense.J[i, j] = (i == j) ? 0 : -1;
                 }
             }
 
             //set local fields
-            for (uint i = 0; i < N; i++)
+            for (uint i = 0; i < n; i++)
             {
                 dense.H[i] = -1;
             }
@@ -40,7 +40,7 @@ namespace Tutorial
             using var randRngine = new StdMt19937(0x1234);
 
             //create classical Ising system
-            using var system = OpenJij.MakeClassicalIsing<Dense<double>>(dense.GenSpin(randRngine), dense);
+            using var system = OpenJij.MakeClassicalIsing(dense.GenSpin(randRngine), dense);
 
             //generate schedule list
             //from beta=0.1 to beta=100, 10 samples, 10 Monte Carlo step for each tempearature
@@ -49,7 +49,7 @@ namespace Tutorial
             //do annealing (updater: SingleSpinFlip)
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            Algorithm<SingleSpinFlip>.Run(system, randRngine, scheduleList);
+            Algorithm<SingleSpinFlip<ClassicalIsing<Dense<double>>>>.Run(system, randRngine, scheduleList);
             stopWatch.Stop();
 
             double ticks = stopWatch.ElapsedTicks;
