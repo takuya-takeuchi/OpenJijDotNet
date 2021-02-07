@@ -141,6 +141,9 @@ namespace OpenJijDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void std_uniform_real_distribution_double_delete(IntPtr ptr);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern double std_uniform_real_distribution_double_xorshift_operator(IntPtr ptr, IntPtr xorshift);
+
         #endregion
 
         #endregion

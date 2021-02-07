@@ -1,29 +1,42 @@
 ﻿using System;
 
+using OpenJijDotNet.Utilities;
+
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet
 {
 
-    public sealed class StdUniformRealDistribution<TItem> : OpenJijObject
+    public sealed class StdUniformRealDistribution<T> : OpenJijObject
     {
 
         #region Fields
 
-        private readonly StdUniformRealDistributionImp<TItem> _Imp;
+        private readonly StdUniformRealDistributionImp<T> _Implement;
 
         #endregion
 
         #region Constructors
 
-        public StdUniformRealDistribution(TItem a, TItem b)
+        public StdUniformRealDistribution(T a, T b)
         {
-            this._Imp = CreateImp();
-            this.NativePtr = this._Imp.Create(a, b);
+            this._Implement = CreateImp();
+            this.NativePtr = this._Implement.Create(a, b);
         }
 
         #endregion
 
         #region Methods
+
+        public T Operator(Xorshift xorshift)
+        {
+            if (xorshift == null)
+                throw new ArgumentNullException(nameof(xorshift));
+            
+            xorshift.ThrowIfDisposed();
+            this.ThrowIfDisposed();
+
+            return this._Implement.Operator(this.NativePtr, xorshift.NativePtr);
+        }
 
         #region Overrides
 
@@ -37,21 +50,21 @@ namespace OpenJijDotNet
             if (this.NativePtr == IntPtr.Zero)
                 return;
 
-            this._Imp?.Dispose(this.NativePtr);
+            this._Implement?.Dispose(this.NativePtr);
         }
 
         #endregion
 
         #region Helpers
 
-        private static StdUniformRealDistributionImp<TItem> CreateImp()
+        private static StdUniformRealDistributionImp<T> CreateImp()
         {
-            if (StdUniformRealDistributionElementTypesRepository.SupportTypes.TryGetValue(typeof(TItem), out var type))
+            if (StdUniformRealDistributionElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
             {
                 switch (type)
                 {
                     case StdUniformRealDistributionElementTypesRepository.ElementTypes.Double:
-                        return new StdUniformRealDistributionDoubleImp() as StdUniformRealDistributionImp<TItem>;
+                        return new StdUniformRealDistributionDoubleImp() as StdUniformRealDistributionImp<T>;
                 }
             }
 
@@ -73,6 +86,8 @@ namespace OpenJijDotNet
 
             public abstract void Dispose(IntPtr ptr);
 
+            public abstract T Operator(IntPtr ptr, IntPtr rng);
+
             #endregion
 
         }
@@ -90,6 +105,11 @@ namespace OpenJijDotNet
             public override void Dispose(IntPtr ptr)
             {
                 NativeMethods.std_uniform_real_distribution_double_delete(ptr);
+            }
+
+            public override double Operator(IntPtr ptr, IntPtr rng)
+            {
+                return NativeMethods.std_uniform_real_distribution_double_xorshift_operator(ptr, rng);
             }
 
             #endregion
