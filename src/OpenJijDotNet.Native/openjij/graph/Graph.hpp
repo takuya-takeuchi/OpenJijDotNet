@@ -16,9 +16,7 @@ DLLEXPORT openjij::graph::Spins* graph_Graph_gen_spin_##__TYPENAME__(openjij::gr
 {\
     auto& rne = *random_numder_engine;\
     const auto spins = graph->gen_spin(rne);\
-    auto ret = new openjij::graph::Spins(spins.size());\
-    for (auto index = 0; index < spins.size(); index++)\
-        ret->operator[](index) = spins[index];\
+    auto ret = new openjij::graph::Spins(spins.begin(), spins.begin() + spins.size());\
     return ret;\
 }\
 

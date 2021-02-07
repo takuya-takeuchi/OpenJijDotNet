@@ -18,10 +18,7 @@
 {\
     const auto& system = *static_cast<openjij::system::__ISINGTYPE__<openjij::graph::__GRAPHTYPE__<__FLOATTYPE__>>*>(ising);\
     const auto& ret = openjij::result::get_solution(system);\
-    auto tmp = new openjij::graph::Spins(ret.size());\
-    for (auto index = 0; index < ret.size(); index++)\
-        tmp->operator[](index) = ret[index];\
-    *spins = tmp;\
+    *spins = new openjij::graph::Spins(ret.begin(), ret.begin() + ret.size());\
 }
 
 #define get_solution_float_template(error, __ISINGTYPE__, __GRAPHTYPE__, ...) \

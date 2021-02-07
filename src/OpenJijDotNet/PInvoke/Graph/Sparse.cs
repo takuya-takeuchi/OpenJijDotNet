@@ -30,6 +30,12 @@ namespace OpenJijDotNet
         public static extern int graph_Sparse_double_get_num_spins(IntPtr sparse, out uint spins);
         
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Sparse_double_adj_nodes(IntPtr sparse, uint index, out IntPtr nodes);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern int graph_Sparse_double_get_num_edges(IntPtr sparse, out uint num_edges);
+        
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern int graph_Sparse_double_get_J(IntPtr sparse, uint i, uint j, out double value);
         
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
