@@ -86,10 +86,15 @@ namespace OpenJijDotNet.Systems
         {
             if (IsingElementTypesRepository.SupportTypes.TryGetValue(type, out var ret))
             {
-                switch (ret)
+                switch (ret.Item1)
                 {
-                    case IsingElementTypesRepository.ElementTypes.DenseDouble:
-                        return new DenseDoubleImplement() as Implement<T>;
+                    case OpenJijDotNet.NativeMethods.GraphTypes.Dense:
+                        switch (ret.Item2)
+                        {
+                            case OpenJijDotNet.NativeMethods.FloatTypes.Double:
+                                return new DenseDoubleImplement() as Implement<T>;
+                        }
+                        break;
                 }
             }
 

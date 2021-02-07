@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using OpenJijDotNet;
+
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Graphs
 {
@@ -10,7 +12,7 @@ namespace OpenJijDotNet.Graphs
 
         #region Fields
 
-        public static readonly Dictionary<Type, ElementTypes> SupportTypes = new Dictionary<Type, ElementTypes>();
+        public static readonly Dictionary<Type, NativeMethods.FloatTypes> SupportTypes = new Dictionary<Type, NativeMethods.FloatTypes>();
 
         #endregion
 
@@ -20,7 +22,7 @@ namespace OpenJijDotNet.Graphs
         {
             var types = new[]
             {
-                new { Type = typeof(double),   ElementType = ElementTypes.Double }
+                new { Type = typeof(double),   ElementType = NativeMethods.FloatTypes.Double }
             };
 
             foreach (var type in types)
@@ -28,13 +30,6 @@ namespace OpenJijDotNet.Graphs
         }
 
         #endregion
-        
-        public enum ElementTypes
-        {
-
-            Double
-
-        }
 
     }
 

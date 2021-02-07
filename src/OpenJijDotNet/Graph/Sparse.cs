@@ -136,7 +136,7 @@ namespace OpenJijDotNet.Graphs
             {
                 switch (type)
                 {
-                    case GrpahElementTypesRepository.ElementTypes.Double:
+                    case NativeMethods.FloatTypes.Double:
                         return new DoubleImplement() as Implement<T>;
                 }
             }

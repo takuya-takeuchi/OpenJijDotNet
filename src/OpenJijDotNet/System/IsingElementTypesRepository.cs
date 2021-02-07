@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using OpenJijDotNet.Graphs;
 using OpenJijDotNet.Systems;
+using UpdaterAttribute = System.Tuple<OpenJijDotNet.NativeMethods.GraphTypes, OpenJijDotNet.NativeMethods.FloatTypes>;
+
 
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Graphs
@@ -13,7 +15,7 @@ namespace OpenJijDotNet.Graphs
 
         #region Fields
 
-        public static readonly Dictionary<Type, ElementTypes> SupportTypes = new Dictionary<Type, ElementTypes>();
+        public static readonly Dictionary<Type, UpdaterAttribute> SupportTypes = new Dictionary<Type, UpdaterAttribute>();
 
         #endregion
 
@@ -23,25 +25,16 @@ namespace OpenJijDotNet.Graphs
         {
             var types = new[]
             {
-                new { Type = typeof(ClassicalIsing<Dense<double>>),        ElementType = ElementTypes.DenseDouble },
-                new { Type = typeof(ContinuousTimeIsing<Sparse<double>>),   ElementType = ElementTypes.SparseDouble },
-                new { Type = typeof(TransverseIsing<Dense<double>>),       ElementType = ElementTypes.DenseDouble }
+                new { Type = typeof(ClassicalIsing<Dense<double>>),        GraphType = NativeMethods.GraphTypes.Dense, FloatType = NativeMethods.FloatTypes.Double },
+                new { Type = typeof(ContinuousTimeIsing<Sparse<double>>),  GraphType = NativeMethods.GraphTypes.Dense, FloatType = NativeMethods.FloatTypes.Double },
+                new { Type = typeof(TransverseIsing<Dense<double>>),       GraphType = NativeMethods.GraphTypes.Dense, FloatType = NativeMethods.FloatTypes.Double }
             };
 
             foreach (var type in types)
-                SupportTypes.Add(type.Type, type.ElementType);
+                SupportTypes.Add(type.Type, new UpdaterAttribute(type.GraphType, type.FloatType));
         }
 
         #endregion
-        
-        public enum ElementTypes
-        {
-
-            DenseDouble,
-            
-            SparseDouble
-
-        }
 
     }
 

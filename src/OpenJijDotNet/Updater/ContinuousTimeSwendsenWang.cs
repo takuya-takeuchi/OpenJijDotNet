@@ -4,15 +4,15 @@
 namespace OpenJijDotNet.Updaters
 {
 
-    public sealed class SingleSpinFlip<T> : Updater
-        where T: Ising
+    public sealed class ContinuousTimeSwendsenWang<T> : Updater
+        where T : Ising
     {
 
         #region Properties
 
         internal override NativeMethods.UpdaterTypes UpdaterType
         {
-            get => NativeMethods.UpdaterTypes.SingleSpinFlip;
+            get => NativeMethods.UpdaterTypes.ContinuousTimeSwendsenWang;
         }
 
         #endregion
