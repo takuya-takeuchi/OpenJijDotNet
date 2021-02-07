@@ -17,7 +17,7 @@ foreach($dockerfile in $dockerfiles)
    $tag = "openjijdotnet" + (Resolve-Path $dockerfileDirectory -Relative).Trim('.').Replace('\', '/')
 
    Write-Host "Start 'docker build -t $tag $dockerfileDirectory'" -ForegroundColor Green
-   docker build --force-rm=true -t $tag $dockerfileDirectory
+   docker build --network host --force-rm=true -t $tag $dockerfileDirectory
 
    if ($lastexitcode -ne 0)
    {
