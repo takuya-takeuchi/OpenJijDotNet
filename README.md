@@ -8,7 +8,7 @@ OpenJij wrapper written in C++ and C# for Windows, MacOS and Linux
 |---|---|---|---|---|---|---|
 |OpenJijDotNet (CPU)|Windows|✓|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/OpenJijDotNet.svg)](https://www.nuget.org/packages/OpenJijDotNet)|
 ||Linux|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/OpenJijDotNet.svg)](https://www.nuget.org/packages/OpenJijDotNet)|
-||OSX|-|-|-|-|[![NuGet version](https://img.shields.io/nuget/v/OpenJijDotNet.svg)](https://www.nuget.org/packages/OpenJijDotNet)|
+||OSX|-|✓|-|-|[![NuGet version](https://img.shields.io/nuget/v/OpenJijDotNet.svg)](https://www.nuget.org/packages/OpenJijDotNet)|
  
 ## Dependencies Libraries and Products
 
