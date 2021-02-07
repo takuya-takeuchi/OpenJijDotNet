@@ -4,6 +4,7 @@ using OpenJijDotNet;
 using OpenJijDotNet.Algorithms;
 using OpenJijDotNet.Graphs;
 using OpenJijDotNet.Results;
+using OpenJijDotNet.Systems;
 using OpenJijDotNet.Updaters;
 
 namespace Tutorial
@@ -48,7 +49,7 @@ namespace Tutorial
             //do annealing (updater: SingleSpinFlip)
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            Algorithm<SingleSpinFlip>.Run(system, randRngine, scheduleList);
+            Algorithm<SingleSpinFlip<ClassicalIsing<Dense<double>>>>.Run(system, randRngine, scheduleList);
             stopWatch.Stop();
 
             double ticks = stopWatch.ElapsedTicks;

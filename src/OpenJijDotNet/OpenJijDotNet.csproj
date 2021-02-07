@@ -50,5 +50,9 @@
     <Folder Include="docs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="xunit.assert" Version="2.4.0" />
+  </ItemGroup>
+
 
 </Project>

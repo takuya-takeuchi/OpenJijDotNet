@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using OpenJijDotNet;
-using OpenJijDotNet.Graphs;
 using OpenJijDotNet.Systems;
-
-using UpdaterAttribute = System.Tuple<OpenJijDotNet.NativeMethods.IsingTypes, OpenJijDotNet.NativeMethods.GraphTypes, OpenJijDotNet.NativeMethods.FloatTypes>;
+using OpenJijDotNet.Updaters;
+using UpdaterAttribute = System.Tuple<OpenJijDotNet.NativeMethods.UpdaterTypes, OpenJijDotNet.NativeMethods.IsingTypes, OpenJijDotNet.NativeMethods.GraphTypes, OpenJijDotNet.NativeMethods.FloatTypes>;
 
 // ReSharper disable once CheckNamespace
 namespace OpenJijDotNet.Graphs
@@ -24,18 +22,18 @@ namespace OpenJijDotNet.Graphs
         
         static UpdaterElementTypesRepository()
         {
-            // var types = new[]
-            // {
-            //     new { Type = typeof(SingleSpinFlip<ClassicalIsing<Dense<double>>>),                   IsingType = NativeMethods.IsingTypes.Classical,      GraphType = NativeMethods.GraphTypes.Dense,  FloatType = NativeMethods.FloatTypes.Double },
-            //     new { Type = typeof(SingleSpinFlip<TransverseIsing<Dense<double>>>),                  IsingType = NativeMethods.IsingTypes.Transverse,     GraphType = NativeMethods.GraphTypes.Dense,  FloatType = NativeMethods.FloatTypes.Double },
-            //     new { Type = typeof(SingleSpinFlip<ClassicalIsing<Sparse<double>>>),                  IsingType = NativeMethods.IsingTypes.Classical,      GraphType = NativeMethods.GraphTypes.Sparse, FloatType = NativeMethods.FloatTypes.Double },
-            //     new { Type = typeof(SingleSpinFlip<TransverseIsing<Sparse<double>>>),                 IsingType = NativeMethods.IsingTypes.Transverse,     GraphType = NativeMethods.GraphTypes.Sparse, FloatType = NativeMethods.FloatTypes.Double },
-            //     new { Type = typeof(SwendsenWang<ClassicalIsing<Sparse<double>>>),                    IsingType = NativeMethods.IsingTypes.Classical,      GraphType = NativeMethods.GraphTypes.Sparse, FloatType = NativeMethods.FloatTypes.Double },
-            //     new { Type = typeof(ContinuousTimeSwendsenWang<ContinuousTimeIsing<Sparse<double>>>), IsingType = NativeMethods.IsingTypes.ContinuousTime, GraphType = NativeMethods.GraphTypes.Sparse, FloatType = NativeMethods.FloatTypes.Double }
-            // };
+            var types = new[]
+            {
+                 new { Type = typeof(SingleSpinFlip<ClassicalIsing<Dense<double>>>),                   UpdaterType = NativeMethods.UpdaterTypes.SingleSpinFlip,             IsingType = NativeMethods.IsingTypes.Classical,      GraphType = NativeMethods.GraphTypes.Dense,  FloatType = NativeMethods.FloatTypes.Double },
+                 new { Type = typeof(SingleSpinFlip<TransverseIsing<Dense<double>>>),                  UpdaterType = NativeMethods.UpdaterTypes.SingleSpinFlip,             IsingType = NativeMethods.IsingTypes.Transverse,     GraphType = NativeMethods.GraphTypes.Dense,  FloatType = NativeMethods.FloatTypes.Double },
+                 new { Type = typeof(SingleSpinFlip<ClassicalIsing<Sparse<double>>>),                  UpdaterType = NativeMethods.UpdaterTypes.SingleSpinFlip,             IsingType = NativeMethods.IsingTypes.Classical,      GraphType = NativeMethods.GraphTypes.Sparse, FloatType = NativeMethods.FloatTypes.Double },
+                 new { Type = typeof(SingleSpinFlip<TransverseIsing<Sparse<double>>>),                 UpdaterType = NativeMethods.UpdaterTypes.SingleSpinFlip,             IsingType = NativeMethods.IsingTypes.Transverse,     GraphType = NativeMethods.GraphTypes.Sparse, FloatType = NativeMethods.FloatTypes.Double },
+                 new { Type = typeof(SwendsenWang<ClassicalIsing<Sparse<double>>>),                    UpdaterType = NativeMethods.UpdaterTypes.SwendsenWang,               IsingType = NativeMethods.IsingTypes.Classical,      GraphType = NativeMethods.GraphTypes.Sparse, FloatType = NativeMethods.FloatTypes.Double },
+                 new { Type = typeof(ContinuousTimeSwendsenWang<ContinuousTimeIsing<Sparse<double>>>), UpdaterType = NativeMethods.UpdaterTypes.ContinuousTimeSwendsenWang, IsingType = NativeMethods.IsingTypes.ContinuousTime, GraphType = NativeMethods.GraphTypes.Sparse, FloatType = NativeMethods.FloatTypes.Double }
+             };
 
-            // foreach (var type in types)
-            //     SupportTypes.Add(type.Type, new UpdaterAttribute(type.IsingType, type.GraphType, type.FloatType));
+            foreach (var type in types)
+                SupportTypes.Add(type.Type, new UpdaterAttribute(type.UpdaterType, type.IsingType, type.GraphType, type.FloatType));
         }
 
         #endregion
