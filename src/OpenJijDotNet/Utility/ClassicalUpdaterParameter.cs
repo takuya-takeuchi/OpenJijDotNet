@@ -4,7 +4,7 @@
 namespace OpenJijDotNet.Utilities
 {
     
-    public abstract class ClassicalUpdaterParameter : OpenJijObject
+    public sealed class ClassicalUpdaterParameter : OpenJijObject
     {
 
         #region Constructors
@@ -14,7 +14,7 @@ namespace OpenJijDotNet.Utilities
             this.NativePtr = NativeMethods.utility_ClassicalUpdaterParameter_new(beta);
         }
 
-        protected ClassicalUpdaterParameter(IntPtr ptr, bool isEnabledDispose)
+        internal ClassicalUpdaterParameter(IntPtr ptr, bool isEnabledDispose)
             : base(isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)

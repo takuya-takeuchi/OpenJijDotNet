@@ -11,7 +11,7 @@ using namespace openjij::utility;
 
 DLLEXPORT TransverseFieldUpdaterParameter* utility_TransverseFieldUpdaterParameter_new(const double beta, const double s)
 {
-    return new TransverseFieldUpdaterParameter(beta, a);
+    return new TransverseFieldUpdaterParameter(beta, s);
 }
 
 DLLEXPORT void utility_TransverseFieldUpdaterParameter_delete(TransverseFieldUpdaterParameter* parameter)

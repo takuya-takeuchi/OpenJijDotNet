@@ -4,7 +4,7 @@
 namespace OpenJijDotNet.Utilities
 {
     
-    public abstract class TransverseFieldUpdaterParameter : OpenJijObject
+    public sealed class TransverseFieldUpdaterParameter : OpenJijObject
     {
 
         #region Constructors
@@ -14,7 +14,7 @@ namespace OpenJijDotNet.Utilities
             this.NativePtr = NativeMethods.utility_TransverseFieldUpdaterParameter_new(beta, s);
         }
 
-        protected TransverseFieldUpdaterParameter(IntPtr ptr, bool isEnabledDispose)
+        internal TransverseFieldUpdaterParameter(IntPtr ptr, bool isEnabledDispose)
             : base(isEnabledDispose)
         {
             if (ptr == IntPtr.Zero)
