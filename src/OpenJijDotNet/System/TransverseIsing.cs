@@ -15,7 +15,7 @@ namespace OpenJijDotNet.Systems
 
         private Implement<T> _Implement;
 
-        private static readonly Dictionary<Type, Func<Spins, T, TransverseIsing<T>, double, ulong>> SupportTypes = new Dictionary<Type, Func<Spins, T, TransverseIsing<T>, double, ulong>>();
+        private static readonly Dictionary<Type, Func<Spins, T, double, ulong, TransverseIsing<T>>> SupportTypes = new Dictionary<Type, Func<Spins, T, double, ulong, TransverseIsing<T>>>();
 
         #endregion
 
@@ -25,8 +25,8 @@ namespace OpenJijDotNet.Systems
         {
             var types = new[]
             {
-                new { Type = typeof(Dense<float>),   Generator = new Func<Spins, T, TransverseIsing<T>, double, ulong>((s, i, g, t) => { return new TransverseIsing<Dense<float>>(s, i as Dense<float>, g, t) as TransverseIsing<T>;   } ) },
-                new { Type = typeof(Dense<double>),  Generator = new Func<Spins, T, TransverseIsing<T>, double, ulong>((s, i, g, t) => { return new TransverseIsing<Dense<double>>(s, i as Dense<double>, g, t) as TransverseIsing<T>; } ) },
+                new { Type = typeof(Dense<float>),   Generator = new Func<Spins, T, double, ulong, TransverseIsing<T>>((s, i, g, t) => { return new TransverseIsing<Dense<float>>(s, i as Dense<float>, g, t) as TransverseIsing<T>;   } ) },
+                new { Type = typeof(Dense<double>),  Generator = new Func<Spins, T, double, ulong, TransverseIsing<T>>((s, i, g, t) => { return new TransverseIsing<Dense<double>>(s, i as Dense<double>, g, t) as TransverseIsing<T>; } ) },
                 // new { Type = typeof(Sparse<float>),  Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Sparse<float>>(s, i);  } ) },
                 // new { Type = typeof(Sparse<double>), Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Sparse<double>>(s, i); } ) }
             };

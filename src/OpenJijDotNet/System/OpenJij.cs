@@ -26,7 +26,7 @@ namespace OpenJijDotNet
             return ClassicalIsing<T>.Create(initSpin, initInteraction);
         }
 
-        public static ContinuousTimeIsing<T> MakeContinuousTimeIsing<T>(Spins initSpin, T initInteraction)
+        public static ContinuousTimeIsing<T> MakeContinuousTimeIsing<T>(Spins initSpin, T initInteraction, double gamma)
             where T: Graph
         {
             if (initSpin == null)
@@ -36,10 +36,10 @@ namespace OpenJijDotNet
             
             initInteraction.ThrowIfDisposed();
 
-            return ContinuousTimeIsing<T>.Create(initSpin, initInteraction);
+            return ContinuousTimeIsing<T>.Create(initSpin, initInteraction, gamma);
         }
 
-        public static TransverseIsing<T> MakeTransverseIsing<T>(Spins initSpin, T initInteraction)
+        public static TransverseIsing<T> MakeTransverseIsing<T>(Spins initSpin, T initInteraction, double gamma, ulong numTrotterSlices)
             where T: Graph
         {
             if (initSpin == null)
@@ -49,7 +49,7 @@ namespace OpenJijDotNet
             
             initInteraction.ThrowIfDisposed();
 
-            return TransverseIsing<T>.Create(initSpin, initInteraction);
+            return TransverseIsing<T>.Create(initSpin, initInteraction, gamma, numTrotterSlices);
         }
 
         #endregion

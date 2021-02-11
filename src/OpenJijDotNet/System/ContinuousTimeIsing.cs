@@ -15,7 +15,7 @@ namespace OpenJijDotNet.Systems
 
         private Implement<T> _Implement;
 
-        private static readonly Dictionary<Type, Func<Spins, T, ContinuousTimeIsing<T>, double>> SupportTypes = new Dictionary<Type, Func<Spins, T, ContinuousTimeIsing<T>, double>>();
+        private static readonly Dictionary<Type, Func<Spins, T, double, ContinuousTimeIsing<T>>> SupportTypes = new Dictionary<Type, Func<Spins, T, double, ContinuousTimeIsing<T>>>();
 
         #endregion
 
@@ -25,8 +25,8 @@ namespace OpenJijDotNet.Systems
         {
             var types = new[]
             {
-                new { Type = typeof(Sparse<float>),   Generator = new Func<Spins, T, ContinuousTimeIsing<T>, double>((s, i, g) => { return new ContinuousTimeIsing<Sparse<float>>(s, i as Sparse<float>, g) as ContinuousTimeIsing<T>;   } ) },
-                new { Type = typeof(Sparse<double>),  Generator = new Func<Spins, T, ContinuousTimeIsing<T>, double>((s, i, g) => { return new ContinuousTimeIsing<Sparse<double>>(s, i as Sparse<double>, g) as ContinuousTimeIsing<T>; } ) },
+                new { Type = typeof(Sparse<float>),   Generator = new Func<Spins, T, double, ContinuousTimeIsing<T>>((s, i, g) => { return new ContinuousTimeIsing<Sparse<float>>(s, i as Sparse<float>, g) as ContinuousTimeIsing<T>;   } ) },
+                new { Type = typeof(Sparse<double>),  Generator = new Func<Spins, T, double, ContinuousTimeIsing<T>>((s, i, g) => { return new ContinuousTimeIsing<Sparse<double>>(s, i as Sparse<double>, g) as ContinuousTimeIsing<T>; } ) },
                 // new { Type = typeof(Sparse<float>),  Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<float>>(s, i);  } ) },
                 // new { Type = typeof(Sparse<double>), Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<double>>(s, i); } ) }
             };
