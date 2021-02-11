@@ -111,8 +111,9 @@ namespace OpenJijDotNet.Systems
                         {
                             case OpenJijDotNet.NativeMethods.FloatTypes.Double:
                                 return new DenseDoubleImplement() as Implement<T>;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(type), type, $"'{ret.Item2}' does not support for {ret.Item1}");
                         }
-                        break;
                 }
             }
 
@@ -124,6 +125,20 @@ namespace OpenJijDotNet.Systems
         #endregion
 
         #region Implement
+    
+        internal abstract class Implement<T>
+            where T: Graph
+        {
+
+            #region Methods
+
+            public abstract IntPtr Create(Spins initSpins, T initInteraction);
+
+            public abstract void Dispose(IntPtr ptr);
+
+            #endregion
+
+        }
 
         private sealed class DenseDoubleImplement : Implement<Dense<double>>
         {

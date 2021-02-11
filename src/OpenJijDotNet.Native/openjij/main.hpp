@@ -15,8 +15,8 @@
 #include "result/get_solution.hpp"
 
 #include "system/ClassicalIsing.hpp"
-// #include "system/ContinuousTimeIsing.hpp"
-// #include "system/TransverseIsing.hpp"
+#include "system/ContinuousTimeIsing.hpp"
+#include "system/TransverseIsing.hpp"
 
 #include "utility/ClassicalConstraintUpdaterParameter.hpp"
 #include "utility/ClassicalUpdaterParameter.hpp"

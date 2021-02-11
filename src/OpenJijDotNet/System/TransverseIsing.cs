@@ -15,7 +15,7 @@ namespace OpenJijDotNet.Systems
 
         private Implement<T> _Implement;
 
-        private static readonly Dictionary<Type, Func<Spins, T, TransverseIsing<T>>> SupportTypes = new Dictionary<Type, Func<Spins, T, TransverseIsing<T>>>();
+        private static readonly Dictionary<Type, Func<Spins, T, TransverseIsing<T>, double, ulong>> SupportTypes = new Dictionary<Type, Func<Spins, T, TransverseIsing<T>, double, ulong>>();
 
         #endregion
 
@@ -25,8 +25,8 @@ namespace OpenJijDotNet.Systems
         {
             var types = new[]
             {
-                new { Type = typeof(Dense<float>),   Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Dense<float>>(s, i as Dense<float>) as TransverseIsing<T>;   } ) },
-                new { Type = typeof(Dense<double>),  Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Dense<double>>(s, i as Dense<double>) as TransverseIsing<T>; } ) },
+                new { Type = typeof(Dense<float>),   Generator = new Func<Spins, T, TransverseIsing<T>, double, ulong>((s, i, g, t) => { return new TransverseIsing<Dense<float>>(s, i as Dense<float>, g, t) as TransverseIsing<T>;   } ) },
+                new { Type = typeof(Dense<double>),  Generator = new Func<Spins, T, TransverseIsing<T>, double, ulong>((s, i, g, t) => { return new TransverseIsing<Dense<double>>(s, i as Dense<double>, g, t) as TransverseIsing<T>; } ) },
                 // new { Type = typeof(Sparse<float>),  Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Sparse<float>>(s, i);  } ) },
                 // new { Type = typeof(Sparse<double>), Generator = new Func<Spins, T, TransverseIsing<T>>((s, i) => { return new TransverseIsing<Sparse<double>>(s, i); } ) }
             };
@@ -35,7 +35,7 @@ namespace OpenJijDotNet.Systems
                 SupportTypes.Add(type.Type, type.Generator);
         }
 
-        private TransverseIsing(Spins initSpins, T initInteraction)
+        private TransverseIsing(Spins initSpins, T initInteraction, double gamma, ulong numTrotterSlices)
         {
             if (initSpins == null)
                 throw new ArgumentNullException(nameof(initSpins));
@@ -43,8 +43,8 @@ namespace OpenJijDotNet.Systems
             this.GraphType = initInteraction.GraphType;
             this.FloatType = initInteraction.FloatType;
 
-            this._Implement = CreateImplement<T>();
-            this.NativePtr = this._Implement.Create(initSpins, initInteraction);
+            this._Implement = CreateImplement<T>(this.GetType());
+            this.NativePtr = this._Implement.Create(initSpins, initInteraction, gamma, numTrotterSlices);
         }
 
         #endregion
@@ -70,12 +70,12 @@ namespace OpenJijDotNet.Systems
 
         #region Methods
 
-        internal static TransverseIsing<T> Create(Spins initSpins, T initInteraction)
+        internal static TransverseIsing<T> Create(Spins initSpins, T initInteraction, double gamma, ulong numTrotterSlices)
         {
             if (!SupportTypes.TryGetValue(typeof(T), out var generator))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
             
-            return generator(initSpins, initInteraction);
+            return generator(initSpins, initInteraction, gamma, numTrotterSlices);
         }
 
         public void ResetDE()
@@ -98,20 +98,21 @@ namespace OpenJijDotNet.Systems
 
         #region Helpers
 
-        private static Implement<T> CreateImplement<T>()
+        private static Implement<T> CreateImplement<T>(Type type)
             where T: Graph
         {
-            if (IsingElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
+            if (IsingElementTypesRepository.SupportTypes.TryGetValue(type, out var ret))
             {
-                switch (type.Item1)
+                switch (ret.Item1)
                 {
                     case OpenJijDotNet.NativeMethods.GraphTypes.Dense:
-                        switch (type.Item2)
+                        switch (ret.Item2)
                         {
                             case OpenJijDotNet.NativeMethods.FloatTypes.Double:
                                 return new DenseDoubleImplement() as Implement<T>;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(type), type, $"'{ret.Item2}' does not support for {ret.Item1}");
                         }
-                        break;
                 }
             }
 
@@ -124,15 +125,32 @@ namespace OpenJijDotNet.Systems
 
         #region Implement
 
+        internal abstract class Implement<T>
+            where T: Graph
+        {
+
+            #region Methods
+
+            public abstract IntPtr Create(Spins initSpins, T initInteraction, double gamma, ulong numTrotterSlices);
+
+            public abstract void Dispose(IntPtr ptr);
+
+            #endregion
+
+        }
+
         private sealed class DenseDoubleImplement : Implement<Dense<double>>
         {
 
             #region Methods
 
-            public override IntPtr Create(Spins initSpins, Dense<double> initInteraction)
+            public override IntPtr Create(Spins initSpins, Dense<double> initInteraction, double gamma, ulong numTrotterSlices)
             {
                 using (var vector = new StdVector<int>(initSpins.Select(s => s.Value)))
-                    return NativeMethods.system_TransverseIsing_Dense_double_new(vector.NativePtr, initInteraction.NativePtr);
+                    return NativeMethods.system_TransverseIsing_Dense_double_new(vector.NativePtr,
+                                                                                 initInteraction.NativePtr,
+                                                                                 gamma,
+                                                                                 numTrotterSlices);
             }
 
             public override void Dispose(IntPtr ptr)
