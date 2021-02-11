@@ -22,6 +22,16 @@ namespace OpenJijDotNet
                                                                                        numCallUpdater);
             return new ClassicalScheduleList(ret, true);
         }
+
+        public static TransverseFieldScheduleList MakeTransverseFieldScheduleList(double beta,
+                                                                                  uint oneMcStep,
+                                                                                  uint numCallUpdater)
+        {
+            var ret = NativeMethods.utility_schedule_list_make_transverse_field_schedule_list(beta,
+                                                                                              oneMcStep,
+                                                                                              numCallUpdater);
+            return new TransverseFieldScheduleList(ret, true);
+        }
         
         #endregion
 
