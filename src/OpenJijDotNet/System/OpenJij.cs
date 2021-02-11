@@ -26,6 +26,32 @@ namespace OpenJijDotNet
             return ClassicalIsing<T>.Create(initSpin, initInteraction);
         }
 
+        public static ContinuousTimeIsing<T> MakeContinuousTimeIsing<T>(Spins initSpin, T initInteraction)
+            where T: Graph
+        {
+            if (initSpin == null)
+                throw new ArgumentNullException(nameof(initSpin));
+            if (initInteraction == null)
+                throw new ArgumentNullException(nameof(initInteraction));
+            
+            initInteraction.ThrowIfDisposed();
+
+            return ContinuousTimeIsing<T>.Create(initSpin, initInteraction);
+        }
+
+        public static TransverseIsing<T> MakeTransverseIsing<T>(Spins initSpin, T initInteraction)
+            where T: Graph
+        {
+            if (initSpin == null)
+                throw new ArgumentNullException(nameof(initSpin));
+            if (initInteraction == null)
+                throw new ArgumentNullException(nameof(initInteraction));
+            
+            initInteraction.ThrowIfDisposed();
+
+            return TransverseIsing<T>.Create(initSpin, initInteraction);
+        }
+
         #endregion
 
     }

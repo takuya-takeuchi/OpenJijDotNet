@@ -23,6 +23,12 @@ namespace OpenJijDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void system_ClassicalIsing_Dense_double_delete(IntPtr sparse);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void system_ClassicalIsing_Dense_double_reset_spins(IntPtr sparse, IntPtr spins);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void system_ClassicalIsing_Dense_double_reset_dE(IntPtr sparse);
+
         #endregion
 
     }

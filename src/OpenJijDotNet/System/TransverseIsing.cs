@@ -78,6 +78,24 @@ namespace OpenJijDotNet.Systems
             return generator(initSpins, initInteraction);
         }
 
+        public void ResetDE()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.system_TransverseIsing_Dense_double_reset_dE(this.NativePtr);
+        }
+
+        public void ResetSpins(Spins spins)
+        {
+            if (spins == null)
+                throw new ArgumentNullException(nameof(spins));
+
+            this.ThrowIfDisposed();
+
+            using (var vector = new StdVector<int>(spins.Select(s => s.Value)))
+                NativeMethods.system_TransverseIsing_Dense_double_reset_spins(this.NativePtr, vector.NativePtr);
+        }
+
         #region Helpers
 
         private static Implement<T> CreateImplement<T>()

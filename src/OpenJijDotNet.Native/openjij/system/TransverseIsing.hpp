@@ -23,6 +23,18 @@ DLLEXPORT void system_TransverseIsing_##__GRAPHNAME__##_##__TYPENAME__##_delete(
 {\
     delete ising;\
 }\
+\
+DLLEXPORT void system_TransverseIsing_##__GRAPHNAME__##_##__TYPENAME__##_reset_spins(openjij::system::TransverseIsing<openjij::graph::__GRAPHTYPE__<__TYPE__>> *ising,\
+                                                                                     openjij::graph::Spins* spins)\
+{\
+    const auto& s = *spins;\
+    ising->reset_spins(s);\
+}\
+\
+DLLEXPORT void system_TransverseIsing_##__GRAPHNAME__##_##__TYPENAME__##_reset_dE(openjij::system::TransverseIsing<openjij::graph::__GRAPHTYPE__<__TYPE__>> *ising)\
+{\
+    ising->reset_dE();\
+}\
 
 #pragma endregion template
 
