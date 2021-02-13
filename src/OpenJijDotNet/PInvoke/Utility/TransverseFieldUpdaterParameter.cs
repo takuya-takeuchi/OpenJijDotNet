@@ -15,21 +15,17 @@ namespace OpenJijDotNet
     internal sealed partial class NativeMethods
     {
 
-        #region Dense<double>
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr utility_TransverseFieldUpdaterParameter_new(double beta,
+                                                                                double s);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr system_ClassicalIsing_Dense_double_new(IntPtr spins, IntPtr graph);
+        public static extern void utility_TransverseFieldUpdaterParameter_delete(IntPtr parameter);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void system_ClassicalIsing_Dense_double_delete(IntPtr sparse);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void system_ClassicalIsing_Dense_double_reset_spins(IntPtr sparse, IntPtr spins);
-
-        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern void system_ClassicalIsing_Dense_double_reset_dE(IntPtr sparse);
-
-        #endregion
+        public static extern void utility_TransverseFieldUpdaterParameter_get_tuple(IntPtr parameter,
+                                                                                    out double item1,
+                                                                                    out double item2);
 
     }
 

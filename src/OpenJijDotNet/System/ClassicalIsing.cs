@@ -79,6 +79,24 @@ namespace OpenJijDotNet.Systems
             return generator(initSpins, initInteraction);
         }
 
+        public void ResetDE()
+        {
+            this.ThrowIfDisposed();
+
+            NativeMethods.system_ClassicalIsing_Dense_double_reset_dE(this.NativePtr);
+        }
+
+        public void ResetSpins(Spins spins)
+        {
+            if (spins == null)
+                throw new ArgumentNullException(nameof(spins));
+
+            this.ThrowIfDisposed();
+
+            using (var vector = new StdVector<int>(spins.Select(s => s.Value)))
+                NativeMethods.system_ClassicalIsing_Dense_double_reset_spins(this.NativePtr, vector.NativePtr);
+        }
+
         #region Helpers
 
         private static Implement<T> CreateImplement<T>(Type type)
@@ -93,8 +111,9 @@ namespace OpenJijDotNet.Systems
                         {
                             case OpenJijDotNet.NativeMethods.FloatTypes.Double:
                                 return new DenseDoubleImplement() as Implement<T>;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(type), type, $"'{ret.Item2}' does not support for {ret.Item1}");
                         }
-                        break;
                 }
             }
 
@@ -106,6 +125,20 @@ namespace OpenJijDotNet.Systems
         #endregion
 
         #region Implement
+    
+        internal abstract class Implement<T>
+            where T: Graph
+        {
+
+            #region Methods
+
+            public abstract IntPtr Create(Spins initSpins, T initInteraction);
+
+            public abstract void Dispose(IntPtr ptr);
+
+            #endregion
+
+        }
 
         private sealed class DenseDoubleImplement : Implement<Dense<double>>
         {

@@ -24,6 +24,14 @@ namespace OpenJijDotNet
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void utility_schedule_list_ClassicalScheduleList_delete(IntPtr list);
 
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern IntPtr utility_schedule_list_make_transverse_field_schedule_list(double beta,
+                                                                                              uint one_mc_step,
+                                                                                              uint num_call_updater);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void utility_schedule_list_TransverseFieldScheduleList_delete(IntPtr list);
+
     }
 
 }

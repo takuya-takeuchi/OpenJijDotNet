@@ -18,10 +18,13 @@ namespace OpenJijDotNet
         #region Sparse<double>
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
-        public static extern IntPtr system_ContinuousTimeIsing_Sparse_double_new(IntPtr spins, IntPtr graph);
+        public static extern IntPtr system_ContinuousTimeIsing_Sparse_double_new(IntPtr spins, IntPtr graph, double gamma);
 
         [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
         public static extern void system_ContinuousTimeIsing_Sparse_double_delete(IntPtr sparse);
+
+        [DllImport(NativeLibrary, CallingConvention = CallingConvention)]
+        public static extern void system_ContinuousTimeIsing_Sparse_double_reset_spins(IntPtr sparse, IntPtr spins);
 
         #endregion
 

@@ -15,7 +15,7 @@ namespace OpenJijDotNet.Systems
 
         private Implement<T> _Implement;
 
-        private static readonly Dictionary<Type, Func<Spins, T, ContinuousTimeIsing<T>>> SupportTypes = new Dictionary<Type, Func<Spins, T, ContinuousTimeIsing<T>>>();
+        private static readonly Dictionary<Type, Func<Spins, T, double, ContinuousTimeIsing<T>>> SupportTypes = new Dictionary<Type, Func<Spins, T, double, ContinuousTimeIsing<T>>>();
 
         #endregion
 
@@ -25,8 +25,8 @@ namespace OpenJijDotNet.Systems
         {
             var types = new[]
             {
-                new { Type = typeof(Sparse<float>),   Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<float>>(s, i as Sparse<float>) as ContinuousTimeIsing<T>;   } ) },
-                new { Type = typeof(Sparse<double>),  Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<double>>(s, i as Sparse<double>) as ContinuousTimeIsing<T>; } ) },
+                new { Type = typeof(Sparse<float>),   Generator = new Func<Spins, T, double, ContinuousTimeIsing<T>>((s, i, g) => { return new ContinuousTimeIsing<Sparse<float>>(s, i as Sparse<float>, g) as ContinuousTimeIsing<T>;   } ) },
+                new { Type = typeof(Sparse<double>),  Generator = new Func<Spins, T, double, ContinuousTimeIsing<T>>((s, i, g) => { return new ContinuousTimeIsing<Sparse<double>>(s, i as Sparse<double>, g) as ContinuousTimeIsing<T>; } ) },
                 // new { Type = typeof(Sparse<float>),  Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<float>>(s, i);  } ) },
                 // new { Type = typeof(Sparse<double>), Generator = new Func<Spins, T, ContinuousTimeIsing<T>>((s, i) => { return new ContinuousTimeIsing<Sparse<double>>(s, i); } ) }
             };
@@ -35,7 +35,7 @@ namespace OpenJijDotNet.Systems
                 SupportTypes.Add(type.Type, type.Generator);
         }
 
-        private ContinuousTimeIsing(Spins initSpins, T initInteraction)
+        private ContinuousTimeIsing(Spins initSpins, T initInteraction, double gamma)
         {
             if (initSpins == null)
                 throw new ArgumentNullException(nameof(initSpins));
@@ -43,8 +43,8 @@ namespace OpenJijDotNet.Systems
             this.GraphType = initInteraction.GraphType;
             this.FloatType = initInteraction.FloatType;
 
-            this._Implement = CreateImplement<T>();
-            this.NativePtr = this._Implement.Create(initSpins, initInteraction);
+            this._Implement = CreateImplement<T>(this.GetType());
+            this.NativePtr = this._Implement.Create(initSpins, initInteraction, gamma);
         }
 
         #endregion
@@ -70,30 +70,42 @@ namespace OpenJijDotNet.Systems
 
         #region Methods
 
-        internal static ContinuousTimeIsing<T> Create(Spins initSpins, T initInteraction)
+        internal static ContinuousTimeIsing<T> Create(Spins initSpins, T initInteraction, double gamma)
         {
             if (!SupportTypes.TryGetValue(typeof(T), out var generator))
                 throw new NotSupportedException($"{typeof(T).Name} does not support");
             
-            return generator(initSpins, initInteraction);
+            return generator(initSpins, initInteraction, gamma);
+        }
+
+        public void ResetSpins(Spins spins)
+        {
+            if (spins == null)
+                throw new ArgumentNullException(nameof(spins));
+
+            this.ThrowIfDisposed();
+
+            using (var vector = new StdVector<int>(spins.Select(s => s.Value)))
+                NativeMethods.system_ContinuousTimeIsing_Sparse_double_reset_spins(this.NativePtr, vector.NativePtr);
         }
 
         #region Helpers
 
-        private static Implement<T> CreateImplement<T>()
+        private static Implement<T> CreateImplement<T>(Type type)
             where T: Graph
         {
-            if (IsingElementTypesRepository.SupportTypes.TryGetValue(typeof(T), out var type))
+            if (IsingElementTypesRepository.SupportTypes.TryGetValue(type, out var ret))
             {
-                switch (type.Item1)
+                switch (ret.Item1)
                 {
                     case OpenJijDotNet.NativeMethods.GraphTypes.Sparse:
-                        switch (type.Item2)
+                        switch (ret.Item2)
                         {
                             case OpenJijDotNet.NativeMethods.FloatTypes.Double:
                                 return new SparseDoubleImplement() as Implement<T>;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(type), type, $"'{ret.Item2}' does not support for {ret.Item1}");
                         }
-                        break;
                 }
             }
 
@@ -105,16 +117,32 @@ namespace OpenJijDotNet.Systems
         #endregion
 
         #region Implement
+    
+        internal abstract class Implement<T>
+            where T: Graph
+        {
+
+            #region Methods
+
+            public abstract IntPtr Create(Spins initSpins, T initInteraction, double gamma);
+
+            public abstract void Dispose(IntPtr ptr);
+
+            #endregion
+
+        }
 
         private sealed class SparseDoubleImplement : Implement<Sparse<double>>
         {
 
             #region Methods
 
-            public override IntPtr Create(Spins initSpins, Sparse<double> initInteraction)
+            public override IntPtr Create(Spins initSpins, Sparse<double> initInteraction, double gamma)
             {
                 using (var vector = new StdVector<int>(initSpins.Select(s => s.Value)))
-                    return NativeMethods.system_ContinuousTimeIsing_Sparse_double_new(vector.NativePtr, initInteraction.NativePtr);
+                    return NativeMethods.system_ContinuousTimeIsing_Sparse_double_new(vector.NativePtr,
+                                                                                      initInteraction.NativePtr,
+                                                                                      gamma);
             }
 
             public override void Dispose(IntPtr ptr)
