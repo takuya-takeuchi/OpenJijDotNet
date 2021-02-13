@@ -1,7 +1,8 @@
 stages:
   - build
+  - package
 
-build_win:
+build:win:
   stage: build
   before_script:
     - chcp 65001
@@ -16,7 +17,7 @@ build_win:
     paths:
       - nuget/artifacts
 
-build_ubuntu:
+build:ubuntu:
   stage: build
   before_script:
     - git submodule update --init --recursive
@@ -29,3 +30,23 @@ build_ubuntu:
   artifacts:
     paths:
       - nuget/artifacts
+
+build:osx:
+  stage: build
+  before_script:
+    - git submodule update --init --recursive
+  script:
+    - cd nuget
+    - pwsh BuildOSX.ps1
+  tags:
+    - osx
+  artifacts:
+    paths:
+      - nuget/artifacts
+
+package:
+  stage: package
+  dependencies:
+    - build:win
+    - build:ubuntu
+    - build:osx
