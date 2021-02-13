@@ -46,6 +46,10 @@ build:osx:
 
 package:
   stage: package
+  script:
+    - echo Hello
+  tags:
+    - windows
   dependencies:
     - build:win
     - build:ubuntu
