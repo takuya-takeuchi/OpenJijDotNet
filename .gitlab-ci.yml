@@ -9,7 +9,7 @@ build:win:
     - git submodule update --init --recursive
   script:
     - cd nuget
-    - git clen -fxd .
+    - git clean -fxd .
     - pwsh BuildWindows.ps1
   tags:
     - windows
