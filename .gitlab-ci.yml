@@ -15,3 +15,17 @@ build_win:
   artifacts:
     paths:
       - nuget/artifacts
+
+build_ubuntu:
+  stage: build
+  before_script:
+    - git submodule update --init --recursive
+  script:
+    - cd nuget
+    - pwsh BuildUbuntu18.ps1
+  tags:
+    - ubuntu
+    - cuda
+  artifacts:
+    paths:
+      - nuget/artifacts
