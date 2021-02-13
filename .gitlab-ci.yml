@@ -3,6 +3,8 @@ stages:
 
 build_win:
   stage: build
+  before_script:
+    - chcp 65001
   script:
     - cd nuget
     - pwsh BuildWindows.ps1
