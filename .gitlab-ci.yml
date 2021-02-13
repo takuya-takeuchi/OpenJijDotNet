@@ -1,0 +1,14 @@
+stages:
+  - build
+
+build_win:
+  stage: build
+  script:
+    - cd nuget
+    - pwsh BuildWindows.ps1
+  tags:
+    - windows
+    - cuda
+  artifacts:
+    paths:
+      - nuget/artifacts
