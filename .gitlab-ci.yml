@@ -9,6 +9,7 @@ build:win:
     - git submodule update --init --recursive
   script:
     - cd nuget
+    - git clen -fxd .
     - pwsh BuildWindows.ps1
   tags:
     - windows
@@ -47,10 +48,14 @@ build:osx:
 package:
   stage: package
   script:
-    - echo Hello
+    - cd nuget
+    - pwsh CreateAllPackage.ps1
   tags:
     - windows
   dependencies:
     - build:win
     - build:ubuntu
     - build:osx
+  artifacts:
+    paths:
+      - nuget/*.nupkg
