@@ -5,6 +5,7 @@ build_win:
   stage: build
   before_script:
     - chcp 65001
+    - git submodule update --init --recursive
   script:
     - cd nuget
     - pwsh BuildWindows.ps1
