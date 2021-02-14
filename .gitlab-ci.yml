@@ -1,6 +1,7 @@
 stages:
   - build
   - package
+  - test
 
 build:win:
   stage: build
@@ -61,3 +62,45 @@ package:
   artifacts:
     paths:
       - nuget/*.nupkg
+
+test:win:
+  stage: test
+  before_script:
+    - chcp 65001
+  script:
+    - cd nuget
+    - pwsh TestPackageWindows.ps1
+  tags:
+    - windows
+  dependencies:
+    - package
+  artifacts:
+    paths:
+      - nuget/test
+
+test:ubuntu:
+  stage: test
+  script:
+    - cd nuget
+    - pwsh TestPackageUbuntu18.ps1
+  tags:
+    - ubuntu
+    - cuda
+  dependencies:
+    - package
+  artifacts:
+    paths:
+      - nuget/test
+
+test:osx:
+  stage: test
+  script:
+    - cd nuget
+    - pwsh TestPackageOSX.ps1
+  tags:
+    - osx
+  dependencies:
+    - package
+  artifacts:
+    paths:
+      - nuget/test
