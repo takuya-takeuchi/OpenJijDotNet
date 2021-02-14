@@ -35,7 +35,6 @@ build:ubuntu:
 build:osx:
   stage: build
   before_script:
-    - chcp 65001
     - git submodule update --init --recursive
   script:
     - cd nuget
@@ -48,6 +47,8 @@ build:osx:
 
 package:
   stage: package
+  before_script:
+    - chcp 65001
   script:
     - cd nuget
     - pwsh CreateAllPackage.ps1
