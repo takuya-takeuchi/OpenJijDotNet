@@ -29,7 +29,7 @@ Write-Host "${nuspec}" -ForegroundColor Green
 
 if ($global:IsWindows)
 {
-   Invoke-Expression "${nugetPath} pack ${nuspec}"
+   & "${nugetPath}" pack "${nuspec}"
 }
 else
 {
