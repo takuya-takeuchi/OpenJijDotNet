@@ -3,7 +3,7 @@
 #%1: Version of Release (19.17.0.yyyyMMdd)
 #***************************************
 Param([Parameter(
-      Mandatory=$True,
+      Mandatory=$False,
       Position = 1
       )][string]
       $Version
@@ -18,6 +18,19 @@ $Current = Get-Location
 
 $BuildTargets = @()
 $BuildTargets += New-Object PSObject -Property @{Package = "OpenJijDotNet";     PlatformTarget="x64"; RID = "$OperatingSystem-x64"; }
+
+if ([string]::IsNullOrEmpty($Version))
+{
+   $packages = Get-ChildItem *.* -include *.nupkg | Sort-Object -Property Name -Descending
+   foreach ($file in $packages)
+   {
+      $file = Split-Path $file -leaf
+      $file = $file -replace "OpenJijDotNet\.",""
+      $file = $file -replace "\.nupkg",""
+      $Version = $file
+      break
+   }
+}
 
 foreach($BuildTarget in $BuildTargets)
 {
