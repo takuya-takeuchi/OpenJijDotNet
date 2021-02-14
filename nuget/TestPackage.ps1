@@ -75,15 +75,15 @@ function RunTest($BuildTargets)
       $env:OPENJIJDOTNET_VERSION = $VERSION
       $env:OPENJIJDOTNET_GUI_SUPPORT = 1
 
-      $NativeTestDir = Join-Path $OpenJijDotNetRoot test | `
-                        Join-Path -ChildPath OpenJijDotNet.Native.Tests
+      $TestDir = Join-Path $OpenJijDotNetRoot test | `
+                 Join-Path -ChildPath OpenJijDotNet.Tests
 
-      $TargetDir = Join-Path $WorkDir OpenJijDotNet.Native.Tests
+      $TargetDir = Join-Path $WorkDir OpenJijDotNet.Tests
       if (Test-Path "$TargetDir") {
          Remove-Item -Path "$TargetDir" -Recurse -Force > $null
       }
 
-      Copy-Item "$NativeTestDir" "$WorkDir" -Recurse
+      Copy-Item "$TestDir" "$WorkDir" -Recurse
 
       Set-Location -Path "$TargetDir"
 
