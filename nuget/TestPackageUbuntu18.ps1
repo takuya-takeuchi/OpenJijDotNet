@@ -20,8 +20,6 @@ $Current = Get-Location
 $OpenJijDotNetRoot = (Split-Path (Get-Location) -Parent)
 $DockerDir = Join-Path $OpenJijDotNetRoot docker
 
-Set-Location -Path $DockerDir
-
 $DockerFileDir = Join-Path $DockerDir test  | `
                  Join-Path -ChildPath $OperatingSystem | `
                  Join-Path -ChildPath $OperatingSystemVersion
@@ -43,6 +41,8 @@ if ([string]::IsNullOrEmpty($Version))
       break
    }
 }
+
+Set-Location -Path $DockerDir
 
 foreach($BuildTarget in $BuildTargets)
 {

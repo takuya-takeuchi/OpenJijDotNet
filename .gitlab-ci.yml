@@ -76,7 +76,7 @@ test:win:
     - package
   artifacts:
     paths:
-      - nuget/test
+      - nuget/artifacts/test
 
 test:ubuntu:
   stage: test
@@ -90,7 +90,7 @@ test:ubuntu:
     - package
   artifacts:
     paths:
-      - nuget/test
+      - nuget/artifacts/test
 
 test:osx:
   stage: test
@@ -103,4 +103,4 @@ test:osx:
     - package
   artifacts:
     paths:
-      - nuget/test
+      - nuget/artifacts/test
