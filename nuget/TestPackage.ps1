@@ -91,12 +91,13 @@ function RunTest($BuildTargets)
 
       # restore package from local nuget pacakge
       # And drop stdout message
+      dotnet remove reference "..\..\src\OpenJijDotNet\OpenJijDotNet.csproj" > $null
       dotnet add package $package -v $VERSION --source "$NugetDir" > $null
 
       # Copy Dependencies
       $OutDir = Join-Path $TargetDir bin | `
-                  Join-Path -ChildPath Release | `
-                  Join-Path -ChildPath netcoreapp2.0
+                Join-Path -ChildPath Release | `
+                Join-Path -ChildPath netcoreapp3.1
       if (!(Test-Path "$OutDir")) {
          New-Item "$OutDir" -ItemType Directory > $null
       }
